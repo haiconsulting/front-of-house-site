@@ -27,6 +27,9 @@ const ogImageUrl = new URL(`/og/${t.slug}.jpg`, site.url).href;
 <!doctype html>
 <html lang="en">
   <head>
+    {import.meta.env.PUBLIC_PREVIEW_ORIGIN && (
+      <meta name="robots" content="noindex, nofollow" />
+    )}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
@@ -55,12 +58,15 @@ const ogImageUrl = new URL(`/og/${t.slug}.jpg`, site.url).href;
     )}
     <script is:inline>
       // Studio previews (?embed=1) drop the FOH chrome before first paint.
-      if (/[?&]embed=1(&|$)/.test(location.search)) document.documentElement.classList.add("foh-embed");
+      if (/[?&]embed=1(&|$)/.test(location.search))
+        document.documentElement.classList.add("foh-embed");
     </script>
     <Analytics />
   </head>
   <body>
-    <a href="#demo-main" class="visually-hidden">Skip to content</a>
+    <a href="#demo-main" class="visually-hidden">
+      Skip to content
+    </a>
     <FohBar t={t} />
     <div
       id="demo-root"
@@ -166,7 +172,9 @@ const ogImageUrl = new URL(`/og/${t.slug}.jpg`, site.url).href;
   .js [data-scroll-reveal] {
     opacity: 0;
     transform: translateY(14px);
-    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.3, 1);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s cubic-bezier(0.2, 0.7, 0.3, 1);
     transition-delay: calc(var(--sr, 0) * 70ms);
   }
   .js [data-scroll-reveal].sr-in {

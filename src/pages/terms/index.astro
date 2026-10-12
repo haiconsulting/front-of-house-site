@@ -1,0 +1,11 @@
+---
+import Legal from '../../layouts/Legal.astro';
+import terms from '../../data/legal/terms-v2.json';
+import release from '../../data/legal/manifest.json';
+import { marked } from 'marked';
+const html=marked.parse(terms.body);
+---
+<Legal title="Terms of Service" status={release.status} documentId={terms.meta.id}>
+  <div set:html={html} />
+  <nav class="legal-archive" aria-label="Terms versions"><p>Your signed Order Form identifies the version that applies to your services.</p><a href="/terms/TERMS-v2">Permanent link to TERMS-v2</a> · <a href="/terms/TERMS-v1">Earlier draft TERMS-v1</a></nav>
+</Legal>

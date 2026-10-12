@@ -10,6 +10,7 @@ import vercel from "@astrojs/vercel";
 // standalone server (self-hosted on the FOH VPS), where the Anthropic key lives server-side.
 export default defineConfig({
   site: "https://fohrestaurants.com",
+  devToolbar: { enabled: false },
   // Dual target during the VPS migration: Vercel sets VERCEL=1 in its builds, so
   // Vercel keeps its serverless adapter; Docker/Coolify builds get the Node
   // standalone server (dist/server/entry.mjs). Drop the Vercel branch after cutover.

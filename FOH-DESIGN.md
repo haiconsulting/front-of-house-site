@@ -1,139 +1,138 @@
 # Front of House — Design System
 
-> Category: Editorial / Hospitality
-> The restaurant web studio. Warm editorial serif, ember accent on paper surfaces, service-forward voice. A restaurant's website is its new front of house, and the brand is built to feel like one.
+> The Open Door · October 2026 · Local review concept
+> A restaurant studio with a welcoming, recognizable identity and a clear ownership promise.
 
-This is the FOH brand contract in the Open Design 9-section `DESIGN.md` schema.
-Any agent generating FOH-branded output (this site, client mockups, decks,
-social, email) reads this file plus the universal rules in `.claude/craft/`.
-Tokens here are the live values in `src/styles/global.css` — keep the two in sync.
+This nine-section contract describes the marketing-site redesign authorized for
+local review. It has **not** been approved for production or rollout across other
+FOH applications. The user's current redesign brief supersedes the previous
+visual direction. This file is the current brand reference where older design
+checklists conflict.
+
+Implementation sources: `src/styles/global.css` for tokens and
+`src/components/Logo.astro` for the logo. Keep this contract aligned with both.
+Use `.claude/craft/` for the universal quality bar. Commercial facts and pricing
+remain in `src/data/site.ts`.
 
 ## 1. Visual Theme & Atmosphere
 
-Warm, editorial, hospitable. The page should feel like the first room a guest walks into: calm, confident, well-lit, never busy. Menu-grade serif headlines over generous paper-toned negative space, with a single ember accent doing the emphasis.
+**The Open Door** is a geometric arch with an open door, paired with the stacked
+lowercase wordmark **front of / house.** It signals welcome before a guest reaches
+the restaurant. The identity should feel assured, useful, and rooted in hospitality.
 
-- **Visual style:** editorial, warm, restaurant-native. Print-menu sensibility rendered for the web.
-- **Color stance:** paper/bone surfaces dominant, ink for structure, ember as the one signature accent, brass reserved for premium (Care+) signals.
-- **Design intent:** every surface should be identifiably Front of House. If a screenshot could belong to any generic SaaS site, it is wrong. Warmth and restraint over decoration and hype.
-- **Feeling to avoid:** corporate, software-y, hype-driven, cold, template-assembled.
+Warm paper, deep red, substantial sans-serif type, generous spacing, and considered
+photography carry the system. Use a distinctive composition rather than decorative
+UI. Let the restaurant work demonstrate the studio's range.
 
 ## 2. Color
 
-Ink and ember carry the brand. Brass is premium-only. Bone and paper are the warm surfaces. Never introduce new hues — the extended palette below is derived from the core.
+| Token | Value | Role |
+|---|---|---|
+| `--ember` | `#a52e24` | Signature red, logo, primary actions, selective emphasis |
+| `--ember-deep` | `#84251f` | Red hover and active states |
+| `--ink` | `#29251f` | Headings, structure, dark surfaces |
+| `--paper` | `#f7f5ee` | Default warm background and reversed type |
+| `--bone` | `#eeece3` | Secondary warm surface |
+| `--body` | `#514c45` | Body text on light surfaces |
+| `--muted` | `#756c62` | Secondary text on light surfaces |
+| `--line` | `#d9d5ca` | Hairline borders |
+| `--line-soft` | `#e7e3da` | Soft dividers |
+| `--muted-on-ink` | `#d2c9bd` | Secondary text on dark surfaces |
+| `--ink-border` | `#51483f` | Dark-surface borders |
+| `--ember-bright` | `#efad99` | Legible accent on dark surfaces |
 
-**Core**
-- **Ink** `#221C18` — primary dark: dark sections, headlines on light, structural elements.
-- **Ember** `#C75B39` — primary accent: CTAs, kickers, one emphasized word per headline, focus rings.
-- **Brass** `#B5853F` — premium accent **only**: Care+, fine detailing. Must feel rare.
-- **Bone** `#F4ECDD` — warm light surface: cards, alternating sections, reversed type on ink.
-- **Paper** `#FBF7F0` — warm light background: the default page color.
-- **Body** `#4A4038` — body copy on light surfaces.
-- **Muted** `#9A8E7E` — secondary text, captions, labels, fine print.
+Supporting surfaces: `--toast: #e9e5da`, `--clay: #efe5dc`, and
+`--dusk: #342a25`. Brass remains secondary and reserved for Care+ detailing:
+`--brass: #8b672e`, `--brass-deep: #755520`. Status-only colors:
+`--live: #75a17c` and `--danger: #a12424`.
 
-**Derived (states, borders, depth — do not invent beyond these)**
-- **Ember Deep** `#A8472B` — ember hover/active; text links.
-- **Brass Deep** `#8A6420` — deep brass detailing.
-- **Line** `#E4D9C4` — hairline borders on light surfaces.
-- **Line Soft** `#EFE7D8` — soft dividers, alt section backgrounds.
-- **Ink Border** `#3A322B` — borders/dividers on ink surfaces.
-- **Muted on Ink** `#C9BBA0` — body/secondary text on ink backgrounds.
-- **Live** `#5FB87A` — the "site live" status dot ONLY. Never a general success color in copy or buttons.
-- **Danger** `#B23122` — form error/invalid state ONLY. A deep brick red, redder and darker than Ember so it never reads as the CTA/action accent. Never decorative.
-
-**Rules**
-- Dominant surfaces are Paper/Bone with Ink text — warm, editorial, calm.
-- Ember is for a small, intentional share: CTAs, kickers, one emphasized headline word. Cap visible ember to ~2 uses per screen.
-- Reserve Brass strictly for premium signals (Care+, special detailing). Never swap Ember and Brass — they mean different things (action vs. premium).
-- On Ink surfaces: Bone/Paper for headings, Muted-on-Ink for body, Ember for accents.
-- **Never** use the AI-default indigo family (`#6366f1`, `#4f46e5`, `#8b5cf6`, etc.) or a purple→blue hero gradient. See `.claude/craft/anti-ai-slop.md`.
-
-**Accessibility**
-- Ink on Paper/Bone and Bone/Paper on Ink both pass comfortably.
-- Avoid Muted text on Paper for long passages — captions/labels only.
-- Focus: 2.5px Ember outline with 3px offset.
+Use semantic tokens. Spend red deliberately, with one clear primary action in a
+view. Do not use dark red for small text on ink. Verify body contrast at 4.5:1,
+large text and meaningful UI at 3:1, including interaction states.
 
 ## 3. Typography
 
-A high-contrast editorial serif for everything menu-grade, a clean neutral sans for everything that has to work.
+- **Display and wordmark:** Archivo Variable. Strong, closely tracked headings;
+  restrained weight in headlines, bold in the wordmark.
+- **Body and UI:** Inter Variable. Clear, direct, and comfortable to scan.
+- **Editorial accent only:** Cormorant italic, used sparingly for a short phrase.
+  It is not the default heading or price face.
 
-- **Display / wordmark:** Cormorant — weights 500/600/700 plus 500/600 italic. Headlines, tier names, prices, section numbers, the wordmark.
-- **Body / UI:** Inter (Variable where available; fallback Helvetica Neue) — 400 body, 500 medium, 600 semibold labels/buttons. Paragraphs, tables, the app, the portal.
-- **Mono (utility only):** system monospace for code/technical snippets; not a brand voice.
-
-**Scale (responsive)**
-| Level | Font | Size | Weight |
-|---|---|---|---|
-| H1 | Cormorant | `clamp(2.6rem, 6vw, 4.4rem)` | 700 |
-| H2 | Cormorant | `clamp(1.9rem, 3.6vw, 2.9rem)` | 600 |
-| H3 | Cormorant | `clamp(1.25rem, 2vw, 1.5rem)` | 600 |
-| Lede | Inter | `clamp(1.05rem, 1.6vw, 1.28rem)` | 400 |
-| Body | Inter | `1.0625rem` / line-height 1.65 | 400 |
-| Kicker | Inter | `0.72rem`, uppercase, `0.22em` tracking | 600 |
-
-**Rules**
-- Display tracking tight at large sizes (~-0.01em to -0.02em); display leading 0.9–1.08.
-- Emphasize exactly **one word** per headline in italic Cormorant Ember (the signature "*front of house.*" treatment) — never several.
-- Headlines and prices in Cormorant; everything functional in Inter. Never set long body in Cormorant; never set headlines in Inter or system-ui.
-- The **kicker** — small uppercase Inter label in Ember with 0.22em tracking above a headline — is a signature recurring device. Open sections with it.
+Live scale: H1 `clamp(3rem, 6.4vw, 6.6rem)`, H2
+`clamp(2.2rem, 4vw, 4rem)`, H3 `clamp(1.35rem, 2vw, 1.8rem)`.
+Headline leading is approximately `1.06`; display tracking is `-0.045em`.
+Body text is at least 16px with `1.65` leading. Uppercase utility labels use
+tracked Inter. Prices use tabular numerals. Do not force an italic accent into
+every headline.
 
 ## 4. Spacing & Grid
 
-- **Baseline:** 8pt rhythm; keep vertical rhythm consistent across sections.
-- **Max content width:** ~1140px, centered, fluid gutter `clamp(1.25rem, 4vw, 3rem)`.
-- **Section padding:** generous — `clamp(3.5rem, 8vw, 6.5rem)`; tight variant `clamp(2.5rem, 5vw, 4rem)`. Let things breathe.
-- **Radius:** 14px cards/large surfaces, 9px small, 4px brand-document panels. Buttons are full pills (`999px`).
-- Align modules to a predictable grid; whitespace separates concerns before borders or shadows do.
+- Content width: up to `1400px`, with `clamp(1.25rem, 4.4vw, 4rem)` gutters.
+- Section padding: `clamp(4rem, 8vw, 7.5rem)`; tighter sections use
+  `clamp(2.5rem, 5vw, 4.5rem)`.
+- Default corner radius: `3px`. Prefer crisp, architectural edges to pill cards.
+- Use whitespace and alignment before borders or shadows. Reflow deliberately
+  for mobile, preserving text order and the primary action.
 
 ## 5. Layout & Composition
 
-- **Editorial, not busy.** Warm negative space; one clear focal point per section.
-- **Alternate surfaces** — Paper → Bone → Ink sections create rhythm down a page.
-- **Numbered sections** (01, 02, 03…) in Cormorant Ember are a recurring structural device.
-- **Hairline rules** (`#E4D9C4`) separate sections and table rows; a 3px Ember rule can sit under a masthead.
-- **Photography earns space** — large, confident, full-bleed or large-card placements, never decoration.
-- Hierarchy is always obvious: kicker → Cormorant headline (one italic ember word) → lede → primary action.
-- **Break the template.** Do not ship the generic Hero → Features → Pricing → FAQ → CTA skeleton unvaried. Include at least one unconventional section (full-bleed pull-quote, own-it-vs-rent-it comparison, live-status proof motif).
+Lead with the guest's first impression and restaurant character. Bring real work
+forward, then explain services, ownership, and transparent pricing. Avoid long
+repeated feature blocks. One strong visual idea should organize each page.
+
+Photography may be large and immersive. Real projects must use their real imagery
+and accurate attribution. A generated fictional scene can establish the local
+concept's mood when identified as such; it must never imply a client, testimonial,
+or completed shoot. Generation provenance belongs in `public/brand/brand-notes.md`.
+
+Keep readable menus, reservations, ordering, and discoverability tied to practical
+guest needs. AI is a supporting capability, not the main identity.
 
 ## 6. Components
 
-- **Buttons**
-  - Primary: Ember fill, Paper text, pill radius. Hover → Ember Deep + soft ember shadow. Inter 600, ~0.96rem, `0.85rem 1.5rem` padding, 1px press-down on active.
-  - Ghost: transparent, Line border, Ink text. Hover → Ink border.
-  - On-ink: Paper fill, Ink text, for dark surfaces.
-- **Cards:** white or Bone fill, 1px Line border, 14px radius, soft shadow `0 8px 28px rgba(34,28,24,0.07)`. Never a rounded card with a colored left-border accent (AI dashboard tile tell).
-- **Surfaces:** `surface-bone` (alt sections); `surface-ink` (headings → Paper, body → Muted-on-Ink, accents → Ember).
-- **Signature motifs:** ember kicker + Cormorant headline; ember dots as punctuation around the wordmark; a live-status card ("Site live · edited this morning") as proof-of-service.
-- **Care plans (recurring):** Care on an Ink surface with an "Own It, Stay Sharp" ember badge (featured/default, tied to $450/yr); Care+ on a light surface with Brass accents and a "Marketing Partner" badge (premium); a build pill pairing the one-time build ("From $2,000 · you own the code") with annual care ("From $450/yr · no monthly rent").
-- **Icons:** 1.6–1.8px-stroke monoline SVG using `currentColor`. Never emoji as feature icons.
+- **Logo:** geometric open doorway and stacked lowercase wordmark. Use the
+  canonical SVG geometry from `Logo.astro`, keep proportions intact, and give it
+  clear space. Red on paper, paper reversed, or a single-color version. Supply an
+  accessible name on the containing link when the logo itself is decorative.
+- **Buttons:** crisp `3px` corners, minimum `48px` height. Primary red with paper
+  text; secondary transparent with a border; reversed paper on dark surfaces.
+- **Cards:** quiet paper/bone surfaces, minimal borders, optional subtle shadow.
+  Do not turn every paragraph into a card.
+- **UI icons:** consistent SVG strokes and `currentColor`. The filled geometric
+  brand mark is the intentional exception.
+- **Forms:** persistent labels, actionable inline errors, clear pending and
+  success states. Preserve working contact and lead-capture behavior.
 
 ## 7. Motion & Interaction
 
-- Short and quiet: 150–250ms, stable easing. Ember is the interaction signal.
-- Every interactive element defines hover, focus-visible, active, disabled, and loading states explicitly.
-- One or two memorable micro-interactions per page (a 2px button press, a number that counts up) — earned, not blanket transitions on everything.
-- Always respect `prefers-reduced-motion: reduce`.
-- No decorative blob/wave SVG backgrounds; no motion that fights readability.
+Keep motion short and purposeful, generally 150–250ms. Favor transform and opacity;
+use subtle press feedback and clear hover states. All interactive elements need
+visible keyboard focus. Respect reduced-motion preferences. Touch targets should
+be at least 44px. Do not use animation to delay reading or access to an action.
 
 ## 8. Voice & Brand
 
-Warm, plainspoken, restaurant-native. Insiders, not vendors. Show, don't oversell. Service is the promise.
+Restaurant-native, warm, confident, and specific. Explain how the service helps
+owners and guests. Avoid jargon, exaggerated outcomes, and invented evidence.
 
-- **Speak restaurant** — kitchen and hospitality language; sound like someone who has worked a Friday rush.
-- **Warm, never corporate** — confident, plainspoken, no buzzwords.
-- **Concrete** — "Just ask Maître. It gets done." beats "leverage our streamlined support workflow."
-- **Naming:** *Front of House* (full, first reference) → *FOH* (short/mark). *Maître* — the front-of-house AI (title case). *Care / Care+* — the two flat annual plans (title case).
-- **Phrases that belong to us:** "Own it. Don't rent it." · "Your new front of house." · "Just ask Maître. It gets done." · "Built only for restaurants." · "You own it. We keep it sharp."
-- **Style rule:** never use em dashes in FOH copy — use commas, colons, or periods instead.
-- **Microcopy is action-oriented and specific:** "Scope your build" beats "Get started."
+- Brand name: **Front of House**; **FOH** when a short form helps.
+- Position: a web and brand studio built exclusively for restaurants.
+- Core promise: a custom website the restaurant owns, with clear annual care.
+- Current commercial facts: builds from **$2,000**, **Care $450/year**, and
+  **Care+ $900/year**. Use `site.ts` as the pricing source.
+- Assistant name: **the Host** in running copy, **The Host** in headings. AI drafts
+  changes and the team reviews them before publication. Do not imply local models,
+  instant publication, unlimited usage, or round-the-clock human support.
+- Prefer a specific action such as “Start your project” or “Explore our work.”
+- No em dashes in customer-facing copy. Use commas, colons, or periods.
 
 ## 9. Anti-patterns
 
-- **No AI-slop tells:** no indigo accent, no purple→blue hero gradient, no emoji feature icons, no invented metrics ("10× faster", "99.9% uptime"), no lorem/filler copy, no left-border-accent dashboard tiles. (See `.claude/craft/anti-ai-slop.md`.)
-- Do not introduce off-palette colors when a token solves it; do not invent hues beyond the derived palette.
-- Do not flatten hierarchy by using one size/weight for everything.
-- Do not set body in Cormorant or headlines in Inter/system-ui.
-- Do not use Ember and Brass interchangeably; do not spend Brass on non-premium elements.
-- Do not use agency jargon (synergy, leverage, solutions, best-in-class, robust) or oversell with piled-on adjectives.
-- Do not use generic stock photography — FOH shoots real rooms, plates, and people; use the `.ph-img` placeholder pattern until real photography exists.
-- Do not use em dashes in copy.
-- Do not ship the unvaried SaaS section skeleton — earn one distinctive section per page.
+- No invented reviews, customer counts, revenue lifts, rankings, or guarantees.
+- No unsupported claims about competitors or universal performance claims.
+- No fictional scene presented as a real client, room, team, or case study.
+- No stock SaaS gradient, decorative emoji icons, excessive rounded tiles, or
+  repeated ornamental flourishes.
+- No claim that annual care means no recurring cost. State build and care together.
+- No automatic cross-product rollout. Review this local concept first, then apply
+  an approved identity consistently to the marketing site and relevant applications.

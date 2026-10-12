@@ -1,0 +1,9 @@
+---
+import Legal from '../layouts/Legal.astro';
+import providers from '../data/legal/providers-v1.json';
+import release from '../data/legal/manifest.json';
+import { marked } from 'marked';
+---
+<Legal title="Hosting and providers" status={release.status} documentId={providers.meta.id}>
+  <div set:html={marked.parse(providers.body)} />
+</Legal>

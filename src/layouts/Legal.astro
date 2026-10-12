@@ -1,0 +1,33 @@
+---
+import Base from './Base.astro';
+interface Props { title: string; status: string; documentId: string; }
+const {title,status,documentId}=Astro.props;
+---
+<Base title={title} description={`${title} for Front Of House LLC services, hosting, and support.`}>
+  <div class="legal-shell container">
+    <nav aria-label="Legal documents" class="legal-nav"><a href="/terms">Terms of Service</a><a href="/providers">Hosting &amp; providers</a><a href="/contact">Contact FOH</a></nav>
+    <p class="legal-meta">Front Of House LLC · {documentId}</p>
+    {status !== 'approved' && <aside class="legal-notice"><strong>Review draft</strong><p>This draft is available for review. It is not an effective agreement and does not amend an existing signed contract.</p></aside>}
+    <article class="legal-copy"><slot /></article>
+  </div>
+</Base>
+<style is:global>
+  .legal-shell { max-width: 940px; padding-block: 3rem 6rem; }
+  .legal-nav { display:flex; flex-wrap:wrap; gap:1.4rem; margin-bottom:2rem; font-size:.92rem; }
+  .legal-nav a,.legal-copy a { text-decoration:underline; text-underline-offset:3px; overflow-wrap:anywhere; }
+  .legal-meta { text-transform:uppercase; letter-spacing:.09em; font-size:.75rem; color:var(--ember); }
+  .legal-notice { border-left:3px solid var(--ember); padding:1rem 1.3rem; background:var(--bone); margin-block:1.5rem 2rem; }
+  .legal-notice p { margin: .25rem 0 0; }
+  .legal-copy { line-height:1.75; overflow-wrap:anywhere; }
+  .legal-copy h1 { font-size:clamp(2.5rem,6vw,4rem); line-height:1.1; margin-bottom:1.5rem; }
+  .legal-copy h2 { font-size:1.8rem; margin-block:2.5rem 1rem; }
+  .legal-copy h3 { font-size:1.25rem; margin-top:1.8rem; }
+  .legal-copy p { margin-block:1rem; }
+  .legal-copy ul,.legal-copy ol { padding-left:1.5rem; }
+  .legal-copy li { margin-bottom:.7rem; }
+  .legal-copy table { width:100%; border-collapse:collapse; font-size:.9rem; margin-block:1.5rem; }
+  .legal-copy th,.legal-copy td { text-align:left; padding:.75rem; border:1px solid var(--line,#ddd); vertical-align:top; }
+  .legal-copy th { background:var(--bone); }
+  .legal-archive { margin-top:2.5rem; padding-top:1rem; border-top:1px solid var(--line,#ddd); }
+  @media(max-width:600px) { .legal-copy table { display:block; overflow-x:auto; } .legal-copy th,.legal-copy td { min-width:150px; } }
+</style>

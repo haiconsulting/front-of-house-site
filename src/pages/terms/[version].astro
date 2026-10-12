@@ -1,0 +1,14 @@
+---
+import Legal from '../../layouts/Legal.astro';
+import v1 from '../../data/legal/terms-v1.json';
+import v2 from '../../data/legal/terms-v2.json';
+import release from '../../data/legal/manifest.json';
+import { marked } from 'marked';
+export function getStaticPaths() {
+  return [{params:{version:'TERMS-v1'},props:{doc:v1,status:'draft'}},{params:{version:'TERMS-v2'},props:{doc:v2,status:release.status}}];
+}
+const {doc,status}=Astro.props;
+---
+<Legal title={`${doc.meta.id} · Terms of Service`} status={status} documentId={doc.meta.id}>
+  <div set:html={marked.parse(doc.body)} />
+</Legal>

@@ -1,13 +1,14 @@
 # Front of House — Restaurant Web Studio
 
 Marketing site for Front of House (FOH), built with [Astro](https://astro.build).
+
+October 2026: the Open Door brand redesign is available for local review at `http://localhost:4999`. See `FOH-DESIGN.md` for the design contract and `public/brand/brand-notes.md` for the asset guide and image provenance. Publication and rollout to other FOH applications follow approval.
 Static output, ready to deploy to Vercel.
 
 ## Stack
 
 - **Astro 6** (static / zero-JS by default)
-- **Cormorant** + **Inter** via `@fontsource` (self-hosted, no external requests) —
-  matches the Claude Design brand system
+- **Archivo** display + **Inter** body/UI + **Cormorant** editorial italic via `@fontsource` (self-hosted)
 - **@astrojs/sitemap** for `sitemap-index.xml`
 - All brand tokens (color, type) in `src/styles/global.css`
 - All site content & pricing in `src/data/site.ts`
@@ -32,7 +33,7 @@ src/
 ├── data/site.ts          ← single source of truth: contact, nav, pricing, copy
 ├── styles/global.css     ← brand palette + typography + base styles
 ├── layouts/Base.astro    ← <head>, SEO/AEO meta, JSON-LD, header + footer
-├── components/           ← Logo (awning SVG), Header, Footer, Tiers, CtaBand
+├── components/           ← Logo (Open Door SVG), Header, Footer, Tiers, CtaBand
 └── pages/                ← index, services, pricing, work, about, contact, 404
 ```
 

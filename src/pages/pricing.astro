@@ -30,11 +30,14 @@ const jsonLd = {
   <section class="phead">
     <div class="container">
       <p class="kicker">Pricing</p>
-      <h1>How much does a restaurant website cost?</h1>
+      <h1>
+        Good websites.
+        <br /> Clear numbers.
+      </h1>
       <p class="lede">
         A custom website you own outright from $2,000, then a flat $450/year to
-        keep it hosted and current. A one-time build and a clear annual Care fee. Make
-        changes yourself or ask the Host.
+        keep it hosted and current. A one-time build and a clear annual Care
+        fee. Make changes yourself or ask the Host.
       </p>
     </div>
   </section>
@@ -58,34 +61,30 @@ const jsonLd = {
       </header>
 
       <div class="scope">
-        {
-          buildScope.map((s, i) => (
-            <article class="scope__cell">
-              <span class="scope__n">0{i + 1}</span>
-              <h3>{s.label}</h3>
-              <p>{s.note}</p>
-            </article>
-          ))
-        }
+        {buildScope.map((s, i) => (
+          <article class="scope__cell">
+            <span class="scope__n">0{i + 1}</span>
+            <h3>{s.label}</h3>
+            <p>{s.note}</p>
+          </article>
+        ))}
       </div>
 
       <div class="bands">
-        {
-          buildBands.map((b) => (
-            <article class="band">
-              <div class="band__top">
-                <h3 class="band__name">{b.name}</h3>
-                <span class="band__price">{b.price}</span>
-              </div>
-              <p class="band__for">{b.for}</p>
-            </article>
-          ))
-        }
+        {buildBands.map((b) => (
+          <article class="band">
+            <div class="band__top">
+              <h3 class="band__name">{b.name}</h3>
+              <span class="band__price">{b.price}</span>
+            </div>
+            <p class="band__for">{b.for}</p>
+          </article>
+        ))}
       </div>
       <p class="bands__note">
         Bigger restaurants (extensive menus, on-site capture, full brand
-        identity, multiple locations) run higher. We'll always scope it with
-        you first.
+        identity, multiple locations) run higher. We'll always scope it with you
+        first.
       </p>
     </div>
   </section>
@@ -114,15 +113,13 @@ const jsonLd = {
             </tr>
           </thead>
           <tbody>
-            {
-              comparison.rows.map((r) => (
-                <tr>
-                  <th scope="row">{r.label}</th>
-                  <td>{r.rival}</td>
-                  <td class="compare__foh">{r.foh}</td>
-                </tr>
-              ))
-            }
+            {comparison.rows.map((r) => (
+              <tr>
+                <th scope="row">{r.label}</th>
+                <td>{r.rival}</td>
+                <td class="compare__foh">{r.foh}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
         <p class="compare__foot">{comparison.footnote}</p>
@@ -134,12 +131,11 @@ const jsonLd = {
     <div class="container">
       <div class="finenote">
         <p>
-          Your AI assistant, the Host, is included with Care. It runs on our own
-          local models, so there's no metered per-message billing and no
-          surprise overages. Changes you or the Host submit are reviewed and built
-          by our team before they go live, so nothing breaks. And every Care
-          plan includes your exit kit: leave whenever you want and we hand you
-          your full code.
+          Your AI assistant, the Host, is included with Care, subject to
+          fair-use limits. It uses commercial AI services to draft updates and
+          answer questions. Our team reviews and builds changes before they go
+          live. And every Care plan includes your exit kit: leave whenever you
+          want and we hand you your full code.
         </p>
       </div>
     </div>
@@ -152,14 +148,12 @@ const jsonLd = {
         <h2>Questions about pricing</h2>
       </header>
       <div class="faq-list">
-        {
-          faq.pricing.map((item) => (
-            <details class="faq-item">
-              <summary class="faq-q">{item.q}</summary>
-              <p class="faq-a">{item.a}</p>
-            </details>
-          ))
-        }
+        {faq.pricing.map((item) => (
+          <details class="faq-item">
+            <summary class="faq-q">{item.q}</summary>
+            <p class="faq-a">{item.a}</p>
+          </details>
+        ))}
       </div>
     </div>
   </section>

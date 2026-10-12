@@ -13,99 +13,100 @@ const ctaLabel: Record<string, string> = {
 const careFrom = carePlans[0].price;
 ---
 
-{
-  showBuild && (
-    <div class="buildpill">
-      <div class="buildpill__cell">
-        <span class="buildpill__label">One-time build</span>
-        <span class="buildpill__price">From {build.from}</span>
-        <span class="buildpill__note">You own the code</span>
-      </div>
-      <div class="buildpill__cell">
-        <span class="buildpill__label">Then yearly</span>
-        <span class="buildpill__price">From {careFrom} / yr</span>
-        <span class="buildpill__note">Hosting &amp; care, no monthly rent</span>
-      </div>
+{showBuild && (
+  <div class="buildpill">
+    <div class="buildpill__cell">
+      <span class="buildpill__label">One-time build</span>
+      <span class="buildpill__price">From {build.from}</span>
+      <span class="buildpill__note">You own the code</span>
     </div>
-  )
-}
+    <div class="buildpill__cell">
+      <span class="buildpill__label">Then yearly</span>
+      <span class="buildpill__price">From {careFrom} / yr</span>
+      <span class="buildpill__note">Hosting &amp; care, no monthly rent</span>
+    </div>
+  </div>
+)}
 
 <div class="tiers">
-  {
-    carePlans.map((plan) => (
-      <article class:list={["tier", { "tier--featured": plan.featured }]}>
-        <header class="tier__head">
-          <h3 class="tier__name">{plan.short}</h3>
-          <span
-            class:list={["tier__pill", { "tier__pill--pop": plan.featured }]}
-          >
-            {plan.pill}
-          </span>
-        </header>
+  {carePlans.map((plan) => (
+    <article class:list={["tier", { "tier--featured": plan.featured }]}>
+      <header class="tier__head">
+        <h3 class="tier__name">{plan.short}</h3>
+        <span class:list={["tier__pill", { "tier__pill--pop": plan.featured }]}>
+          {plan.pill}
+        </span>
+      </header>
 
-        <p class="tier__price">
-          {plan.price}
-          <span>{plan.period}</span>
-        </p>
-        <p class="tier__goodfor">{plan.goodFor}</p>
+      <p class="tier__price">
+        {plan.price}
+        <span>{plan.period}</span>
+      </p>
+      <p class="tier__goodfor">{plan.goodFor}</p>
 
-        <div class="tier__rule" />
+      <div class="tier__rule" />
 
-        <ul class="tier__features">
-          {plan.features.map((f) => (
-            <li>
-              <svg class="tier__check" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M4 12.5l5 5L20 6.5"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              {f}
-            </li>
-          ))}
-        </ul>
+      <ul class="tier__features">
+        {plan.features.map((f) => (
+          <li>
+            <svg
+              class="tier__check"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M4 12.5l5 5L20 6.5"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            {f}
+          </li>
+        ))}
+      </ul>
 
-        <a href="/contact" class="tier__cta">
-          {ctaLabel[plan.short] ?? `Choose ${plan.short}`}
-        </a>
-      </article>
-    ))
-  }
+      <a href="/contact" class="tier__cta">
+        {ctaLabel[plan.short] ?? `Choose ${plan.short}`}
+      </a>
+    </article>
+  ))}
 </div>
 
-{
-  showLocations && (
-    <div class="loc">
-      <div class="loc__copy">
-        <p class="kicker">More than one location</p>
-        <h3 class="loc__h">
-          One panel,<br />all your sites.
-        </h3>
-        <p>
-          Run every location's site from a single login, and the more you bring
-          on, the less the yearly care costs on each. The build stays priced to
-          each site; the discount applies to care.
-        </p>
-      </div>
-      <div class="loc__grid">
-        {locationDiscounts.map((d, i) => {
-          const pct = d.off.match(/\d+%/)?.[0] ?? d.off;
-          const sites = d.range.replace(/ locations?/, "").replace("or more", "+");
-          return (
-            <div class:list={["loc__cell", { "loc__cell--top": i === 2 }]}>
-              <span class="loc__range">{sites} sites</span>
-              <span class="loc__pct">{pct}</span>
-              <span class="loc__off">off care</span>
-            </div>
-          );
-        })}
-      </div>
+{showLocations && (
+  <div class="loc">
+    <div class="loc__copy">
+      <p class="kicker">More than one location</p>
+      <h3 class="loc__h">
+        One panel,
+        <br />
+        all your sites.
+      </h3>
+      <p>
+        Run every location's site from a single login, and the more you bring
+        on, the less the yearly care costs on each. The build stays priced to
+        each site; the discount applies to care.
+      </p>
     </div>
-  )
-}
+    <div class="loc__grid">
+      {locationDiscounts.map((d, i) => {
+        const pct = d.off.match(/\d+%/)?.[0] ?? d.off;
+        const sites = d.range
+          .replace(/ locations?/, "")
+          .replace("or more", "+");
+        return (
+          <div class:list={["loc__cell", { "loc__cell--top": i === 2 }]}>
+            <span class="loc__range">{sites} sites</span>
+            <span class="loc__pct">{pct}</span>
+            <span class="loc__off">off care</span>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+)}
 
 <style>
   /* ── Build / yearly pill ── */
@@ -113,7 +114,7 @@ const careFrom = carePlans[0].price;
     display: flex;
     width: fit-content;
     border: 1px solid var(--line);
-    border-radius: 8px;
+    border-radius: var(--radius);
     overflow: hidden;
     background: var(--bone);
     margin: 0 auto 2.5rem;
@@ -154,23 +155,22 @@ const careFrom = carePlans[0].price;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
     align-items: start;
-    max-width: 760px;
+    max-width: 900px;
     margin-inline: auto;
   }
   .tier {
+    min-width: 0;
     background: var(--paper);
     border: 1px solid var(--line);
-    border-radius: 10px;
+    border-radius: var(--radius);
     padding: 2.2rem 2rem;
     display: flex;
     flex-direction: column;
     height: 100%;
   }
   .tier--featured {
-    background: var(--ink);
-    border-color: var(--ink);
-    box-shadow: 0 18px 40px rgba(34, 28, 24, 0.22);
-    transform: translateY(-10px);
+    background: var(--ember);
+    border-color: var(--ember);
   }
 
   .tier__head {
@@ -204,9 +204,9 @@ const careFrom = carePlans[0].price;
     padding: 0.32rem 0.75rem;
   }
   .tier__pill--pop {
-    color: var(--ink);
-    background: var(--ember);
-    border-color: var(--ember);
+    color: var(--paper);
+    background: transparent;
+    border-color: rgba(247, 245, 238, 0.4);
   }
 
   .tier__price {
@@ -234,7 +234,7 @@ const careFrom = carePlans[0].price;
     margin: 0 0 1.6rem;
   }
   .tier--featured .tier__goodfor {
-    color: var(--muted-on-ink);
+    color: var(--paper);
   }
   .tier__rule {
     height: 1px;
@@ -242,7 +242,7 @@ const careFrom = carePlans[0].price;
     margin-bottom: 1.5rem;
   }
   .tier--featured .tier__rule {
-    background: var(--ink-border);
+    background: rgba(247, 245, 238, 0.3);
   }
 
   .tier__features {
@@ -276,27 +276,42 @@ const careFrom = carePlans[0].price;
   .tier__cta {
     text-align: center;
     padding: 0.85rem 1rem;
-    border-radius: 6px;
+    border-radius: var(--radius);
     font-family: var(--sans);
     font-size: 0.92rem;
     font-weight: 600;
     letter-spacing: 0.02em;
     border: 1px solid var(--ink);
     color: var(--ink);
-    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+    transition:
+      background 0.18s ease,
+      color 0.18s ease,
+      border-color 0.18s ease;
   }
   .tier__cta:hover {
     background: var(--ink);
     color: var(--paper);
   }
   .tier--featured .tier__cta {
-    background: var(--ember);
-    border-color: var(--ember);
-    color: var(--paper);
+    background: var(--paper);
+    border-color: var(--paper);
+    color: var(--ember);
   }
   .tier--featured .tier__cta:hover {
-    background: var(--ember-deep);
-    border-color: var(--ember-deep);
+    background: var(--bone);
+    border-color: var(--bone);
+  }
+
+  .tier--featured .tier__check,
+  .tier--featured .tier__price span {
+    color: var(--paper);
+  }
+  .tier--featured :focus-visible {
+    outline-color: var(--paper);
+  }
+  .loc__cell--top .loc__range,
+  .loc__cell--top .loc__off {
+    color: var(--muted-on-ink);
   }
 
   /* ── Multi-location ── */
@@ -304,7 +319,7 @@ const careFrom = carePlans[0].price;
     margin-top: 2.5rem;
     background: var(--bone);
     border: 1px solid var(--line);
-    border-radius: 10px;
+    border-radius: var(--radius);
     padding: clamp(1.8rem, 4vw, 3rem);
     display: grid;
     grid-template-columns: 1fr 1.3fr;
@@ -328,7 +343,7 @@ const careFrom = carePlans[0].price;
   .loc__cell {
     background: var(--paper);
     border: 1px solid var(--line);
-    border-radius: 6px;
+    border-radius: var(--radius);
     padding: 1.6rem 1.2rem;
     text-align: center;
   }
@@ -354,7 +369,7 @@ const careFrom = carePlans[0].price;
     line-height: 1;
   }
   .loc__cell--top .loc__pct {
-    color: var(--brass);
+    color: var(--paper);
   }
   .loc__off {
     display: block;
@@ -376,6 +391,12 @@ const careFrom = carePlans[0].price;
     }
   }
   @media (max-width: 520px) {
+    .tier {
+      padding: 1.5rem 1.25rem;
+    }
+    .tier__head {
+      flex-wrap: wrap;
+    }
     .buildpill {
       display: flex;
       width: 100%;

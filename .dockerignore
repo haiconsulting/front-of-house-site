@@ -16,3 +16,8 @@ coverage
 Dockerfile
 .dockerignore
 README.md
+
+# Capture tooling and local work records are not part of the deployed site.
+demos/
+.cursor/
+WORKLOG.md

@@ -2,6 +2,13 @@
 
 Astro marketing site for Front of House, the restaurant web studio.
 
+**Current direction: The Open Door, October 2026.** The user authorized a full
+brand and marketing-site redesign for local review at port 4999. This concept is
+pending user approval before production or rollout across other FOH applications.
+The current `FOH-DESIGN.md`, `src/styles/global.css`, and
+`src/components/Logo.astro` supersede legacy palette, type, and logo requirements
+in older checklists. Preserve the craft requirements that do not conflict.
+
 ## Design contract — read before any visual or copy work
 
 **Start with `Mac_Master_Design_claude_must_read.md`** (project root): the
@@ -41,15 +48,25 @@ them — if you change one, change the other.
 
 ### Non-negotiables (fast checklist)
 
-- Ember `#C75B39` is the only signature accent; Brass `#B5853F` is premium-only
-  (Care+). Never the AI-default indigo family or a purple→blue hero gradient.
-- Cormorant for display/prices, Inter for body/UI. Never body in Cormorant or
-  headlines in Inter/system-ui. One italic-ember word per headline, not several.
-- Monoline SVG icons (`currentColor`), never emoji as feature icons.
-- No em dashes in copy — commas, colons, periods instead.
-- No invented metrics, no lorem/filler, no generic stock photography.
-- Break the generic Hero→Features→Pricing→FAQ→CTA skeleton with at least one
-  distinctive FOH section per page.
+- Use The Open Door mark from `src/components/Logo.astro`: geometric arch and
+  open doorway, stacked lowercase `front of / house.` wordmark.
+- Signature red `#a52e24`, ink `#29251f`, paper `#f7f5ee`, bone `#eeece3`.
+  Read complete semantic tokens from `src/styles/global.css`.
+- Archivo Variable for display and wordmark; Inter Variable for body/UI.
+  Cormorant italic is an occasional editorial accent only.
+- Compose around hospitality, real work, and ownership. Keep services and pricing
+  clear: a one-time build from $2,000, then annual Care from $450.
+- Use crisp edges, deliberate spacing, restrained motion, visible focus, readable
+  contrast, and mobile touch targets. Verify the page in a browser at mobile and
+  desktop widths, including reduced motion and keyboard navigation.
+- Use SVG UI icons, not emoji. Preserve the logo's intentional filled geometry.
+- Use real project imagery for case studies. Identify any fictional generated
+  concept photography and document its provenance in `public/brand/brand-notes.md`.
+- No invented metrics, endorsements, search guarantees, or claims about competitors.
+- The AI assistant is **the Host**. AI drafts changes; the team reviews them.
+- No em dashes in customer-facing copy. Avoid generic repeated feature-card layouts.
+- Keep this phase local and reviewable. User approval is still pending for the
+  production identity and its application to other FOH products.
 
 > This design contract was seeded from the Open Design toolkit
 > (`Claude Design/open-design`, `craft/` + 9-section `DESIGN.md` schema).

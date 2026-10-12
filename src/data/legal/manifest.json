@@ -1,0 +1,30 @@
+{
+  "status": "draft",
+  "reviewDate": "2026-10-02",
+  "effectiveDate": null,
+  "termsRef": "TERMS-v2",
+  "providerRef": "PROVIDERS-v1",
+  "documents": [
+    {
+      "slug": "terms-v1",
+      "id": "TERMS-v1",
+      "title": "Terms of Service",
+      "sha256": "0821082f1047be3124f9e7bb0258a40c1bc406fa9164aa777d49d9633e635b0c",
+      "released": false
+    },
+    {
+      "slug": "terms-v2",
+      "id": "TERMS-v2",
+      "title": "Terms of Service",
+      "sha256": "73fb841b41a61a56a7f260da254fd3d771ea668ec7b8e3069af205b2520f06b8",
+      "released": false
+    },
+    {
+      "slug": "providers-v1",
+      "id": "PROVIDERS-v1",
+      "title": "Hosting and Provider Schedule",
+      "sha256": "b672187c00e5216f3807ad6433566270c73e9348cd185c0039d4a221e8b90ef3",
+      "released": false
+    }
+  ]
+}

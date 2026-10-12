@@ -1,65 +1,68 @@
 ---
 import Base from "../layouts/Base.astro";
 import CtaBand from "../components/CtaBand.astro";
-import VideoSlot from "../components/VideoSlot.astro";
-import TickList from "../components/TickList.astro";
-import { steps, portfolioVideo, site, faq } from "../data/site.ts";
+import { Image } from "astro:assets";
+import burgerPreview from "../../public/videos/burger-lab.jpg";
+import { steps, site, faq, build, carePlans } from "../data/site.ts";
 
 const services = [
   {
+    id: "websites",
+    name: "The website.",
+    label: "The main course",
+    kind: "Core",
+    line: "Your restaurant, beautifully translated.",
+    body: "A custom website that gives people a feel for your place and a clear next step. Explore the menu. Book a table. Place an order. Every detail works together, on a phone in someone’s hand or a screen at home.",
+    points: [
+      "Custom design and code you own",
+      "Readable menus, reservations & ordering links",
+      "Mobile-first design & search foundations",
+    ],
+    note: `One-time builds from ${build.from}`,
+  },
+  {
+    id: "brand",
+    name: "The identity.",
+    label: "Make your mark",
     kind: "Optional",
-    name: "Brand & Design",
-    line: "A look, not just a site.",
-    body: "Identity, menu, and a visual system for restaurants that need a real brand. Logo, type, color, and the menu design that ties it all together, built so it reads as well on the table as it does on the screen.",
+    line: "A look that belongs to your place.",
+    body: "From the sign out front to the menu on the table, the best restaurant brands feel like themselves everywhere. We build a visual identity with enough character to be remembered, and enough consistency to grow with you.",
     points: [
       "Logo & identity system",
+      "Color, typography & art direction",
       "Menu design & layout",
-      "Color, type & art direction",
     ],
-    video: portfolioVideo.burgerLab,
-    mediaAlt: "BURGER.LAB brand and site preview",
+    note: "Scoped around your restaurant",
   },
   {
+    id: "capture",
+    name: "The atmosphere.",
+    label: "Show what makes you",
     kind: "Optional",
-    name: "Capture",
-    line: "The space, the plates, the people.",
-    body: "On-site photo and video, shot where you serve. We capture the room, the food, and the team, then edit and deliver a library your site and socials can pull from all year.",
+    line: "The space. The plates. The people.",
+    body: "The light in your dining room. The last touch on a dish. The people who make the place. Our on-site photography and video capture the details guests come for, with a library you can use across your website and socials.",
     points: [
       "On-location photo & video",
-      "Food & interior styling",
-      "Edited, delivered, ready to use",
+      "Food, interiors & team",
+      "Edited assets, ready to use",
     ],
-    video: portfolioVideo.killa,
-    mediaAlt: "Killa, on-site video capture for restaurant sites",
+    note: "On-site capture, scoped separately",
   },
   {
+    id: "care",
+    name: "The ongoing care.",
+    label: "Still here after launch",
     kind: "Core",
-    name: "Build",
-    line: "A real, custom website you own.",
-    body: "Hand-built, fast, and modern, made to turn visitors into covers. Real custom code you own outright, not a locked drag-and-drop template you rent forever. Optimized to be found through AI search, not Google alone.",
+    line: "You run the restaurant. We keep it current.",
+    body: "Your hours change. The seasonal menu arrives. A new photo deserves the spotlight. Edit it yourself, ask our team, or ask the Host, your front-of-house AI. The Host drafts changes, our team checks them, and your site stays in step.",
     points: [
-      "Custom code you own outright",
-      "Fast, mobile-first, accessible",
-      "Built for AI search (AEO)",
+      "Hosting, security & maintenance",
+      "The Host AI assistant & team support",
+      "Your full code, whenever you need it",
     ],
-    video: portfolioVideo.burgerLab,
-    mediaAlt: "BURGER.LAB, custom restaurant website build",
-  },
-  {
-    kind: "Core",
-    name: "Care",
-    line: "We keep you running.",
-    body: "Hosting and maintenance for one flat yearly fee, no monthly rental. Edit it yourself, or just ask the Host, your front-of-house AI. Either way, it gets done. Reviewed, tested, and live fast.",
-    points: [
-      "Flat yearly fee, hosting included",
-      "Edit it yourself or ask the Host",
-      "Changes reviewed before they go live",
-    ],
-    video: portfolioVideo.killa,
-    mediaAlt: "Killa, live site with ongoing care",
+    note: `Care from ${carePlans[0].price} / year`,
   },
 ];
-
 const jsonLd = [
   {
     "@context": "https://schema.org",
@@ -67,18 +70,18 @@ const jsonLd = [
     provider: { "@id": `${site.url}/#organization` },
     name: "Restaurant Website Design and Build",
     description:
-      "Custom restaurant website the owner owns outright. Hand-built, fast, mobile-first, accessible, optimized for AI search (AEO/GEO). One-time build from $2,000.",
+      "Custom restaurant websites, brand identity, photography and video, and annual care. One-time website builds from $2,000.",
     serviceType: "Website Design",
     areaServed: "United States",
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Restaurant Web Studio Services",
-      itemListElement: services.map((s) => ({
+      itemListElement: services.map((service) => ({
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: s.name,
-          description: s.body,
+          name: service.name,
+          description: service.body,
         },
       })),
     },
@@ -97,282 +100,529 @@ const jsonLd = [
 
 <Base
   title="Services"
-  description="Front of House offers restaurant website design, branding, on-site photo and video, and flat yearly care. Custom sites you own from $2,000. Built for AI search."
+  description="Custom restaurant websites, distinctive brands, on-site photo and video, and ongoing care. Website builds from $2,000. You own the code."
   jsonLd={jsonLd}
 >
-  <section class="phead">
+  <section class="services-hero" data-od-id="services-introduction">
     <div class="container">
-      <p class="kicker">What we do</p>
-      <h1>What does a restaurant web studio do?</h1>
-      <p class="lede">
-        Front of House offers four services built around one idea: a
-        restaurant's website is its new front of house, so we treat it like one.
-        Brand, capture, build, and care. Two are core to every partnership, two
-        are optional.
-      </p>
+      <p class="kicker">A full-service welcome</p>
+      <div class="hero-grid">
+        <h1>
+          Everything
+          <br /> before the
+          <br /> <span>first bite.</span>
+        </h1>
+        <div class="hero-copy">
+          <p>
+            A website that feels like your restaurant. A brand people remember.
+            The photos that make them hungry.
+          </p>
+          <p>We bring it all to the table, then stay to keep it working.</p>
+          <a class="btn btn--primary" href="/contact">
+            Tell us about your restaurant <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+      <nav class="service-nav" aria-label="Our services">
+        {services.map((service, i) => (
+          <a href={`#${service.id}`}>
+            <span>0{i + 1}</span>
+            {service.name}
+            <span aria-hidden="true">↓</span>
+          </a>
+        ))}
+      </nav>
     </div>
   </section>
 
-  <section id="offerings" class="section">
-    <div class="container svc-list">
-      {
-        services.map((s, i) => (
-          <article class="svc">
-            <div class="svc__index">
-              <span class="svc__num">0{i + 1}</span>
-              <span
-                class:list={[
-                  "svc__kind",
-                  { "svc__kind--core": s.kind === "Core" },
-                ]}
-              >
-                {s.kind}
-              </span>
-            </div>
-            <div class="svc__main">
-              <h2>{s.name}</h2>
-              <p class="svc__line">{s.line}</p>
-              <p class="svc__body">{s.body}</p>
-              <div class="svc__points">
-                <TickList points={s.points} inline />
-              </div>
-            </div>
-            <div class="svc__media">
-              <VideoSlot src={s.video} alt={s.mediaAlt} />
-            </div>
-          </article>
-        ))
-      }
+  <section class="offerings-section" id="offerings" data-od-id="services-menu">
+    <div class="container">
+      {services.map((service, i) => (
+        <article class="service" id={service.id}>
+          <div class="service-title">
+            <p class="kicker">
+              <span>0{i + 1}</span> / {service.label}
+            </p>
+            <h2>{service.name}</h2>
+            <span class="service-kind">
+              {service.kind === "Core"
+                ? "Part of every partnership"
+                : "Add it when you need it"}
+            </span>
+          </div>
+          <div class="service-content">
+            <h3>{service.line}</h3>
+            <p>{service.body}</p>
+            <ul>
+              {service.points.map((point) => (
+                <li>
+                  <span aria-hidden="true">↗</span>
+                  {point}
+                </li>
+              ))}
+            </ul>
+            <p class="service-note">{service.note}</p>
+          </div>
+        </article>
+      ))}
     </div>
   </section>
 
-  <section id="how" class="section surface-ink surface-ink--glow">
+  <section class="in-practice" data-od-id="services-in-practice">
+    <div class="container practice-grid">
+      <div class="practice-copy">
+        <p class="kicker">From the menu to the screen</p>
+        <h2>
+          Every place has
+          <br /> a personality.
+          <br /> Let’s show yours.
+        </h2>
+        <p>
+          For Burger Lab, that means a bold visual world with its menu, online
+          ordering, and waitlist built into the experience.
+        </p>
+        <a href="/work">
+          See the work <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+      <div class="practice-media">
+        <Image
+          src={burgerPreview}
+          alt="Burger Lab's custom restaurant website with its menu and ordering experience"
+          widths={[480, 800, 1280]}
+          sizes="(max-width: 850px) 100vw, 55vw"
+          loading="lazy"
+        />
+        <span class="practice-caption">BURGER.LAB / Salt Lake City, UT</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="process-section" id="how" data-od-id="services-process">
     <div class="container">
-      <header class="head head--center">
-        <p class="kicker">How it works</p>
-        <h2>Simple to start. Easy to live with.</h2>
-      </header>
+      <div class="section-heading">
+        <p class="kicker">From first hello to opening day</p>
+        <h2>We keep this simple.</h2>
+      </div>
       <div class="steps">
-        {
-          steps.map((s) => (
-            <article class="step">
-              <span class="step__n">{s.n}</span>
-              <h3>{s.title}</h3>
-              <p>{s.body}</p>
-            </article>
-          ))
-        }
+        {steps.map((step) => (
+          <article class="step">
+            <span class="step-number">0{step.n}</span>
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+          </article>
+        ))}
       </div>
     </div>
   </section>
 
-  <!-- ── FAQ ── -->
-  <section id="faq" class="section">
-    <div class="container">
-      <header class="head--center">
-        <h2>Questions about our services</h2>
-      </header>
+  <section class="questions-section" id="faq" data-od-id="services-questions">
+    <div class="container questions-grid">
+      <div>
+        <p class="kicker">Good questions</p>
+        <h2>
+          Let’s clear
+          <br /> a few things up.
+        </h2>
+        <p class="questions-note">
+          For the full breakdown of what a build costs and what Care includes,{" "}
+          <a href="/pricing">
+            take a look at our pricing <span aria-hidden="true">↗</span>
+          </a>
+          .
+        </p>
+      </div>
       <div class="faq-list">
-        {
-          faq.services.map((item) => (
-            <details class="faq-item">
-              <summary class="faq-q">{item.q}</summary>
-              <p class="faq-a">{item.a}</p>
-            </details>
-          ))
-        }
+        {faq.services.map((item) => (
+          <details class="faq-item">
+            <summary>
+              {item.q}
+              <span aria-hidden="true">+</span>
+            </summary>
+            <p>{item.a}</p>
+          </details>
+        ))}
       </div>
     </div>
   </section>
-
   <CtaBand />
 </Base>
 
 <style>
-  .phead {
-    padding-block: clamp(3rem, 7vw, 5rem) clamp(1.5rem, 3vw, 2.5rem);
-    background: var(--bone);
+  .services-hero {
+    padding-block: clamp(3.5rem, 7vw, 6rem) 0;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.25fr 0.75fr;
+    gap: clamp(2rem, 7vw, 7rem);
+    align-items: end;
+    margin-top: 2rem;
+  }
+  h1 {
+    font-size: clamp(4rem, 8.4vw, 8rem);
+    letter-spacing: -0.065em;
+    line-height: 0.96;
+    font-weight: 550;
+    margin: 0;
+  }
+  h1 > span {
+    color: var(--ember);
+  }
+  .hero-copy {
+    padding-bottom: 0.25rem;
+  }
+  .hero-copy > p {
+    font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+    line-height: 1.6;
+    max-width: 29ch;
+  }
+  .hero-copy > p + p {
+    font-size: 1rem;
+    max-width: 34ch;
+    margin-bottom: 2rem;
+  }
+  .hero-copy .btn {
+    font-size: 0.78rem;
+    white-space: normal;
+    gap: 1.5rem;
+  }
+  .service-nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: clamp(3.5rem, 7vw, 6rem);
+    border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
   }
-  .phead h1 {
-    max-width: 18ch;
-  }
-  .phead .lede {
-    margin-top: 1rem;
-  }
-
-  .svc-list {
+  .service-nav a {
     display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-  .svc {
-    display: grid;
-    grid-template-columns: 120px 1fr 0.85fr;
-    gap: clamp(1.5rem, 3vw, 2.5rem);
-    padding-block: clamp(2rem, 4vw, 3rem);
-    border-top: 1px solid var(--line);
     align-items: center;
+    padding-block: 1.4rem;
+    gap: 0.75rem;
+    font-size: 0.83rem;
+    font-weight: 550;
+    color: var(--ink);
   }
-  .svc:first-child {
-    border-top: 0;
-    padding-top: 0;
+  .service-nav a > span:first-child {
+    color: var(--muted);
+    font-size: 0.65rem;
+    font-weight: 400;
   }
-  .svc__media {
-    border-radius: var(--radius);
-    overflow: hidden;
-    aspect-ratio: 4 / 3;
-    box-shadow: var(--shadow);
+  .service-nav a > span:last-child {
+    margin-left: auto;
+    margin-right: 1.5rem;
+    color: var(--ember);
   }
-  .svc__media img,
-  .svc__media video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    background: var(--ink);
+  .service-nav a:hover {
+    color: var(--ember);
   }
-  .svc__index {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
+  .offerings-section {
+    padding-block: clamp(1rem, 3vw, 3rem) clamp(3rem, 6vw, 5rem);
   }
-  .svc__num {
-    font-family: var(--display);
-    font-size: 2.4rem;
-    font-weight: 700;
-    color: var(--line);
+  .service {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2.5rem, 8vw, 8rem);
+    padding-block: clamp(3.5rem, 6.5vw, 6rem);
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 5rem;
   }
-  .svc__kind {
+  .service:last-child {
+    border-bottom: 0;
+    padding-bottom: 1rem;
+  }
+  .service-title .kicker {
     font-size: 0.66rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .service-title h2 {
+    font-size: clamp(2.5rem, 4.5vw, 4.25rem);
+    font-weight: 550;
+    letter-spacing: -0.055em;
+    line-height: 1.07;
+    margin-bottom: 1.2rem;
+    max-width: 11ch;
+  }
+  .service-kind {
+    font-size: 0.74rem;
     color: var(--muted);
   }
-  .svc__kind--core {
+  .service-content h3 {
+    font-size: 1.35rem;
+    font-weight: 550;
+    line-height: 1.3;
+    letter-spacing: -0.035em;
+    margin-bottom: 1rem;
+  }
+  .service-content > p {
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 54ch;
+  }
+  .service-content ul {
+    list-style: none;
+    margin: 1.7rem 0 1.5rem;
+    padding: 0;
+  }
+  .service-content li {
+    display: flex;
+    gap: 1rem;
+    padding-block: 0.45rem;
+    font-size: 0.88rem;
+    color: var(--ink);
+    align-items: baseline;
+  }
+  .service-content li > span {
     color: var(--ember);
   }
-  .svc__main h2 {
-    margin-bottom: 0.2rem;
-  }
-  .svc__line {
-    font-family: var(--display);
-    font-style: italic;
-    font-size: 1.2rem;
+  .service-content .service-note {
+    display: inline-block;
     color: var(--ember);
-    margin: 0 0 1rem;
+    font-size: 0.75rem;
+    font-weight: 550;
+    padding-top: 0.6rem;
+    margin: 0;
   }
-  .svc__body {
-    max-width: 60ch;
+  .in-practice {
+    background: var(--ink);
+    color: var(--paper);
+    padding-block: clamp(4rem, 7.5vw, 7rem);
   }
-  .svc__points {
-    margin-top: 1.2rem;
+  .practice-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
   }
-
-  .head--center {
-    margin-inline: auto;
-    text-align: center;
-    max-width: 640px;
-    margin-bottom: 2.6rem;
+  .practice-copy .kicker {
+    color: var(--paper);
+  }
+  .practice-copy h2 {
+    color: var(--paper);
+    font-size: clamp(2.5rem, 4vw, 3.8rem);
+    font-weight: 500;
+    letter-spacing: -0.055em;
+    margin-block: 1.7rem;
+    line-height: 1.08;
+  }
+  .practice-copy > p:not(.kicker) {
+    font-size: 1rem;
+    color: var(--paper);
+    max-width: 39ch;
+  }
+  .practice-copy a {
+    display: inline-flex;
+    align-items: center;
+    gap: 3rem;
+    color: var(--paper);
+    border-bottom: 1px solid var(--paper);
+    padding-block: 0.75rem;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+  }
+  .practice-copy a:focus-visible {
+    outline-color: var(--paper);
+  }
+  .practice-media {
+    min-width: 0;
+  }
+  .practice-media :global(img) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
+    border-radius: 0;
+    object-fit: cover;
+  }
+  .practice-caption {
+    display: block;
+    margin-top: 1rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .process-section {
+    padding-block: clamp(4rem, 8vw, 7rem);
+  }
+  .section-heading h2 {
+    font-size: clamp(2.5rem, 4vw, 3.8rem);
+    font-weight: 550;
+    letter-spacing: -0.05em;
   }
   .steps {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+    gap: 3rem;
+    margin-top: 3rem;
   }
   .step {
-    border: 1px solid rgba(244, 236, 221, 0.16);
-    border-radius: var(--radius);
-    padding: 1.8rem;
+    border-top: 1px solid var(--line);
+    padding-top: 1.5rem;
   }
-  .step__n {
-    display: inline-grid;
-    place-items: center;
-    width: 2.4rem;
-    height: 2.4rem;
-    border-radius: 999px;
-    background: var(--ember);
-    color: var(--paper);
+  .step-number {
+    display: block;
     font-family: var(--display);
-    font-weight: 700;
-    margin-bottom: 1rem;
+    font-size: 3.2rem;
+    line-height: 1;
+    letter-spacing: -0.06em;
+    font-weight: 500;
+    color: var(--ember);
+    margin-bottom: 2.5rem;
   }
   .step h3 {
-    color: var(--paper);
-    font-size: 1.2rem;
-    margin-bottom: 0.4rem;
+    font-size: 1.35rem;
+    letter-spacing: -0.035em;
+    font-weight: 550;
+    line-height: 1.25;
   }
   .step p {
-    margin: 0;
-    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin: 1rem 0 0;
+    max-width: 34ch;
   }
-
-  .faq-list {
-    max-width: 740px;
-    margin-inline: auto;
+  .questions-section {
+    padding-block: clamp(4rem, 7vw, 6rem);
+    background: var(--bone);
+  }
+  .questions-grid {
+    display: grid;
+    grid-template-columns: 0.8fr 1fr;
+    gap: clamp(2rem, 6vw, 6rem);
+  }
+  .questions-grid h2 {
+    font-size: clamp(2.1rem, 3.3vw, 3.25rem);
+    letter-spacing: -0.05em;
+    font-weight: 550;
+    line-height: 1.1;
+  }
+  .questions-note {
+    max-width: 34ch;
+    font-size: 0.94rem;
+    margin-top: 1.5rem;
   }
   .faq-item {
     border-bottom: 1px solid var(--line);
   }
-  .faq-q {
+  .faq-item:first-child {
+    border-top: 1px solid var(--line);
+  }
+  .faq-item summary {
     cursor: pointer;
-    padding: 1.2rem 0;
-    font-weight: 600;
-    font-size: 1.05rem;
-    color: var(--ink);
     list-style: none;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 1rem;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1.4rem;
+    color: var(--ink);
+    font-weight: 550;
+    font-size: 0.98rem;
+    line-height: 1.5;
   }
-  .faq-q::after {
-    content: "+";
-    font-size: 1.3rem;
-    color: var(--ember);
-    flex: none;
-    transition: transform 0.2s ease;
-  }
-  .faq-item[open] .faq-q::after {
-    content: "−";
-  }
-  .faq-q::-webkit-details-marker {
+  .faq-item summary::-webkit-details-marker {
     display: none;
   }
-  .faq-a {
-    padding: 0 0 1.2rem;
-    color: var(--body);
-    max-width: 65ch;
+  .faq-item summary > span {
+    color: var(--ember);
+    font-size: 1.5rem;
+    flex: none;
+    font-weight: 400;
+  }
+  .faq-item[open] summary > span {
+    transform: rotate(45deg);
+  }
+  .faq-item > p {
+    padding-bottom: 1.4rem;
+    font-size: 0.94rem;
+    line-height: 1.7;
+    max-width: 62ch;
     margin: 0;
   }
-
-  @media (max-width: 980px) {
-    .svc {
-      grid-template-columns: 90px 1fr;
+  @media (max-width: 850px) {
+    .hero-grid {
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 2rem;
     }
-    .svc__media {
-      grid-column: 1 / -1;
-      aspect-ratio: 16 / 9;
+    .hero-copy .btn {
+      padding-inline: 1rem;
+    }
+    .service-nav {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .service-nav a:nth-child(-n + 2) {
+      border-bottom: 1px solid var(--line);
+    }
+    .service {
+      gap: 2rem;
+    }
+    .practice-grid {
+      grid-template-columns: 1fr;
+    }
+    .practice-copy > p:not(.kicker) {
+      max-width: 50ch;
+    }
+    .practice-media :global(img) {
+      aspect-ratio: 16/9;
+    }
+    .steps {
+      gap: 1.5rem;
+    }
+    .questions-grid {
+      grid-template-columns: 1fr;
     }
   }
-  @media (max-width: 760px) {
-    .svc {
+  @media (max-width: 600px) {
+    .hero-grid {
       grid-template-columns: 1fr;
-      gap: 1rem;
+      gap: 2rem;
     }
-    .svc__index {
-      flex-direction: row;
-      align-items: center;
-      gap: 1rem;
+    h1 {
+      font-size: clamp(4rem, 14vw, 5.5rem);
     }
-    .svc__num {
-      font-size: 1.6rem;
+    .hero-copy > p {
+      max-width: 36ch;
     }
-    .svc__media {
-      grid-column: auto;
+    .hero-copy > p + p {
+      max-width: 36ch;
+    }
+    .hero-copy .btn {
+      font-size: 0.86rem;
+    }
+    .service-nav a {
+      font-size: 0.75rem;
+    }
+    .service-nav a > span:last-child {
+      margin-right: 0.8rem;
+    }
+    .service {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .service-title h2 {
+      max-width: none;
+      font-size: 2.8rem;
+    }
+    .service-title .kicker {
+      margin-bottom: 1rem;
+    }
+    .service-content li {
+      font-size: 1rem;
+    }
+    .service-content .service-note {
+      font-size: 0.85rem;
     }
     .steps {
       grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    .step-number {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .step p,
+    .faq-item > p,
+    .questions-note {
+      font-size: 1rem;
     }
   }
 </style>

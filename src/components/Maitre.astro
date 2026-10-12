@@ -11,24 +11,22 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
 
 <div id="maitre" class="maitre" data-endpoint={endpoint}>
   <!-- Launcher -->
-  <button id="maitre-launch" class="maitre__launch" aria-label={`Chat with ${maitre.nameInline}`} aria-expanded="false">
+  <button
+    id="maitre-launch"
+    class="maitre__launch"
+    aria-label={`Chat with ${maitre.nameInline}`}
+    aria-expanded="false"
+  >
     <span class="maitre__avatar" aria-hidden="true">
       {maitre.avatar ? (
         <img src={maitre.avatar} alt="" />
       ) : (
-        <svg viewBox="0 0 40 40" role="img" aria-hidden="true">
-          <rect width="40" height="40" rx="12" fill="var(--ink)" />
-          <!-- awning -->
-          <g transform="translate(8,9)">
-            <rect x="0" y="0" width="24" height="3.4" rx="1.2" fill="var(--ember)" />
-            <path d="M0 3.4 h4 v4 l-2 2 l-2 -2 z" fill="var(--ember)" />
-            <path d="M4 3.4 h4 v4 l-2 2 l-2 -2 z" fill="var(--bone)" />
-            <path d="M8 3.4 h4 v4 l-2 2 l-2 -2 z" fill="var(--ember)" />
-            <path d="M12 3.4 h4 v4 l-2 2 l-2 -2 z" fill="var(--bone)" />
-            <path d="M16 3.4 h4 v4 l-2 2 l-2 -2 z" fill="var(--ember)" />
-            <path d="M20 3.4 h4 v4 l-2 2 l-2 -2 z" fill="var(--ember)" />
+        <svg viewBox="0 0 40 40" aria-hidden="true">
+          <rect width="40" height="40" rx="5" fill="var(--ember)" />
+          <g transform="translate(8,5) scale(.43)" fill="var(--paper)">
+            <path d="M6 57V28C6 15.85 15.85 6 28 6s22 9.85 22 22v29H39V28c0-6.08-4.92-11-11-11s-11 4.92-11 11v29H6Z" />
+            <path d="M26 30 39 23v34l-13 7V30Z" />
           </g>
-          <circle cx="20" cy="29" r="3.1" fill="var(--ember)" />
         </svg>
       )}
     </span>
@@ -36,24 +34,24 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
   </button>
 
   <!-- Panel -->
-  <section id="maitre-panel" class="maitre__panel" role="dialog" aria-label={`${maitre.name}, ${maitre.title}`} hidden>
+  <section
+    id="maitre-panel"
+    class="maitre__panel"
+    role="dialog"
+    aria-label={`${maitre.name}, ${maitre.title}`}
+    hidden
+  >
     <header class="maitre__head">
       <span class="maitre__avatar maitre__avatar--sm" aria-hidden="true">
         {maitre.avatar ? (
           <img src={maitre.avatar} alt="" />
         ) : (
           <svg viewBox="0 0 40 40" aria-hidden="true">
-            <rect width="40" height="40" rx="12" fill="var(--ink)" />
-            <g transform="translate(8,9)">
-              <rect x="0" y="0" width="24" height="3.4" rx="1.2" fill="var(--ember)" />
-              <path d="M0 3.4 h4 v4 l-2 2 l-2 -2 z" fill="var(--ember)" />
-              <path d="M4 3.4 h4 v4 l-2 2 l-2 -2 z" fill="var(--bone)" />
-              <path d="M8 3.4 h4 v4 l-2 2 l-2 -2 z" fill="var(--ember)" />
-              <path d="M12 3.4 h4 v4 l-2 2 l-2 -2 z" fill="var(--bone)" />
-              <path d="M16 3.4 h4 v4 l-2 2 l-2 -2 z" fill="var(--ember)" />
-              <path d="M20 3.4 h4 v4 l-2 2 l-2 -2 z" fill="var(--ember)" />
+            <rect width="40" height="40" rx="5" fill="var(--ember)" />
+            <g transform="translate(8,5) scale(.43)" fill="var(--paper)">
+              <path d="M6 57V28C6 15.85 15.85 6 28 6s22 9.85 22 22v29H39V28c0-6.08-4.92-11-11-11s-11 4.92-11 11v29H6Z" />
+              <path d="M26 30 39 23v34l-13 7V30Z" />
             </g>
-            <circle cx="20" cy="29" r="3.1" fill="var(--ember)" />
           </svg>
         )}
       </span>
@@ -61,14 +59,18 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
         <span class="maitre__name">{maitre.name}</span>
         <span class="maitre__title">{maitre.title}</span>
       </div>
-      <button id="maitre-close" class="maitre__close" aria-label="Close">&times;</button>
+      <button id="maitre-close" class="maitre__close" aria-label="Close">
+        &times;
+      </button>
     </header>
 
     <div id="maitre-log" class="maitre__log" aria-live="polite"></div>
 
     <div id="maitre-chips" class="maitre__chips">
       {maitre.suggestions.map((s) => (
-        <button class="maitre__chip" type="button" data-suggest={s}>{s}</button>
+        <button class="maitre__chip" type="button" data-suggest={s}>
+          {s}
+        </button>
       ))}
     </div>
 
@@ -87,7 +89,9 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
         </svg>
       </button>
     </form>
-    <p class="maitre__foot">The Host is an AI assistant. It can take you around the site.</p>
+    <p class="maitre__foot">
+      The Host is an AI assistant. It can take you around the site.
+    </p>
   </section>
 </div>
 
@@ -111,14 +115,16 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
     border-radius: 999px;
     box-shadow: var(--shadow-lift);
     cursor: pointer;
-    transition: transform 0.16s ease, box-shadow 0.18s ease;
+    transition:
+      transform 0.16s ease,
+      box-shadow 0.18s ease;
   }
   .maitre__launch:hover {
     transform: translateY(-2px);
   }
   .maitre__launchlabel {
     font-weight: 600;
-    font-size: 0.92rem;
+    font-size: 0.8rem;
     color: var(--ink);
   }
   .maitre__avatar {
@@ -153,7 +159,7 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
     flex-direction: column;
     background: var(--paper);
     border: 1px solid var(--line);
-    border-radius: 16px;
+    border-radius: 5px;
     box-shadow: 0 24px 60px rgba(34, 28, 24, 0.28);
     overflow: hidden;
     animation: maitre-rise 0.2s ease;
@@ -162,8 +168,14 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
     display: none;
   }
   @keyframes maitre-rise {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: none; }
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
 
   .maitre__head {
@@ -217,7 +229,7 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
     max-width: 85%;
     padding: 0.65rem 0.85rem;
     border-radius: 14px;
-    font-size: 0.92rem;
+    font-size: 0.8rem;
     line-height: 1.5;
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -253,7 +265,9 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
     border-radius: 999px;
     padding: 0.35rem 0.7rem;
     cursor: pointer;
-    transition: background 0.16s ease, border-color 0.16s ease;
+    transition:
+      background 0.16s ease,
+      border-color 0.16s ease;
   }
   .maitre__chip:hover {
     border-color: var(--ember);
@@ -269,7 +283,7 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
   .maitre__input {
     flex: 1;
     font: inherit;
-    font-size: 0.92rem;
+    font-size: 0.8rem;
     color: var(--ink);
     background: var(--bone);
     border: 1px solid var(--line);
@@ -362,7 +376,9 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
 
     function bubble(role, text) {
       const el = document.createElement("div");
-      el.className = "maitre__msg " + (role === "user" ? "maitre__msg--me" : "maitre__msg--bot");
+      el.className =
+        "maitre__msg " +
+        (role === "user" ? "maitre__msg--me" : "maitre__msg--bot");
       el.textContent = text;
       log.appendChild(el);
       log.scrollTop = log.scrollHeight;
@@ -370,7 +386,8 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
     }
 
     function setOpen(state) {
-      if (state && !open) window.fohTrack?.("host_open", { page: window.location.pathname });
+      if (state && !open)
+        window.fohTrack?.("host_open", { page: window.location.pathname });
       open = state;
       panel.hidden = !state;
       launch.setAttribute("aria-expanded", String(state));
@@ -400,7 +417,10 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
       if (!Array.isArray(actions)) return;
       for (const a of actions) {
         if (a && a.type === "navigate" && a.path) {
-          window.fohTrack?.("host_navigate", { path: a.path, from: window.location.pathname });
+          window.fohTrack?.("host_navigate", {
+            path: a.path,
+            from: window.location.pathname,
+          });
           const here = window.location.pathname.replace(/\/$/, "") || "/";
           const dest = a.path.replace(/\/$/, "") || "/";
           if (here === dest) {
@@ -426,7 +446,8 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
       input.value = "";
 
       if (!endpoint) {
-        const msg = "I'm not connected just yet. Head to the contact page and we'll get right back to you.";
+        const msg =
+          "I'm not connected just yet. Head to the contact page and we'll get right back to you.";
         bubble("assistant", msg);
         transcript.push({ role: "assistant", content: msg });
         save();
@@ -455,7 +476,8 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
         runActions(data.actions);
       } catch (e) {
         typing.remove();
-        const msg = "Sorry, I had trouble there. You can always reach the team on the contact page.";
+        const msg =
+          "Sorry, I had trouble there. You can always reach the team on the contact page.";
         bubble("assistant", msg);
         transcript.push({ role: "assistant", content: msg });
         save();

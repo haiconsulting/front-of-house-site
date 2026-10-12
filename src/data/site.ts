@@ -39,7 +39,7 @@ export const site = {
 
   // ── The AI that runs each client's front of house. ──
   // The Host drafts changes, answers questions, and books time with the team;
-  // we verify every change before it goes live. Runs on our own local models.
+  // we verify every change before it goes live. Uses commercial AI services.
   assistant: {
     name: "the Host",
     role: "your front-of-house AI",
@@ -376,7 +376,7 @@ export const faq = {
     },
     {
       q: "What is the Host?",
-      a: "The Host is Front of House's AI assistant included with every Care plan. It helps restaurant owners update their website: change a price, swap a photo, update hours, or answer questions. The Host runs on our own local models with no per-message billing. Every change it drafts is reviewed by our team before going live.",
+      a: "The Host is Front of House's AI assistant included with every Care plan. It helps restaurant owners update their website: change a price, swap a photo, update hours, or answer questions. The Host uses commercial AI services, with usage included in Care subject to fair-use limits. AI self-service is available 24/7; human support is available Monday through Friday, 8 AM to 8 PM Eastern Time. Every change it drafts is reviewed by our team before going live.",
     },
     {
       q: "Will my restaurant website be found by AI search like ChatGPT and Perplexity?",

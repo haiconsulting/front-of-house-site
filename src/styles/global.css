@@ -1,182 +1,172 @@
-/* ───────────────────────────────────────────────
-   Front of House global styles & design tokens
-   Palette and type straight from the brand guide.
-   ─────────────────────────────────────────────── */
-
-@import "@fontsource/cormorant/500.css";
-@import "@fontsource/cormorant/600.css";
-@import "@fontsource/cormorant/700.css";
-@import "@fontsource/cormorant/500-italic.css";
-@import "@fontsource/cormorant/600-italic.css";
+/* Front of House / The Open Door identity / October 2026 */
+@import "@fontsource-variable/archivo";
 @import "@fontsource-variable/inter";
+@import "@fontsource/cormorant/500-italic.css";
+@import "@fontsource/cormorant/600.css";
 
 :root {
-  /* Brand color */
-  --ink: #221c18;
-  --ember: #c75b39;
-  --ember-deep: #a8472b;
-  --brass: #b5853f;
-  --brass-deep: #8a6420;
-  --bone: #f4ecdd;
-  --paper: #fbf7f0;
-  /* Layered warm surfaces (brand revision, July 2026) */
-  --toast: #efe0c9; /* deeper bone — alternating light sections */
-  --clay: #f6e3d4; /* ember-tinted wash — warm feature sections */
-  --dusk: #2e231c; /* warm dark between Ink and Body — editorial breaks */
-  --ember-bright: #d97b57; /* ember accent legible on Dusk/Ink */
-  --body: #4a4038;
-  --muted: #9a8e7e;
-
-  /* Derived surfaces */
-  --line: #e4d9c4;
-  --line-soft: #efe7d8;
-  --ink-border: #3a322b;
-  --muted-on-ink: #c9bba0;
-  --live: #5fb87a;
-  --ink-soft: rgba(34, 28, 24, 0.62);
-  /* Error/invalid state only. A deep brick red, redder and darker than
-     Ember so it never reads as the CTA/action accent. */
-  --danger: #b23122;
-
-  /* Type */
-  --display: "Cormorant", Georgia, "Times New Roman", serif;
-  --sans: "Inter Variable", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
-
-  /* Rhythm */
-  --maxw: 1140px;
-  --gutter: clamp(1.25rem, 4vw, 3rem);
-  --radius: 14px;
-  --radius-sm: 9px;
-  --shadow: 0 1px 2px rgba(34, 28, 24, 0.05), 0 8px 28px rgba(34, 28, 24, 0.07);
-  --shadow-lift: 0 2px 6px rgba(34, 28, 24, 0.08), 0 22px 50px rgba(34, 28, 24, 0.14);
+  --ink: #29251f;
+  --ember: #a52e24;
+  --ember-deep: #84251f;
+  --brass: #8b672e;
+  --brass-deep: #755520;
+  --paper: #f7f5ee;
+  --bone: #eeece3;
+  --toast: #e9e5da;
+  --clay: #efe5dc;
+  --dusk: #342a25;
+  --ember-bright: #efad99;
+  --body: #514c45;
+  --muted: #756c62;
+  --line: #d9d5ca;
+  --line-soft: #e7e3da;
+  --ink-border: #51483f;
+  --muted-on-ink: #d2c9bd;
+  --live: #75a17c;
+  --ink-soft: rgba(41, 37, 31, 0.65);
+  --danger: #a12424;
+  --display: "Archivo Variable", "Arial", sans-serif;
+  --serif: "Cormorant", Georgia, serif;
+  --sans: "Inter Variable", "Helvetica Neue", Arial, sans-serif;
+  --maxw: 1400px;
+  --gutter: clamp(1.25rem, 4.4vw, 4rem);
+  --radius: 3px;
+  --radius-sm: 3px;
+  --shadow: 0 8px 24px rgba(41, 37, 31, 0.06);
+  --shadow-lift: 0 16px 40px rgba(41, 37, 31, 0.1);
 }
-
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
-
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
-  /* Keep anchored sections clear of the sticky header */
-  scroll-padding-top: 84px;
+  scroll-padding-top: 100px;
 }
-
 body {
   margin: 0;
   background: var(--paper);
   color: var(--body);
   font-family: var(--sans);
-  font-size: 1.0625rem;
+  font-size: 1rem;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  /* Safety net against accidental horizontal scroll on small screens */
-  overflow-x: hidden;
 }
-
 h1,
 h2,
 h3,
 h4 {
   font-family: var(--display);
   color: var(--ink);
-  font-weight: 600;
-  line-height: 1.08;
-  letter-spacing: -0.01em;
-  margin: 0 0 0.5em;
+  font-weight: 550;
+  line-height: 1.06;
+  letter-spacing: -0.045em;
+  margin: 0 0 0.55em;
   overflow-wrap: break-word;
 }
-
 h1 {
-  font-size: clamp(2.6rem, 6vw, 4.4rem);
-  font-weight: 700;
+  font-size: clamp(3rem, 6.4vw, 6.6rem);
 }
 h2 {
-  font-size: clamp(1.9rem, 3.6vw, 2.9rem);
+  font-size: clamp(2.2rem, 4vw, 4rem);
 }
 h3 {
-  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+  letter-spacing: -0.025em;
 }
-
 p {
   margin: 0 0 1rem;
 }
-
 a {
-  color: var(--ember-deep);
+  color: var(--ember);
   text-decoration: none;
-  transition: color 0.18s ease;
+  transition: color 0.18s;
 }
 a:hover {
-  color: var(--ink);
+  color: var(--ember-deep);
 }
-
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button,
+a,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
 img {
   max-width: 100%;
   display: block;
 }
-
-/* ── Layout helpers ── */
+button {
+  cursor: pointer;
+}
 .container {
   width: 100%;
   max-width: var(--maxw);
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
-
 .section {
-  padding-block: clamp(3.5rem, 8vw, 6.5rem);
+  padding-block: clamp(4rem, 8vw, 7.5rem);
 }
 .section--tight {
-  padding-block: clamp(2.5rem, 5vw, 4rem);
+  padding-block: clamp(2.5rem, 5vw, 4.5rem);
 }
-
-/* Eyebrow / kicker label */
 .kicker {
   font-family: var(--sans);
-  font-size: 0.72rem;
+  font-size: 0.67rem;
   font-weight: 600;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ember);
-  margin: 0 0 0.9rem;
+  margin: 0 0 1.5rem;
 }
-
 .lede {
-  font-size: clamp(1.05rem, 1.6vw, 1.28rem);
+  font-size: clamp(1rem, 1.35vw, 1.15rem);
   color: var(--body);
-  max-width: 56ch;
+  max-width: 54ch;
 }
-
 .eyebrow-serif {
-  font-family: var(--display);
+  font-family: var(--serif);
   font-style: italic;
-  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  font-size: 1.5rem;
   color: var(--ember);
   font-weight: 500;
 }
-
-/* ── Buttons ── */
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 1.5rem;
+  min-height: 48px;
+  padding: 0.9rem 1.4rem;
   font-family: var(--sans);
-  font-weight: 600;
-  font-size: 0.96rem;
+  font-size: 0.8rem;
+  font-weight: 500;
   letter-spacing: 0.005em;
-  padding: 0.85rem 1.5rem;
-  border-radius: 999px;
-  border: 1.5px solid transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
   cursor: pointer;
-  transition: transform 0.16s ease, background 0.18s ease, color 0.18s ease,
-    border-color 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    background 0.18s,
+    color 0.18s,
+    transform 0.18s,
+    border-color 0.18s;
 }
 .btn:active {
   transform: translateY(1px);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 .btn--primary {
   background: var(--ember);
@@ -185,7 +175,6 @@ img {
 .btn--primary:hover {
   background: var(--ember-deep);
   color: var(--paper);
-  box-shadow: 0 10px 22px rgba(199, 91, 57, 0.28);
 }
 .btn--ghost {
   background: transparent;
@@ -193,9 +182,8 @@ img {
   border-color: var(--line);
 }
 .btn--ghost:hover {
-  color: var(--ink);
   border-color: var(--ink);
-  background: rgba(34, 28, 24, 0.03);
+  color: var(--ink);
 }
 .btn--on-ink {
   background: var(--paper);
@@ -205,16 +193,26 @@ img {
   background: var(--bone);
   color: var(--ink);
 }
-
-/* ── Cards ── */
+.text-link {
+  display: inline-flex;
+  gap: 1.25rem;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ink);
+  border-bottom: 1px solid var(--ink);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.text-link:hover {
+  color: var(--ember);
+  border-color: var(--ember);
+}
 .card {
-  background: #fff;
+  background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: clamp(1.4rem, 2.4vw, 2rem);
 }
-
-/* ── Surfaces ── */
 .surface-bone {
   background: var(--bone);
 }
@@ -224,28 +222,13 @@ img {
 .surface-clay {
   background: var(--clay);
 }
-.surface-ink {
+.surface-ink,
+.surface-ink--glow {
   background: var(--ink);
   color: var(--bone);
 }
-/* Quiet ember glow for featured dark sections (not footer/utility ink) */
-.surface-ink--glow {
-  background:
-    radial-gradient(
-      110% 110% at 85% -10%,
-      rgba(199, 91, 57, 0.22),
-      transparent 58%
-    ),
-    var(--ink);
-}
 .surface-dusk {
-  background:
-    radial-gradient(
-      100% 140% at 50% 110%,
-      rgba(199, 91, 57, 0.2),
-      transparent 60%
-    ),
-    var(--dusk);
+  background: var(--dusk);
   color: var(--bone);
 }
 .surface-ink h1,
@@ -256,23 +239,21 @@ img {
 .surface-dusk h3 {
   color: var(--paper);
 }
-/* Cards sitting on Toast need a slightly deeper hairline */
-.surface-toast .card,
-.surface-clay .card {
-  border-color: #decba9;
+.surface-ink .kicker,
+.surface-dusk .kicker {
+  color: var(--ember-bright);
 }
-
-/* Thin ember rule under the masthead, echoing the brand docs */
 .brand-rule {
-  height: 3px;
-  background: var(--ember);
+  height: 1px;
+  background: var(--line);
 }
-
-/* ── Accessibility ── */
 :focus-visible {
-  outline: 2.5px solid var(--ember);
-  outline-offset: 3px;
-  border-radius: 4px;
+  outline: 2px solid var(--ember);
+  outline-offset: 5px;
+}
+.surface-ink :focus-visible,
+.surface-dusk :focus-visible {
+  outline-color: var(--paper);
 }
 .visually-hidden {
   position: absolute;
@@ -285,10 +266,29 @@ img {
   white-space: nowrap;
   border: 0;
 }
-
+a.visually-hidden:focus {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  width: auto;
+  height: auto;
+  padding: 12px 20px;
+  margin: 0;
+  clip: auto;
+  background: var(--paper);
+  color: var(--ink);
+  z-index: 1000;
+}
+::selection {
+  background: var(--ember);
+  color: var(--paper);
+}
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }

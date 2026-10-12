@@ -1,33 +1,35 @@
 ---
 import Base from "../layouts/Base.astro";
 import CtaBand from "../components/CtaBand.astro";
-import VideoSlot from "../components/VideoSlot.astro";
-import TickList from "../components/TickList.astro";
+import { Image } from "astro:assets";
+import burgerPreview from "../../public/videos/burger-lab.jpg";
+import killaPreview from "../../public/videos/killa-nikkei.jpg";
 import { caseStudies, hai, specConcepts, site } from "../data/site.ts";
+const projectImages = [burgerPreview, killaPreview];
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ItemList",
-  name: "Restaurant Websites Built by Front of House",
+  name: "Restaurant Websites Built by the Front of House Team",
   description:
-    "Portfolio of custom restaurant websites designed, built, and maintained by Front of House. Each site is owned outright by the restaurant owner.",
-  itemListElement: caseStudies.map((c, i) => ({
+    "Custom restaurant website projects from the team behind Front of House, including Burger Lab and Killa in Salt Lake City.",
+  itemListElement: caseStudies.map((project, i) => ({
     "@type": "ListItem",
     position: i + 1,
     item: {
       "@type": "WebSite",
-      name: c.name,
-      url: c.url,
-      description: c.blurb,
+      name: project.name,
+      url: project.url,
+      description: project.blurb,
       creator: { "@id": `${site.url}/#organization` },
       about: {
         "@type": "Restaurant",
-        name: c.name,
-        servesCuisine: c.type,
+        name: project.name,
+        servesCuisine: project.type,
         address: {
           "@type": "PostalAddress",
-          addressLocality: c.location.split(",")[0].trim(),
-          addressRegion: c.location.split(",")[1]?.trim(),
+          addressLocality: project.location.split(",")[0].trim(),
+          addressRegion: project.location.split(",")[1]?.trim(),
         },
       },
     },
@@ -36,358 +38,508 @@ const jsonLd = {
 ---
 
 <Base
-  title="Work"
-  description="Restaurant websites built by Front of House. See Burger Lab and Killa: custom, fast, mobile-first, and owned by the restaurant owner. Based in Salt Lake City, Park City, and Atlanta."
+  title="Our Work"
+  description="Distinctive websites for distinctive restaurants. Explore Burger Lab and Killa, two custom Salt Lake City restaurant websites built by the Front of House team."
   jsonLd={jsonLd}
 >
-  <section class="phead">
+  <section class="work-hero" data-od-id="work-introduction">
     <div class="container">
-      <p class="kicker">Our work</p>
-      <h1>What does a Front of House restaurant website look like?</h1>
-      <p class="lede">
-        Real restaurants we designed and built. Fast, custom, mobile-first,
-        and owned by the restaurant owner. Each ships with online ordering,
-        reservations, waitlists, email capture, and AI search optimization.
-      </p>
-    </div>
-  </section>
-
-  <section id="cases" class="section">
-    <div class="container">
-      <div class="cases">
-        {
-          caseStudies.map((c, i) => (
-            <article class:list={["case", { "case--flip": i % 2 === 1 }]}>
-              <a
-                class="case__media"
-                href={c.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Visit ${c.name}`}
-              >
-                <VideoSlot src={c.video} alt={c.alt} />
-
-                <span class="case__badge">Live site</span>
-              </a>
-              <div class="case__body">
-                <p class="case__loc">{c.location}</p>
-                <h2 class="case__name">{c.name}</h2>
-                <p class="case__type">{c.type}</p>
-                <p class="case__tag">"{c.tagline}"</p>
-                <p class="case__blurb">{c.blurb}</p>
-                <div class="case__points">
-                  <TickList points={c.points} inline />
-                </div>
-                <a
-                  class="case__link"
-                  href={c.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Visit {c.name} →
-                </a>
-              </div>
-            </article>
-          ))
-        }
+      <p class="kicker">A taste of our work</p>
+      <h1>
+        Different restaurants.
+        <br /> <span>Same care.</span>
+      </h1>
+      <div class="hero-bottom">
+        <p>Selected work / 01–02</p>
+        <p>
+          No two restaurants have the same story. Their websites shouldn’t,
+          either. Here’s how we’ve brought two very different places to the
+          screen.
+        </p>
       </div>
     </div>
   </section>
 
-  <!-- ── HAI talent reference (separate company) ── -->
-  <section class="section--tight">
-    <div class="container">
-      <div class="agency surface-ink">
-        <div class="agency__copy">
-          <p class="kicker">Same team, same standard</p>
-          <h2>Real sites. Real restaurants.</h2>
-          <p>{hai.blurb}</p>
-        </div>
-        <a
-          class="btn btn--on-ink agency__cta"
-          href={hai.url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          More work at {hai.name} →
+  <section
+    class="projects-section"
+    id="cases"
+    aria-label="Selected restaurant website projects"
+    data-od-id="work-projects"
+  >
+    <div class="container projects">
+      {caseStudies.map((project, i) => (
+        <article class:list={["project", { "project--offset": i === 1 }]}>
+          <a
+            class="project-media"
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Visit ${project.name}'s live website, opens in a new tab`}
+          >
+            <div class="project-browser" aria-hidden="true">
+              <span>
+                <i></i>
+                <i></i>
+                <i></i>
+              </span>
+              <span>{new URL(project.url).hostname.replace("www.", "")}</span>
+              <span>↗</span>
+            </div>
+            <div class="project-screen">
+              <Image
+                src={projectImages[i]}
+                alt={project.alt}
+                widths={[480, 800, 1280]}
+                sizes="(max-width: 850px) 100vw, 90vw"
+                loading="lazy"
+              />
+            </div>
+            <span class="project-visit">
+              Explore the live site <span aria-hidden="true">↗</span>
+            </span>
+          </a>
+          <div class="project-caption">
+            <span class="project-index">0{i + 1}</span>
+            <div class="project-title">
+              <p class="project-location">{project.location}</p>
+              <h2>{project.name}</h2>
+              <p class="project-type">{project.type}</p>
+            </div>
+            <div class="project-details">
+              <p>{project.blurb}</p>
+              <ul>
+                {project.points.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
+              <a href={project.url} target="_blank" rel="noopener noreferrer">
+                Visit {project.name} <span aria-hidden="true">↗</span>
+                <span class="sr-only"> (opens in a new tab)</span>
+              </a>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="team-note" data-od-id="work-team">
+    <div class="container team-note-grid">
+      <p class="kicker">The people behind the work</p>
+      <div>
+        <h2>
+          Same team.
+          <br /> A new front door.
+        </h2>
+        <p>{hai.blurb}</p>
+        <a href="/about">
+          Get to know Front of House <span aria-hidden="true">↗</span>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- ── Spec showcase by category ── -->
-  <section id="spec" class="section--tight">
-    <div class="container">
-      <header class="spec-head">
-        <p class="kicker">Spec builds</p>
-        <h2>Don't see your kind of place yet?</h2>
-        <p class="lede">
-          We built a live spec site for every kind of restaurant, so you can
-          see exactly what yours could look like before we start. Open one,
-          answer four quick questions, and it puts your name up in lights.
+  <section class="concepts-section" id="spec" data-od-id="work-concepts">
+    <div class="container concepts-grid">
+      <div class="concepts-heading">
+        <p class="kicker">Imagine your place here</p>
+        <h2>
+          Your kind
+          <br /> of restaurant.
+        </h2>
+        <p>
+          Explore a few creative directions, from a neighborhood bar to a
+          tasting menu. These are interactive concepts, made to help you picture
+          what’s possible.
         </p>
-      </header>
-      <div class="specs">
-        {
-          specConcepts.map((s) => (
-            <a class="spec" href={s.href}>
-              <span class="spec__tag">Live spec</span>
-              <h3>{s.name}</h3>
-              <p>{s.note}</p>
-              <span class="spec__go">Try it with your name →</span>
-            </a>
-          ))
-        }
+        <a class="text-link" href="/templates">
+          Explore all concepts <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+      <div class="concepts">
+        {specConcepts.map((concept, i) => (
+          <a class="concept" href={concept.href}>
+            <span class="concept-index">0{i + 1}</span>
+            <div>
+              <span class="concept-label">Interactive concept</span>
+              <h3>{concept.name}</h3>
+              <p>{concept.note}</p>
+            </div>
+            <span class="concept-arrow" aria-hidden="true">
+              ↗
+            </span>
+          </a>
+        ))}
       </div>
     </div>
   </section>
-
-  <section class="section--tight">
-    <div class="container">
-      <div class="soon">
-        <div>
-          <h2>Want to be next?</h2>
-          <p class="lede">
-            We're booking our first Front of House partners now. Early partners
-            get our fullest attention, and a spot in this gallery.
-          </p>
-        </div>
-        <a href="/contact" class="btn btn--primary">Become an early partner</a>
-      </div>
-    </div>
-  </section>
-
-  <CtaBand />
+  <CtaBand
+    heading="Your restaurant. Next on the list."
+    sub="Let’s make a website that feels as good as walking through your door."
+  />
 </Base>
 
 <style>
-  .phead {
-    padding-block: clamp(3rem, 7vw, 5rem) clamp(1.5rem, 3vw, 2.5rem);
-    background: var(--bone);
-    border-bottom: 1px solid var(--line);
+  .work-hero {
+    padding-block: clamp(3.5rem, 8vw, 7rem) clamp(3.5rem, 6vw, 5rem);
   }
-  .phead h1 {
-    max-width: 18ch;
+  .work-hero .kicker {
+    margin-bottom: 2rem;
   }
-  .phead .lede {
-    margin-top: 1rem;
+  h1 {
+    font-size: clamp(3.3rem, 7.8vw, 7.5rem);
+    line-height: 1;
+    letter-spacing: -0.065em;
+    font-weight: 550;
+    margin-bottom: 2.6rem;
   }
-
-  /* ── Case studies ── */
-  .cases {
+  h1 > span {
+    color: var(--ember);
+  }
+  .hero-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: end;
+  }
+  .hero-bottom > p:first-child {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin: 0;
+  }
+  .hero-bottom > p:last-child {
+    font-size: clamp(1.05rem, 1.55vw, 1.25rem);
+    line-height: 1.6;
+    max-width: 42ch;
+    margin: 0;
+  }
+  .projects-section {
+    padding-bottom: clamp(4rem, 8vw, 7rem);
+  }
+  .projects {
     display: flex;
     flex-direction: column;
-    gap: clamp(2.5rem, 6vw, 4.5rem);
+    gap: clamp(4rem, 8vw, 7rem);
   }
-  .case {
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    gap: clamp(1.5rem, 4vw, 3.5rem);
-    align-items: center;
+  .project {
+    width: 94%;
   }
-  .case--flip .case__media {
-    order: 2;
+  .project--offset {
+    margin-left: auto;
   }
-  .case__media {
+  .project-media {
     position: relative;
     display: block;
-    border-radius: var(--radius);
+    background: var(--bone);
+    padding: clamp(1rem, 3vw, 2.5rem);
+    color: var(--ink);
     overflow: hidden;
-    aspect-ratio: 4 / 3;
-    box-shadow: var(--shadow);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
-  .case__media:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lift);
+  .project--offset .project-media {
+    background: var(--ink);
   }
-  .case__media img,
-  .case__media video {
+  .project-browser {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 0.85rem;
+    background: var(--paper);
+    font-size: 0.62rem;
+    color: var(--body);
+  }
+  .project-browser > span:first-child {
+    display: flex;
+    gap: 4px;
+  }
+  .project-browser i {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--line);
+  }
+  .project-screen {
+    aspect-ratio: 16/9;
+    overflow: hidden;
+  }
+  .project-screen :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    background: var(--ink);
+    border-radius: 0;
   }
-  .case__badge {
+  .project-visit {
     position: absolute;
-    top: 1rem;
-    left: 1rem;
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--paper);
-    background: rgba(34, 28, 24, 0.6);
-    backdrop-filter: blur(4px);
-    padding: 0.3rem 0.7rem;
-    border-radius: 999px;
-  }
-  .case__loc {
+    bottom: clamp(1.5rem, 4vw, 3.25rem);
+    right: clamp(1.5rem, 4vw, 3.25rem);
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    background: var(--paper);
+    padding: 0.7rem 1rem;
+    color: var(--ink);
     font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.16em;
+    font-weight: 550;
+    transition: transform 0.2s ease-out;
+  }
+  .project-media:hover .project-visit {
+    transform: translateY(-3px);
+  }
+  .project-media:active .project-visit {
+    transform: translateY(0);
+  }
+  .project-caption {
+    display: grid;
+    grid-template-columns: 0.15fr 0.9fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .project-index {
+    color: var(--ember);
+    font-size: 0.72rem;
+    padding-top: 0.3rem;
+  }
+  .project-location {
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
-    margin: 0 0 0.6rem;
+    margin-bottom: 0.75rem;
   }
-  .case__name {
-    font-size: clamp(2rem, 4vw, 2.8rem);
-    margin: 0 0 0.2rem;
+  .project-title h2 {
+    font-size: clamp(2rem, 3.4vw, 3.3rem);
+    font-weight: 550;
+    letter-spacing: -0.055em;
+    line-height: 1.06;
+    margin-bottom: 0.6rem;
   }
-  .case__type {
-    color: var(--ember);
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    margin: 0 0 0.9rem;
-  }
-  .case__tag {
-    font-family: var(--display);
-    font-style: italic;
-    font-size: 1.2rem;
-    color: var(--ink);
-    margin: 0 0 1rem;
-  }
-  .case__blurb {
-    color: var(--body);
-    max-width: 52ch;
-    margin: 0 0 1.2rem;
-  }
-  .case__points {
-    margin: 0 0 1.5rem;
-  }
-  .case__link {
-    font-weight: 600;
-    color: var(--ember-deep);
-  }
-  .case__link:hover {
-    color: var(--ink);
-  }
-
-  /* ── Agency / HAI band ── */
-  .agency {
-    border-radius: var(--radius);
-    padding: clamp(1.8rem, 4vw, 3rem);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    flex-wrap: wrap;
-  }
-  .agency__copy {
-    max-width: 56ch;
-  }
-  .agency__copy h2 {
-    margin: 0.4rem 0 0.6rem;
-  }
-  .agency__copy p {
-    color: var(--muted-on-ink);
+  .project-type {
+    font-size: 0.84rem;
     margin: 0;
   }
-  .agency__cta {
-    flex: none;
+  .project-details > p {
+    font-size: 0.94rem;
+    line-height: 1.7;
+    max-width: 50ch;
   }
-
-  /* ── Spec showcase ── */
-  .spec-head {
-    max-width: 640px;
+  .project-details ul {
+    list-style: none;
+    margin: 1.5rem 0 1rem;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.8rem;
+  }
+  .project-details li {
+    font-size: 0.66rem;
+    color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.35rem;
+  }
+  .project-details > a {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.5rem;
+    min-height: 44px;
+    font-size: 0.79rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .project-details > a:hover {
+    color: var(--ember);
+  }
+  .team-note {
+    background: var(--ember);
+    color: var(--paper);
+    padding-block: clamp(4rem, 8vw, 7rem);
+  }
+  .team-note-grid {
+    display: grid;
+    grid-template-columns: 0.55fr 1fr;
+    gap: 3rem;
+  }
+  .team-note .kicker {
+    color: var(--paper);
+    padding-top: 0.5rem;
+  }
+  .team-note h2 {
+    color: var(--paper);
+    font-size: clamp(3rem, 5.5vw, 5rem);
+    font-weight: 500;
+    letter-spacing: -0.055em;
+    line-height: 1.04;
     margin-bottom: 2rem;
   }
-  .spec-head h2 {
-    margin: 0.3rem 0 0.6rem;
+  .team-note-grid > div > p {
+    max-width: 48ch;
+    font-size: 1rem;
+    line-height: 1.7;
   }
-  .spec-head .lede {
-    margin: 0;
+  .team-note a {
+    display: inline-flex;
+    align-items: center;
+    gap: 2rem;
+    color: var(--paper);
+    font-size: 0.85rem;
+    border-bottom: 1px solid var(--paper);
+    padding-block: 0.8rem;
+    margin-top: 0.5rem;
   }
-  .specs {
+  .team-note a:focus-visible {
+    outline-color: var(--paper);
+  }
+  .concepts-section {
+    padding-block: clamp(4rem, 8vw, 7rem);
+  }
+  .concepts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
+    grid-template-columns: 0.8fr 1fr;
+    gap: clamp(3rem, 6vw, 6rem);
   }
-  .spec {
-    display: block;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 1.6rem;
-    background: var(--bone);
-    color: var(--body);
-    transition: border-color 0.18s ease, box-shadow 0.18s ease,
-      transform 0.18s ease;
+  .concepts-heading h2 {
+    font-size: clamp(2.6rem, 4.4vw, 4rem);
+    letter-spacing: -0.055em;
+    font-weight: 550;
+    line-height: 1.05;
+    margin-block: 1.4rem 1.7rem;
   }
-  .spec:hover {
-    border-color: var(--ink);
-    box-shadow: var(--shadow-lift);
-    transform: translateY(-2px);
-    color: var(--body);
+  .concepts-heading > p:not(.kicker) {
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 36ch;
   }
-  .spec__go {
-    display: block;
-    margin-top: 0.9rem;
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--ember-deep);
+  .text-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 2rem;
+    color: var(--ink);
+    font-size: 0.85rem;
+    border-bottom: 1px solid var(--ink);
+    padding-block: 0.75rem;
+    margin-top: 0.5rem;
   }
-  .spec:hover .spec__go {
+  .concept {
+    display: grid;
+    grid-template-columns: 1.1rem 1fr 1rem;
+    align-items: start;
+    gap: 1.3rem;
+    padding-block: 1.7rem;
+    border-top: 1px solid var(--line);
     color: var(--ink);
   }
-  .spec__tag {
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
+  .concept:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+  .concept-index {
+    color: var(--muted);
+    font-size: 0.68rem;
+    padding-top: 0.15rem;
+  }
+  .concept-label {
+    display: block;
+    color: var(--muted);
+    font-size: 0.59rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--brass);
+    margin-bottom: 0.7rem;
   }
-  .spec h3 {
-    font-size: 1.3rem;
-    margin: 0.7rem 0 0.4rem;
+  .concept h3 {
+    font-size: 1.7rem;
+    letter-spacing: -0.04em;
+    font-weight: 550;
+    margin-bottom: 0.6rem;
   }
-  .spec p {
+  .concept p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    max-width: 38ch;
     margin: 0;
-    font-size: 0.9rem;
     color: var(--body);
   }
-
-  /* ── Booking band ── */
-  .soon {
-    background: var(--bone);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: clamp(1.8rem, 4vw, 2.8rem);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    flex-wrap: wrap;
+  .concept-arrow {
+    color: var(--ember);
+    font-size: 1.15rem;
   }
-  .soon h2 {
-    margin: 0 0 0.4rem;
+  .concept:hover h3,
+  .text-link:hover {
+    color: var(--ember);
   }
-  .soon .lede {
-    margin: 0;
-    max-width: 46ch;
+  @media (max-width: 850px) {
+    .project {
+      width: 100%;
+    }
+    .project-caption {
+      grid-template-columns: 0.8fr 1fr;
+    }
+    .project-index {
+      display: none;
+    }
+    .team-note-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .concepts-grid {
+      grid-template-columns: 1fr;
+    }
+    .concepts-heading > p:not(.kicker) {
+      max-width: 48ch;
+    }
   }
-
-  @media (max-width: 760px) {
-    .case {
+  @media (max-width: 560px) {
+    h1 {
+      font-size: clamp(2.75rem, 10.2vw, 3.8rem);
+    }
+    .hero-bottom {
       grid-template-columns: 1fr;
       gap: 1.4rem;
     }
-    .case--flip .case__media {
-      order: 0;
+    .project-media {
+      padding: 0.7rem;
     }
-    .case__media {
-      aspect-ratio: 16 / 10;
+    .project-browser {
+      font-size: 0.5rem;
+      padding: 0.55rem;
     }
-    .agency,
-    .soon {
-      flex-direction: column;
-      align-items: flex-start;
+    .project-caption {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-top: 1.5rem;
     }
-    .agency__cta,
-    .soon .btn {
-      width: 100%;
-      justify-content: center;
+    .project-visit {
+      position: static;
+      margin-top: 0.7rem;
+      justify-content: space-between;
+      min-height: 44px;
+      padding: 0.6rem 0.75rem;
+      background: transparent;
+      color: var(--ink);
+      font-size: 0.75rem;
+    }
+    .project--offset .project-visit {
+      color: var(--paper);
+    }
+    .project-details > p {
+      font-size: 1rem;
+    }
+    .project-details li {
+      font-size: 0.72rem;
+    }
+    .project-details > a {
+      font-size: 0.86rem;
+    }
+    .concept {
+      gap: 1rem;
+    }
+    .concept p {
+      font-size: 1rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .project-visit {
+      transition: none;
+    }
+    .project-media:hover .project-visit {
+      transform: none;
     }
   }
 </style>

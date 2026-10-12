@@ -28,8 +28,12 @@ const jsonLd = {
   <section id="form" class="phead">
     <div class="container phead__grid">
       <div>
-        <p class="kicker">Scope your build</p>
-        <h1>Ready to own your restaurant website?</h1>
+        <p class="kicker">LET’S MAKE SOMETHING GOOD</p>
+        <h1>
+          There’s a place
+          <br />
+          for you here.
+        </h1>
         <p class="lede">
           Tell us about your restaurant and what you need. We'll come back with
           a scope, a price, a recommended Care tier, and next steps, usually
@@ -61,9 +65,19 @@ const jsonLd = {
         id="lead-form"
         data-endpoint={import.meta.env.PUBLIC_LEAD_ENDPOINT || "/api/lead"}
       >
-        <div class="hp" aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden">
+        <div
+          class="hp"
+          aria-hidden="true"
+          style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden"
+        >
           <label for="company_website">Leave this field empty</label>
-          <input id="company_website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
+          <input
+            id="company_website"
+            name="company_website"
+            type="text"
+            tabindex="-1"
+            autocomplete="off"
+          />
         </div>
         <input id="build-brief" name="build_brief" type="hidden" value="" />
         <div class="field">
@@ -90,7 +104,13 @@ const jsonLd = {
           </div>
           <div class="field">
             <label for="locations">Locations</label>
-            <input id="locations" name="locations" type="number" min="1" value="1" />
+            <input
+              id="locations"
+              name="locations"
+              type="number"
+              min="1"
+              value="1"
+            />
           </div>
         </div>
         <div class="field-row">
@@ -115,7 +135,9 @@ const jsonLd = {
           <label for="tier">Care plan</label>
           <select id="tier" name="tier">
             <option value="">Not sure yet, help me choose</option>
-            {carePlans.map((t) => <option value={t.name}>{t.name}</option>)}
+            {carePlans.map((t) => (
+              <option value={t.name}>{t.name}</option>
+            ))}
           </select>
         </div>
         <div class="field">
@@ -124,12 +146,19 @@ const jsonLd = {
             id="message"
             name="message"
             rows="4"
-            placeholder="New site, a refresh, photos, branding…"></textarea>
+            placeholder="New site, a refresh, photos, branding…"
+          ></textarea>
         </div>
         <button type="submit" class="btn btn--primary form__submit">
           Send it over
         </button>
-        <p class="form__note" id="form-note" role="status" aria-live="polite" hidden></p>
+        <p
+          class="form__note"
+          id="form-note"
+          role="status"
+          aria-live="polite"
+          hidden
+        ></p>
       </form>
     </div>
   </section>
@@ -205,7 +234,9 @@ const jsonLd = {
     border: 1.5px solid var(--line);
     border-radius: var(--radius-sm);
     padding: 0.7rem 0.85rem;
-    transition: border-color 0.16s ease, box-shadow 0.16s ease;
+    transition:
+      border-color 0.16s ease,
+      box-shadow 0.16s ease;
   }
   input:focus,
   select:focus,
@@ -264,6 +295,10 @@ const jsonLd = {
     }
   }
   @media (max-width: 520px) {
+    .direct {
+      flex-direction: column;
+      gap: 1.25rem;
+    }
     .field-row {
       flex-direction: column;
       gap: 0;
@@ -290,7 +325,9 @@ const jsonLd = {
     const restaurant = q.get("restaurant") || "";
     const city = q.get("city") || "";
     const accentRaw = (q.get("accent") || "").trim().replace(/^#/, "");
-    const brandColor = /^[0-9a-f]{6}$/i.test(accentRaw) ? `#${accentRaw.toUpperCase()}` : "";
+    const brandColor = /^[0-9a-f]{6}$/i.test(accentRaw)
+      ? `#${accentRaw.toUpperCase()}`
+      : "";
     const brandLine = brandColor
       ? `${brandColor}${q.get("finish") === "tonal" ? " with tonal gradient buttons" : ""}`
       : "";
@@ -301,14 +338,14 @@ const jsonLd = {
     if (tpl && msg && !msg.value) {
       const vibe = q.get("vibe") || "";
       const tag = q.get("tag") || "";
-        let text = `I customized the ${tpl} spec template`;
-        if (restaurant) text += ` as ${restaurant}`;
-        if (city) text += ` in ${city}`;
-        text += vibe ? `, ${vibe} vibe.` : ".";
-        if (tag) text += ` Tagline: "${tag}".`;
-        if (brandLine) text += ` Brand color: ${brandLine}.`;
-        text += " Let's build the real thing.";
-        msg.value = text;
+      let text = `I customized the ${tpl} spec template`;
+      if (restaurant) text += ` as ${restaurant}`;
+      if (city) text += ` in ${city}`;
+      text += vibe ? `, ${vibe} vibe.` : ".";
+      if (tag) text += ` Tagline: "${tag}".`;
+      if (brandLine) text += ` Brand color: ${brandLine}.`;
+      text += " Let's build the real thing.";
+      msg.value = text;
     }
 
     if (isBrief) {
@@ -323,9 +360,14 @@ const jsonLd = {
       const note = q.get("note") || "";
       const briefInput = document.getElementById("build-brief");
       const parts = [];
-      if (selectedDirections.length) parts.push(`Directions: ${selectedDirections.join(" + ")}`);
-      if (priority) parts.push(`Primary action: ${priority.replace(/-/g, " ")}`);
-      if (needs.length) parts.push(`Needs: ${needs.map((need) => need.replace(/-/g, " ")).join(", ")}`);
+      if (selectedDirections.length)
+        parts.push(`Directions: ${selectedDirections.join(" + ")}`);
+      if (priority)
+        parts.push(`Primary action: ${priority.replace(/-/g, " ")}`);
+      if (needs.length)
+        parts.push(
+          `Needs: ${needs.map((need) => need.replace(/-/g, " ")).join(", ")}`,
+        );
       if (city) parts.push(`City: ${city}`);
       if (tag) parts.push(`Tagline: ${tag}`);
       if (brandLine) parts.push(`Brand color: ${brandLine}`);
@@ -333,11 +375,13 @@ const jsonLd = {
 
       if (msg && !msg.value) {
         let text = "I started a website build brief";
-        if (selectedDirections.length) text += ` around ${selectedDirections.join(" and ")}`;
+        if (selectedDirections.length)
+          text += ` around ${selectedDirections.join(" and ")}`;
         if (restaurant) text += ` for ${restaurant}`;
         if (city) text += ` in ${city}`;
         text += `. The main guest action is ${priority.replace(/-/g, " ")}.`;
-        if (needs.length) text += ` We need ${needs.map((need) => need.replace(/-/g, " ")).join(", ")}.`;
+        if (needs.length)
+          text += ` We need ${needs.map((need) => need.replace(/-/g, " ")).join(", ")}.`;
         if (tag) text += ` Suggested tagline: "${tag}".`;
         if (brandLine) text += ` Brand color: ${brandLine}.`;
         if (note) text += ` Note: ${note}`;
@@ -408,7 +452,9 @@ const jsonLd = {
     });
     if (firstInvalid) {
       firstInvalid.focus();
-      window.fohTrack?.("lead_form_invalid", { field: firstInvalid.name || firstInvalid.id });
+      window.fohTrack?.("lead_form_invalid", {
+        field: firstInvalid.name || firstInvalid.id,
+      });
       showNote("A couple of fields need a look.", "err");
       return;
     }
@@ -429,7 +475,10 @@ const jsonLd = {
         if (res.ok) {
           form.reset();
           setSubmitting(false);
-          window.fohTrack?.("lead_submitted", { via: "form", tier: data.tier || "unsure" });
+          window.fohTrack?.("lead_submitted", {
+            via: "form",
+            tier: data.tier || "unsure",
+          });
           showNote("Thanks, we'll be in touch within a business day.", "ok");
           return;
         }
@@ -452,10 +501,13 @@ const jsonLd = {
       `${data.message || ""}`,
     ].join("\n");
     window.location.href = `mailto:${to}?subject=${encodeURIComponent(
-      subject
+      subject,
     )}&body=${encodeURIComponent(body)}`;
     setSubmitting(false);
-    window.fohTrack?.("lead_submitted", { via: "email_app", tier: data.tier || "unsure" });
+    window.fohTrack?.("lead_submitted", {
+      via: "email_app",
+      tier: data.tier || "unsure",
+    });
     showNote("Opening your email app to send. Almost there.", "ok");
   });
 
