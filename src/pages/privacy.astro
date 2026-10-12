@@ -1,0 +1,92 @@
+---
+// Privacy Policy for fohrestaurants.com, the client portal (portal.fohrestaurants.com)
+// and the sites FOH hosts. Linked from Google's OAuth consent screen for the portal's
+// Google Business Profile connection, so the Google user data section must stay
+// accurate (Google API Services User Data Policy, Limited Use).
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+const updated = 'October 12, 2026';
+---
+<Base title="Privacy Policy" description="How Front Of House LLC collects, uses, and protects information on fohrestaurants.com, the client portal, and the restaurant websites we host.">
+  <div class="privacy container">
+    <p class="privacy__meta">Front Of House LLC · Last updated {updated}</p>
+    <article class="privacy__copy">
+      <h1>Privacy <em>Policy</em></h1>
+      <p>Front Of House LLC ("Front of House", "FOH", "we") is a web and brand studio for restaurants. This policy explains what information we collect, how we use it, and the choices you have. It covers our website at fohrestaurants.com, our client portal at portal.fohrestaurants.com (the "Portal"), and the restaurant websites we build and host for our clients.</p>
+
+      <h2>What we collect</h2>
+      <h3>When you visit our website</h3>
+      <ul>
+        <li><strong>Contact forms.</strong> Your name, email, phone, restaurant name, and the message you send us.</li>
+        <li><strong>Chat with the Host.</strong> The messages you type to our website assistant.</li>
+        <li><strong>Usage data.</strong> Pages visited and basic device and browser information, measured with self-hosted analytics that does not use advertising cookies. Our network provider processes IP addresses and request logs to deliver and protect the site.</li>
+      </ul>
+      <h3>When you use the Portal</h3>
+      <ul>
+        <li><strong>Account details.</strong> Your name, email address, phone number (to send sign-in codes), and passkeys you register. Passwords are stored only as secure hashes.</li>
+        <li><strong>Your restaurant's information.</strong> Your restaurant profile, menu details, hours, photos, documents, change requests, messages with our team, and meeting bookings.</li>
+        <li><strong>Accounts you connect.</strong> When you connect Instagram or Google Business Profile, we receive the account details and permissions you approve. See the Google section below.</li>
+      </ul>
+
+      <h2>How we use information</h2>
+      <ul>
+        <li>To provide and support our services: build and update your website, run the Portal, publish posts you approve, and keep your business details current where you ask us to.</li>
+        <li>To communicate with you: sign-in codes, notices about your account and changes, and replies to your questions.</li>
+        <li>To keep our services secure, prevent abuse, and meet legal obligations.</li>
+      </ul>
+      <p>We do not sell personal information, and we do not use it for third-party advertising.</p>
+
+      <h2 id="google">Google user data</h2>
+      <p>The Portal can connect to a restaurant's Google Business Profile so the owner, or Front of House at the owner's request, can view and update the restaurant's listing.</p>
+      <ul>
+        <li><strong>What we access.</strong> With your permission (the Google Business Profile management scope), we access the Business Profile accounts and locations your Google account manages, and the business information on them, such as the business name, address, website, and opening hours.</li>
+        <li><strong>How we use it.</strong> Only to show your profile in the Portal and to make the updates you request, for example changing your hours. We do not use it for anything else.</li>
+        <li><strong>What we store.</strong> An encrypted access token, the profile and location you chose, and the details needed to show them in the Portal.</li>
+        <li><strong>Sharing.</strong> We do not sell Google user data or use it for advertising. We do not transfer it to others, except to the service providers that host and operate the Portal, as needed to provide the feature you use, or as required by law.</li>
+        <li><strong>AI models.</strong> We do not use Google user data to develop, improve, or train generalized artificial intelligence or machine learning models.</li>
+        <li><strong>People.</strong> Our team does not read your Google user data unless you ask us to, it is needed for security or to comply with the law, or it is part of the support you requested.</li>
+        <li><strong>Your control.</strong> You can disconnect Google Business Profile in the Portal at any time, or remove Front Of House Portal's access at <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>. When you disconnect or close your account, we delete the stored token and Google data within 30 days.</li>
+      </ul>
+      <p>Front of House's use and transfer of information received from Google APIs to any other app will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
+
+      <h2>Who we share information with</h2>
+      <p>We use trusted service providers to run our services, and they handle information only to provide their service to us: Vultr (servers and backups, Atlanta, Georgia), Cloudflare (network and security), GitHub (code), Anthropic (AI assistance), Twilio SendGrid (email), Twilio or Apple messaging (sign-in codes), Post for Me and Meta (Instagram publishing you approve), Google (Business Profile updates you request), Stripe (payments), and Microsoft 365 (our business email). We may also share information if the law requires it, to protect rights and safety, or as part of a sale or merger of our business.</p>
+
+      <h2>How long we keep it</h2>
+      <p>We keep information while your account or our work together is active, and as needed for legal, tax, and accounting purposes. You can ask us to delete your information at any time; we will do so unless we must keep it by law.</p>
+
+      <h2>Security</h2>
+      <p>We use encryption in transit, encrypt connected-account tokens at rest, require two-step sign-in or passkeys for the Portal, and limit access to the people who need it. No method of transmission or storage is completely secure.</p>
+
+      <h2>Your choices</h2>
+      <ul>
+        <li>Ask us for a copy of your information, or to correct or delete it.</li>
+        <li>Disconnect Instagram or Google Business Profile in the Portal at any time.</li>
+        <li>Opt out of non-essential emails using the link in them or by contacting us.</li>
+      </ul>
+
+      <h2>Children</h2>
+      <p>Our services are for businesses and are not directed to children under 16. We do not knowingly collect their information.</p>
+
+      <h2>Changes to this policy</h2>
+      <p>If we change this policy, we will update the date above and, for significant changes, let Portal users know.</p>
+
+      <h2>Contact us</h2>
+      <p>Front Of House LLC<br />Email: <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a><br />Phone: <a href={site.contact.phoneHref}>{site.contact.phone}</a></p>
+    </article>
+  </div>
+</Base>
+
+<style>
+  .privacy { max-width: 940px; padding-block: 3rem 6rem; }
+  .privacy__meta { text-transform: uppercase; letter-spacing: .09em; font-size: .75rem; color: var(--ember); }
+  .privacy__copy { line-height: 1.75; overflow-wrap: anywhere; }
+  .privacy__copy h1 { font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1.1; margin-bottom: 1.5rem; }
+  .privacy__copy h1 em { color: var(--ember); }
+  .privacy__copy h2 { font-size: 1.8rem; margin-block: 2.5rem 1rem; }
+  .privacy__copy h3 { font-size: 1.25rem; margin-top: 1.8rem; }
+  .privacy__copy p { margin-block: 1rem; }
+  .privacy__copy ul { padding-left: 1.5rem; }
+  .privacy__copy li { margin-bottom: .7rem; }
+  .privacy__copy a { text-decoration: underline; text-underline-offset: 3px; }
+</style>
