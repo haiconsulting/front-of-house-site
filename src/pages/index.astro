@@ -1,8 +1,16 @@
 ---
 import Base from "../layouts/Base.astro";
 import CtaBand from "../components/CtaBand.astro";
-import Logo from "../components/Logo.astro";
-import { caseStudies, faq, build, carePlans } from "../data/site";
+import HeroVideo from "../components/templates/HeroVideo.astro";
+import { Image } from "astro:assets";
+import {
+  caseStudies,
+  faq,
+  build,
+  carePlans,
+  portfolioVideo,
+} from "../data/site";
+import { directions } from "../data/directions";
 const questions = [faq.pricing[0], faq.pricing[2], faq.services[1]];
 const jsonLd = {
   "@context": "https://schema.org",
@@ -16,30 +24,26 @@ const jsonLd = {
 const services = [
   {
     name: "Websites",
-    note: "Your digital front door.",
-    body: "Custom websites that feel like your restaurant and make the next step easy. Find the menu. Book the table. Place the order.",
-    details: "Custom design · Mobile-first · Search foundations",
+    note: "A site that feels like your place.",
+    body: "Distinctive design. Menus that are easy to find. A clear path to book a table or place an order. Built around your guests, and yours to keep.",
     href: "/websites-for-restaurants",
   },
   {
     name: "Brand & identity",
-    note: "A look that belongs to you.",
-    body: "From the sign above your door to the menu in their hands. A distinctive identity that brings your restaurant’s personality into focus.",
-    details: "Logo & identity · Menu design · Art direction",
+    note: "Make it unmistakably yours.",
+    body: "The logo, the menu, the little details. A considered identity that carries your restaurant’s personality from the street to the screen.",
     href: "/services#brand",
   },
   {
     name: "Photo & video",
-    note: "Give them a taste.",
-    body: "The space, the plates, the people. On-site photography and film that capture what makes your place worth coming back to.",
-    details: "On-site shoots · Food & interiors · Brand films",
+    note: "Let people feel the room.",
+    body: "On-site photography and film that capture your food, your people, and the atmosphere they create together.",
     href: "/services#capture",
   },
   {
     name: "Care & support",
-    note: "Still here after opening night.",
-    body: "Your restaurant changes. Your website should keep up. Hosting, maintenance, and real people behind every update, with one clear annual fee.",
-    details: "Hosting · Website updates · The Host AI assistant",
+    note: "A team that stays at the table.",
+    body: "Hosting, maintenance, and ongoing updates. Ask the Host AI assistant for a change, and our team reviews it before it goes live.",
     href: "/services#care",
   },
 ];
@@ -47,526 +51,450 @@ const services = [
 
 <Base
   title="Restaurant websites, branding & a better first impression"
-  description="A creative studio built only for restaurants. Custom websites, brand identity, photography, and ongoing care. Websites you own from $2,000."
+  description="Websites, brands, and content for independent restaurants. Explore our work, try a design with your restaurant’s name, and build a website you own."
   jsonLd={jsonLd}
 >
-  <section class="hero" data-od-id="first-impression">
-    <div class="container hero__grid">
-      <div class="hero__copy">
-        <p class="kicker hero__eyebrow">
-          <span></span> THE CREATIVE STUDIO FOR RESTAURANTS
-        </p>
-        <h1>
-          Good hospitality
-          <br />
-          starts before
-          <br />
-          <em>the door.</em>
-        </h1>
-        <p class="hero__intro">
-          You make people feel at home.
-          <br />
-          We make sure they find you.
-        </p>
-        <p class="hero__body">
-          Distinctive brands, beautiful websites, and the people to keep them
-          going. Built for independent restaurants. Owned by you.
-        </p>
-        <div class="hero__actions">
-          <a href="/work" class="btn btn--primary">
-            Explore our work <span aria-hidden="true">↗</span>
-          </a>
-          <a href="/contact" class="hero__secondary">
-            Let's meet <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </div>
-      <div class="hero__visual">
-        <div class="hero__photo">
-          <img
-            src="/images/brand/hospitality-editorial.webp"
-            srcset="/images/brand/hospitality-editorial-small.webp 600w, /images/brand/hospitality-editorial.webp 1122w"
-            sizes="(max-width: 760px) 90vw, 38vw"
-            alt="Warm light, a table set for dinner, and an open doorway into a welcoming restaurant. Brand illustration."
-            width="1122"
-            height="1402"
-            fetchpriority="high"
-            decoding="async"
-          />
-        </div>
-        <div
-          class="hero__seal"
-          aria-label="Independent restaurants. All heart."
-        >
-          <span>
-            INDEPENDENT
-            <br />
-            RESTAURANTS
-          </span>
-          <Logo variant="mark" />
-          <span>ALL HEART.</span>
-        </div>
-        <p class="hero__caption">
-          <span>A little more welcome.</span>
-          <span>A lot more you.</span>
-        </p>
-      </div>
+  <section class="opening container" data-od-id="first-impression">
+    <div class="opening__top">
+      <p class="kicker">FRONT OF HOUSE / A RESTAURANT CREATIVE STUDIO</p>
+      <span class="opening__note">Made for the places people love.</span>
     </div>
-    <div class="container">
-      <div class="hero__foot">
-        <span>RESTAURANT PEOPLE. CREATIVE PEOPLE. YOUR PEOPLE.</span>
-        <a href="#selected-work">
-          COME ON IN <span aria-hidden="true">↓</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <section class="work section" id="selected-work" data-od-id="selected-work">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <p class="kicker">A FEW PLACES WE'VE SET THE TABLE</p>
-          <h2>
-            Different restaurants.
-            <br />
-            Same care.
-          </h2>
-        </div>
-        <a class="text-link" href="/work">
-          Take a closer look <span aria-hidden="true">↗</span>
-        </a>
-      </div>
-      <div class="work__grid">
-        {caseStudies.map((c, i) => (
-          <article class={`project project--${i}`}>
-            <a
-              href={c.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="project__image"
-              aria-label={`Visit ${c.name}'s live website, opens in a new tab`}
-            >
-              <div class="project__browser">
-                <span class="browser__dots" aria-hidden="true">
-                  <i></i>
-                  <i></i>
-                  <i></i>
-                </span>
-                <span>{i === 0 ? "burgerlabbar.com" : "killanikkei.com"}</span>
-                <span aria-hidden="true">↗</span>
-              </div>
-              <img
-                src={c.video.poster}
-                alt={`${c.name} restaurant website designed by the Front of House team`}
-                width="1280"
-                height="720"
-                loading="lazy"
-              />
-              <span class="project__view">Visit the live site ↗</span>
-            </a>
-            <div class="project__meta">
-              <div>
-                <h3>{c.name}</h3>
-                <p>
-                  {c.type} · {c.location}
-                </p>
-              </div>
-              <a
-                href={c.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Visit ${c.name} website, opens in a new tab`}
-              >
-                ↗
-              </a>
-            </div>
-            <p class="project__services">
-              {i === 0
-                ? "WEBSITE DESIGN · ONLINE ORDERING · SEARCH"
-                : "WEBSITE DESIGN · RESERVATIONS · NEWSLETTER"}
-            </p>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section id="templates" class="concepts" data-od-id="templates">
-    <div class="container concepts__inner">
-      <div class="concepts__type" aria-hidden="true">
-        Your
+    <div class="opening__grid">
+      <h1>
+        A taste of
         <br />
-        <em>name here.</em>
-      </div>
-      <div>
-        <p class="kicker">TEMPLATES · TRY YOUR RESTAURANT FIRST</p>
-        <h2>Picture your place.</h2>
+        <em>what’s next.</em>
+      </h1>
+      <div class="opening__copy">
         <p>
-          Put your restaurant’s name on four working previews. Try your brand
-          colors, switch between desktop and phone, and explore ten design
-          directions. Save your favorites to start a build brief.
+          Give your restaurant
+          <br />a presence worth <em>pulling up for.</em>
         </p>
-        <a href="/templates" class="text-link">
-          Explore Templates <span aria-hidden="true">↗</span>
+        <p class="opening__description">
+          Distinctive websites, brands, and content. Built by restaurant people,
+          for restaurant people.
+        </p>
+        <a href="/templates" class="btn btn--primary">
+          Find your direction <span aria-hidden="true">↗</span>
         </a>
-        <p class="concepts__note">Your name. Your colors. No email needed.</p>
+        <a href="/work" class="opening__link">
+          Explore our work <span aria-hidden="true">↓</span>
+        </a>
       </div>
     </div>
   </section>
 
-  <section class="studio section" data-od-id="studio-services">
-    <div class="container studio__grid">
-      <div class="studio__intro">
-        <p class="kicker">YOUR PLACE. OUR KIND OF PROJECT.</p>
-        <h2>
-          You bring
-          <br />
-          the good food.
-          <br />
-          <em>
-            We'll bring
-            <br />
-            the rest.
-          </em>
-        </h2>
-        <p>
-          A neighborhood favorite. A new opening. A small group with big ideas.
-          We help the right people discover what makes your restaurant yours.
-        </p>
-        <a class="text-link" href="/services">
-          Everything we do <span aria-hidden="true">↗</span>
+  <section class="feature container" aria-label="Featured restaurant project">
+    <div class="feature__frame">
+      <HeroVideo
+        {...portfolioVideo.killaHero}
+        label="the Killa restaurant film"
+        className="feature__film"
+      />
+      <div class="feature__caption">
+        <span>IN GOOD COMPANY</span>
+        <a
+          href="https://www.killanikkei.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Killa <span aria-hidden="true">↗</span>
         </a>
-      </div>
-      <div class="service-menu">
-        {services.map((s, i) => (
-          <details class="service" name="services" open={i === 0}>
-            <summary>
-              <span>{s.name}</span>
-              <span class="service__plus" aria-hidden="true">
-                +
-              </span>
-            </summary>
-            <div class="service__content">
-              <h3>{s.note}</h3>
-              <p>{s.body}</p>
-              <p class="service__details">{s.details}</p>
-              <a href={s.href}>
-                Explore {s.name.toLowerCase()} <span aria-hidden="true">↗</span>
-              </a>
-            </div>
-          </details>
-        ))}
+        <p>Peruvian–Japanese. Salt Lake City.</p>
       </div>
     </div>
-  </section>
-
-  <section class="ownership section" data-od-id="ownership">
-    <div class="container ownership__grid">
-      <div class="ownership__copy">
-        <p class="kicker">THE HOUSE RULE</p>
-        <h2>
-          Your restaurant.
-          <br />
-          Your website.
-          <br />
-          <em>Yours. Period.</em>
-        </h2>
-        <p>
-          You put everything into your business. Your website should be an asset
-          you own, with the code to keep and a team you can call.
-        </p>
-        <a href="/pricing" class="btn btn--on-ink">
-          Refreshingly simple pricing <span aria-hidden="true">↗</span>
-        </a>
-      </div>
-      <div class="receipt">
-        <div class="receipt__heading">
-          <Logo variant="inline" />
-          <span>YOUR NEXT CHAPTER</span>
-        </div>
-        <p class="receipt__intro">
-          A great first impression.
-          <br />A straightforward investment.
-        </p>
-        <div class="receipt__item">
-          <div>
-            <h3>The custom build</h3>
-            <p>Designed, built, and yours to keep.</p>
-          </div>
-          <div class="receipt__price">
-            <small>FROM</small>
-            {build.from}
-            <small>ONE TIME</small>
-          </div>
-        </div>
-        <div class="receipt__item">
-          <div>
-            <h3>Care</h3>
-            <p>Hosting, updates, and a real team.</p>
-          </div>
-          <div class="receipt__price">
-            {carePlans[0].price}
-            <small>PER YEAR</small>
-          </div>
-        </div>
-        <div class="receipt__note">
-          <span aria-hidden="true">↳</span> A little more support? Care+ adds
-          ongoing marketing for {carePlans[1].price}/year.
-        </div>
-        <p class="receipt__bottom">
-          YOUR NAME ON THE DOOR. YOUR NAME ON THE CODE.
-        </p>
-        <p class="receipt__fine">
-          Scope agreed up front. Domains, third-party tools, and additional work
-          quoted separately.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="process section" data-od-id="the-process">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <p class="kicker">FROM FIRST HELLO TO WHAT'S NEXT</p>
-          <h2>
-            Good people.
-            <br />A clear process.
-          </h2>
-        </div>
-        <p class="section-head__note">
-          Restaurant operators and creative builders.
-          <br />
-          One team on your side.
-        </p>
-      </div>
-      <div class="process__steps">
-        <article>
-          <span class="process__number">01 / MEET</span>
-          <h3>First, your story.</h3>
-          <p>
-            We get to know your restaurant, your guests, and where you want to
-            go. Then we agree on a scope and a price.
-          </p>
-        </article>
-        <article>
-          <span class="process__number">02 / MAKE</span>
-          <h3>Made around you.</h3>
-          <p>
-            We design, build, and bring your place to life online. You see it,
-            refine it with us, and approve it before launch.
-          </p>
-        </article>
-        <article>
-          <span class="process__number">03 / KEEP GOING</span>
-          <h3>Consider us regulars.</h3>
-          <p>
-            You own the website. We keep it hosted and current. Need a change?
-            Ask the Host or reach our team directly.
-          </p>
-        </article>
-      </div>
-      <a class="text-link" href="/about">
-        Meet your new people <span aria-hidden="true">↗</span>
+    <div class="feature__credit">
+      <p>A real place. A distinct point of view.</p>
+      <a href="/work">
+        Meet the restaurants <span aria-hidden="true">↗</span>
       </a>
     </div>
   </section>
 
-  <section class="questions section" data-od-id="questions">
-    <div class="container questions__grid">
+  <section
+    class="selected container"
+    id="selected-work"
+    data-od-id="selected-work"
+  >
+    <div class="section-heading">
       <div>
-        <p class="kicker">BEFORE YOU PULL UP A CHAIR</p>
+        <p class="kicker">01 / SELECTED WORK</p>
         <h2>
-          A few good
+          Personality.
           <br />
-          questions.
+          On every page.
         </h2>
-        <a class="text-link" href="/pricing#faq">
-          More about pricing <span aria-hidden="true">↗</span>
-        </a>
       </div>
-      <div>
-        {questions.map((q) => (
-          <details class="question">
-            <summary>
-              {q.q}
-              <span aria-hidden="true">+</span>
-            </summary>
-            <p>{q.a}</p>
-          </details>
+      <p>
+        Different menus. Different moods.
+        <br />
+        Always a website that belongs to the restaurant.
+      </p>
+    </div>
+    <div class="work-grid">
+      {caseStudies.map((c, i) => (
+        <article class="project">
+          <a
+            href={c.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="project__image"
+            aria-label={`Visit ${c.name} website, opens in a new tab`}
+          >
+            <img
+              src={c.video.poster}
+              alt={`${c.name} restaurant website designed by the Front of House team`}
+              width="1920"
+              height="1080"
+              loading="lazy"
+            />
+            <span class="project__visit">Visit the site ↗</span>
+          </a>
+          <div class="project__caption">
+            <div>
+              <h3>{c.name}</h3>
+              <p>{c.type}</p>
+            </div>
+            <span class="project__number">0{i + 1} ↗</span>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="directions" id="templates" data-od-id="templates">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">02 / THE TEMPLATE STUDIO</p>
+          <h2>
+            See your place
+            <br />
+            in a new light.
+          </h2>
+        </div>
+        <div class="directions__intro">
+          <p>
+            Your name. Your colors. Four working previews and ten directions to
+            make your own.
+          </p>
+          <a href="/templates" class="text-link">
+            Explore Templates <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+      <div class="direction-grid">
+        {directions.slice(0, 4).map((d, i) => (
+          <a href={d.href} class={`direction direction--${i}`}>
+            <div class="direction__photo">
+              <Image
+                src={d.image}
+                alt={d.imageAlt}
+                width={640}
+                format="webp"
+                loading="lazy"
+              />
+              <div class="direction__sample" aria-hidden="true">
+                {[
+                  "The evening<br>is yours.",
+                  "GOOD FOOD.<br>GREAT TIMES.",
+                  "A table for<br>everyone.",
+                  "Your usual.<br>Only better.",
+                ][i]
+                  .split("<br>")
+                  .map((line) => (
+                    <span>{line}</span>
+                  ))}
+              </div>
+              <span class="direction__tag">LIVE PREVIEW</span>
+            </div>
+            <div class="direction__caption">
+              <span>{d.label}</span>
+              <span aria-hidden="true">↗</span>
+            </div>
+          </a>
         ))}
       </div>
+      <p class="directions__foot">
+        Try it with your restaurant’s name. No email needed.
+      </p>
+    </div>
+  </section>
+
+  <section class="services container" data-od-id="studio-services">
+    <div class="services__intro">
+      <p class="kicker">03 / WHAT WE BRING</p>
+      <h2>
+        The whole
+        <br />
+        first impression.
+      </h2>
+      <p>
+        From your identity to the everyday updates. One creative partner who
+        understands how restaurants work.
+      </p>
+      <a href="/about" class="text-link">
+        Meet the studio <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+    <div class="service-list">
+      {services.map((s, i) => (
+        <details class="service" name="homepage-services" open={i === 0}>
+          <summary>
+            <span class="service__number">0{i + 1}</span>
+            <span>{s.name}</span>
+            <span class="service__plus" aria-hidden="true">
+              +
+            </span>
+          </summary>
+          <div class="service__body">
+            <h3>{s.note}</h3>
+            <p>{s.body}</p>
+            <a href={s.href}>
+              Explore {s.name.toLowerCase()} <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="ownership" data-od-id="ownership">
+    <div class="container ownership__grid">
+      <div>
+        <p class="kicker">A BETTER WAY TO BUILD</p>
+        <h2>
+          Your website.
+          <br />
+          <em>Yours to keep.</em>
+        </h2>
+        <p>
+          A custom build, clear pricing, and the code in your hands. We stay to
+          help because you want us to.
+        </p>
+        <a href="/pricing" class="text-link">
+          See the pricing <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+      <div class="pricing">
+        <div class="pricing__row">
+          <div>
+            <span class="pricing__label">CUSTOM WEBSITE</span>
+            <p>Designed around your restaurant.</p>
+          </div>
+          <div class="pricing__amount">
+            <small>FROM</small>
+            <strong>{build.from}</strong>
+            <span>one time</span>
+          </div>
+        </div>
+        <div class="pricing__row">
+          <div>
+            <span class="pricing__label">ONGOING CARE</span>
+            <p>Hosting, updates, and a real team.</p>
+          </div>
+          <div class="pricing__amount">
+            <strong>{carePlans[0].price}</strong>
+            <span>per year</span>
+          </div>
+        </div>
+        <p class="pricing__fine">
+          Care+ with ongoing marketing: {carePlans[1].price}/year. Scope agreed
+          up front. Domains and third-party tools quoted separately.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="questions container" data-od-id="questions">
+    <div>
+      <p class="kicker">BEFORE WE SAY HELLO</p>
+      <h2>
+        A few good
+        <br />
+        questions.
+      </h2>
+    </div>
+    <div>
+      {questions.map((q) => (
+        <details class="question">
+          <summary>
+            {q.q}
+            <span aria-hidden="true">+</span>
+          </summary>
+          <p>{q.a}</p>
+        </details>
+      ))}
     </div>
   </section>
   <CtaBand />
 </Base>
 <style>
-  .hero {
-    padding-top: clamp(2.4rem, 4.6vw, 4.5rem);
+  .opening {
+    padding-top: 2.5rem;
+    padding-bottom: 3.5rem;
   }
-  .hero__grid {
-    display: grid;
-    grid-template-columns: 1.35fr 1fr;
-    gap: 4%;
-    align-items: center;
-  }
-  .hero__copy {
-    padding-bottom: 1.5rem;
-  }
-  .hero__eyebrow {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-size: 0.6rem;
-    margin-bottom: 2.1rem;
-    color: var(--ink);
-  }
-  .hero__eyebrow > span {
-    width: 6px;
-    height: 6px;
-    background: var(--ember);
-    border-radius: 50%;
-    flex: none;
-  }
-  .hero h1 {
-    font-size: clamp(3.5rem, 6.05vw, 6rem);
-    line-height: 1.02;
-    letter-spacing: -0.062em;
-    font-weight: 550;
-    margin: 0 0 1.55rem;
-  }
-  .hero h1 em {
-    font-family: var(--serif);
-    font-weight: 500;
-    font-size: 1.33em;
-    line-height: 0.9;
-    color: var(--ember);
-    letter-spacing: -0.055em;
-  }
-  .hero__intro {
-    font-size: 1rem;
-    line-height: 1.55;
-    color: var(--ink);
-    margin-bottom: 0.65rem;
-  }
-  .hero__body {
-    font-size: 0.85rem;
-    max-width: 43ch;
-    line-height: 1.75;
-    color: var(--muted);
-    margin-bottom: 1.9rem;
-  }
-  .hero__actions {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-  }
-  .hero__secondary {
-    font-size: 0.78rem;
-    color: var(--ink);
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-    min-height: 44px;
-  }
-  .hero__secondary:hover {
-    color: var(--ember);
-  }
-  .hero__visual {
-    position: relative;
-    align-self: stretch;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .hero__photo {
-    height: clamp(460px, 42vw, 575px);
-    border-radius: 48% 48% 2px 2px;
-    overflow: hidden;
-    background: var(--bone);
-  }
-  .hero__photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 50% 52%;
-  }
-  .hero__caption {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.61rem;
-    color: var(--muted);
-    margin: 0.9rem 0 0;
-    letter-spacing: 0.015em;
-  }
-  .hero__seal {
-    width: 116px;
-    height: 116px;
-    position: absolute;
-    bottom: 67px;
-    left: -46px;
-    border-radius: 50%;
-    background: var(--paper);
-    color: var(--ember);
-    border: 1px solid var(--ember);
-    outline: 6px solid var(--paper);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transform: rotate(-12deg);
-  }
-  .hero__seal > span {
-    font-size: 0.5rem;
-    line-height: 1.3;
-    text-align: center;
-    letter-spacing: 0.1em;
-    font-weight: 600;
-  }
-  .hero__seal :global(.logo) {
-    width: 27px;
-  }
-  .hero__foot {
+  .opening__top {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    border-bottom: 1px solid var(--line);
-    margin-top: 3.2rem;
-    padding-bottom: 1.3rem;
-    font-size: 0.56rem;
-    letter-spacing: 0.12em;
+    margin-bottom: 2.5rem;
+  }
+  .opening__top .kicker {
+    margin: 0;
+    color: var(--ink);
+    font-size: 0.59rem;
+  }
+  .opening__note {
+    font-size: 0.7rem;
     color: var(--muted);
   }
-  .hero__foot a {
+  .opening__grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 5%;
+    align-items: end;
+  }
+  .opening h1 {
+    font-size: clamp(5rem, 8.8vw, 8.6rem);
+    line-height: 0.96;
+    letter-spacing: -0.07em;
+    font-weight: 550;
+    margin: 0;
+    color: var(--ember);
+  }
+  .opening h1 em {
+    font-family: var(--serif);
+    font-weight: 500;
+    letter-spacing: -0.055em;
+    font-size: 1.06em;
+  }
+  .opening__copy {
+    max-width: 350px;
+    justify-self: end;
+    padding-bottom: 0.2rem;
+  }
+  .opening__copy > p:first-child {
+    font-size: 1.32rem;
     color: var(--ink);
-    display: flex;
-    gap: 1.5rem;
-    min-height: 30px;
-    align-items: center;
+    line-height: 1.4;
+    letter-spacing: -0.035em;
+    margin-bottom: 0.8rem;
   }
-  .hero__foot a span {
-    font-size: 1rem;
+  .opening__copy em {
+    font-style: normal;
   }
-  .section-head {
+  .opening__description {
+    font-size: 0.82rem;
+    line-height: 1.7;
+    margin-bottom: 1.4rem;
+    max-width: 34ch;
+  }
+  .opening__copy .btn {
+    font-size: 0.74rem;
+    padding: 0.85rem 1.1rem;
+    min-height: 48px;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .opening__link {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    gap: 2rem;
-    margin-bottom: 2.7rem;
+    align-items: center;
+    font-size: 0.75rem;
+    min-height: 44px;
+    margin-top: 0.25rem;
+    color: var(--ink);
   }
-  .section-head h2 {
+  .feature__frame {
+    height: clamp(360px, 38vw, 570px);
+    position: relative;
+    overflow: hidden;
+    background: var(--ink);
+  }
+  .feature__frame :global(.feature__film) {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .feature__frame:after {
+    content: "";
+    position: absolute;
+    inset: 35% 0 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.65));
+    pointer-events: none;
+  }
+  .feature__frame :global(.hero-video__toggle) {
+    z-index: 3;
+  }
+  .feature__caption {
+    position: absolute;
+    left: 2rem;
+    bottom: 1.7rem;
+    z-index: 2;
+    color: white;
+  }
+  .feature__caption > span {
+    font-size: 0.55rem;
+    letter-spacing: 0.16em;
+    display: block;
+    margin-bottom: 0.55rem;
+  }
+  .feature__caption > a {
+    font: 550 2.8rem/1 var(--display);
+    color: white;
+    letter-spacing: -0.06em;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .feature__caption > a > span {
+    font: 400 1.4rem var(--sans);
+  }
+  .feature__caption p {
+    font-size: 0.65rem;
+    margin: 0.5rem 0 0;
+    color: #eee;
+  }
+  .feature__credit {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.65rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--muted);
+  }
+  .feature__credit p {
     margin: 0;
   }
-  .section-head > .text-link {
-    margin-bottom: 0.25rem;
+  .feature__credit a {
+    color: var(--ink);
   }
-  .work {
-    padding-top: 5rem;
+  .selected {
+    padding-block: 6rem;
   }
-  .work__grid {
+  .section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 3rem;
+    margin-bottom: 2.5rem;
+  }
+  .section-heading h2 {
+    margin: 0;
+    font-size: clamp(2.6rem, 4.3vw, 4.6rem);
+    letter-spacing: -0.055em;
+  }
+  .section-heading > p {
+    font-size: 0.84rem;
+    line-height: 1.7;
+    max-width: 33ch;
+    margin: 0 0 0.4rem;
+  }
+  .work-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
@@ -574,399 +502,295 @@ const services = [
   .project__image {
     display: block;
     position: relative;
-    padding: 3.2rem 2.5rem;
     overflow: hidden;
-    background: #dfdfd5;
-  }
-  .project--1 .project__image {
-    background: #d9c8b9;
-  }
-  .project__browser {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #f6f5f1;
-    border-radius: 5px 5px 0 0;
-    padding: 0.5rem 0.65rem;
-    font-size: 0.48rem;
-    letter-spacing: 0.01em;
-    color: var(--muted);
-  }
-  .browser__dots {
-    display: flex;
-    gap: 3px;
-  }
-  .browser__dots i {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: #b8b3a9;
+    aspect-ratio: 16/10;
+    background: var(--toast);
   }
   .project__image img {
     width: 100%;
-    height: auto;
-    box-shadow: 0 15px 30px #29251f24;
-    transition: transform 0.35s;
-    aspect-ratio: 16/9;
+    height: 100%;
     object-fit: cover;
+    object-position: top;
+    transition: transform 0.6s;
   }
-  .project__view {
+  .project__image:hover img {
+    transform: scale(1.025);
+  }
+  .project__visit {
     position: absolute;
-    inset: auto 50% 1rem auto;
-    transform: translate(50%, 5px);
-    opacity: 0;
-    font-size: 0.61rem;
+    right: 1rem;
+    bottom: 1rem;
     background: var(--paper);
     color: var(--ink);
-    padding: 0.45rem 1rem;
-    border-radius: 2px;
-    transition:
-      opacity 0.2s,
-      transform 0.2s;
-    white-space: nowrap;
+    padding: 0.55rem 0.8rem;
+    font-size: 0.65rem;
   }
-  .project__image:hover .project__view,
-  .project__image:focus-visible .project__view {
-    opacity: 1;
-    transform: translate(50%, 0);
-  }
-  .project__meta {
+  .project__caption {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
-    align-items: center;
-    padding-top: 1.35rem;
+    padding-top: 1.1rem;
   }
-  .project__meta h3 {
-    font-size: 1.6rem;
+  .project__caption h3 {
+    font-size: 1.45rem;
     letter-spacing: -0.035em;
-    margin: 0 0 0.4rem;
+    margin: 0 0 0.3rem;
   }
-  .project--1 h3 {
-    font-family: var(--serif);
-    font-size: 2.1rem;
-    line-height: 0.9;
-  }
-  .project__meta p {
-    font-size: 0.66rem;
+  .project__caption p {
+    font-size: 0.72rem;
     color: var(--muted);
     margin: 0;
   }
-  .project__meta > a {
-    display: grid;
-    place-items: center;
-    width: 42px;
-    height: 42px;
-    border: 1px solid var(--line);
-    border-radius: 50%;
-    color: var(--ink);
-    font-size: 1.2rem;
-  }
-  .project__meta > a:hover {
-    background: var(--ink);
-    color: var(--paper);
-  }
-  .project__services {
-    font-size: 0.51rem;
-    letter-spacing: 0.1em;
+  .project__number {
+    font-size: 0.7rem;
     color: var(--muted);
-    margin: 1.1rem 0 0;
   }
-  .studio {
+  .directions {
     background: var(--bone);
+    padding-block: 5.5rem;
   }
-  .studio__grid {
+  .directions__intro {
+    max-width: 33ch;
+    font-size: 0.84rem;
+  }
+  .directions__intro p {
+    line-height: 1.75;
+  }
+  .directions__intro .text-link {
+    font-size: 0.78rem;
+  }
+  .direction-grid {
     display: grid;
-    grid-template-columns: 1fr 1.1fr;
-    gap: 11%;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
   }
-  .studio__intro h2 {
-    font-size: clamp(2.8rem, 4.6vw, 4.6rem);
+  .direction {
+    min-width: 0;
+    color: var(--ink);
   }
-  .studio__intro h2 em {
+  .direction__photo {
+    position: relative;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    background: var(--ink);
+  }
+  .direction__photo img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.6s;
+    filter: brightness(0.58);
+  }
+  .direction:hover img {
+    transform: scale(1.04);
+  }
+  .direction__sample {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     font-family: var(--serif);
-    font-weight: 500;
-    font-size: 1.2em;
-    line-height: 0.9;
-    color: var(--ember);
+    font-size: clamp(1.5rem, 2.5vw, 2.6rem);
+    line-height: 1;
+    color: #fff6e4;
+    letter-spacing: -0.025em;
+    padding: 0.6rem;
   }
-  .studio__intro > p:not(.kicker) {
-    font-size: 0.88rem;
-    max-width: 38ch;
-    margin-block: 1.6rem 1.3rem;
+  .direction--1 .direction__sample {
+    font-family: var(--display);
+    font-weight: 750;
+    letter-spacing: -0.065em;
+    font-size: clamp(1.2rem, 2vw, 2rem);
+    color: #fff2b8;
   }
-  .service-menu {
-    align-self: center;
-    border-top: 1px solid var(--line);
+  .direction--2 .direction__sample {
+    font-style: italic;
+  }
+  .direction--3 .direction__sample {
+    font-family: var(--display);
+    font-size: clamp(1.2rem, 2vw, 2rem);
+    font-weight: 700;
+  }
+  .direction__tag {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    color: white;
+    font-size: 0.5rem;
+    letter-spacing: 0.15em;
+  }
+  .direction__caption {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    padding: 0.8rem 0;
+    line-height: 1.5;
+  }
+  .directions__foot {
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin: 1.5rem 0 0;
+  }
+  .services {
+    padding-block: 6rem;
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 12%;
+  }
+  .services__intro h2 {
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    letter-spacing: -0.055em;
+  }
+  .services__intro > p:not(.kicker) {
+    font-size: 0.85rem;
+    max-width: 34ch;
+    margin-block: 1.5rem;
+  }
+  .services__intro .text-link {
+    font-size: 0.77rem;
   }
   .service {
+    border-top: 1px solid var(--line);
+  }
+  .service:last-child {
     border-bottom: 1px solid var(--line);
   }
   .service summary {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 1rem;
     padding: 1.5rem 0;
     list-style: none;
     cursor: pointer;
-    font-family: var(--display);
-    font-size: 1.5rem;
-    letter-spacing: -0.04em;
     color: var(--ink);
+    font: 550 clamp(1.3rem, 2vw, 1.8rem)/1.15 var(--display);
+    letter-spacing: -0.035em;
   }
-  summary::-webkit-details-marker {
+  .service summary::-webkit-details-marker {
     display: none;
   }
+  .service__number {
+    font: 400 0.6rem var(--sans);
+    color: var(--muted);
+    margin-right: 0.25rem;
+  }
   .service__plus {
-    font-family: var(--sans);
-    font-size: 1.5rem;
-    font-weight: 300;
-    transition: transform 0.2s;
+    margin-left: auto;
+    font: 400 1.2rem var(--sans);
   }
   .service[open] .service__plus {
     transform: rotate(45deg);
   }
-  .service[open] summary {
+  .service__body {
+    padding: 0 0 1.7rem 2.2rem;
+  }
+  .service__body h3 {
+    font: 600 0.85rem var(--sans);
+    letter-spacing: -0.015em;
+    margin-bottom: 0.7rem;
+  }
+  .service__body p {
+    font-size: 0.8rem;
+    max-width: 47ch;
+    line-height: 1.8;
+  }
+  .service__body a {
+    font-size: 0.72rem;
     color: var(--ember);
   }
-  .service__content {
-    padding: 0.1rem 2rem 1.8rem 0;
-  }
-  .service__content h3 {
-    font-family: var(--sans);
-    font-size: 0.83rem;
-    letter-spacing: 0;
-    font-weight: 500;
-    margin-bottom: 0.8rem;
-  }
-  .service__content p {
-    font-size: 0.85rem;
-    line-height: 1.8;
-    max-width: 48ch;
-  }
-  .service__content .service__details {
-    font-size: 0.62rem;
-    color: var(--muted);
-    margin-bottom: 1.2rem;
-  }
-  .service__content a {
-    font-size: 0.7rem;
-    display: inline-flex;
-    gap: 1.5rem;
-    align-items: center;
-    min-height: 30px;
-  }
   .ownership {
-    background: var(--ember);
+    background: var(--ink);
+    padding-block: 5.5rem;
     color: var(--paper);
   }
   .ownership__grid {
     display: grid;
-    grid-template-columns: 1.1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 12%;
     align-items: center;
   }
   .ownership .kicker {
-    color: var(--paper);
+    color: #e4b6a7;
   }
   .ownership h2 {
-    font-size: clamp(2.8rem, 4.8vw, 4.8rem);
     color: var(--paper);
+    font-size: clamp(2.6rem, 4.3vw, 4.5rem);
   }
   .ownership h2 em {
     font-family: var(--serif);
-    font-size: 1.19em;
     font-weight: 500;
-    letter-spacing: -0.04em;
+    color: #f0b8a6;
+    font-size: 1.12em;
   }
-  .ownership__copy > p:not(.kicker) {
-    font-size: 0.9rem;
-    max-width: 41ch;
-    margin: 1.6rem 0 2rem;
+  .ownership__grid > div > p:not(.kicker) {
+    font-size: 0.84rem;
+    max-width: 35ch;
+    margin-block: 1.5rem;
+    color: #d4cec5;
+  }
+  .ownership .text-link {
     color: var(--paper);
+    font-size: 0.78rem;
   }
-  .ownership :focus-visible {
-    outline-color: var(--paper);
-  }
-  .receipt {
-    background: var(--paper);
-    color: var(--ink);
-    padding: 2rem 2.2rem 2.5rem;
-    transform: rotate(2deg);
-    position: relative;
-    box-shadow: 0 12px 30px #60201330;
-  }
-  .receipt::after {
-    content: "";
-    position: absolute;
-    inset: auto 0 -7px;
-    height: 8px;
-    background:
-      linear-gradient(135deg, var(--paper) 25%, transparent 25%) -4px 0/16px
-        16px,
-      linear-gradient(225deg, var(--paper) 25%, transparent 25%) -4px 0/16px
-        16px;
-  }
-  .receipt__heading {
+  .pricing__row {
+    padding-block: 1.5rem;
+    border-bottom: 1px solid #5e564d;
     display: flex;
     justify-content: space-between;
-    gap: 1rem;
     align-items: center;
-    padding-bottom: 1.4rem;
-    border-bottom: 1px dashed var(--line);
+    gap: 1.5rem;
   }
-  .receipt__heading > span {
-    font-size: 0.46rem;
-    letter-spacing: 0.13em;
-    color: var(--muted);
-    text-align: right;
-    max-width: 8ch;
+  .pricing__row:first-child {
+    border-top: 1px solid #5e564d;
   }
-  .receipt__heading :global(.logo) {
-    transform: scale(0.78);
-    transform-origin: left center;
+  .pricing__label {
+    font-size: 0.61rem;
+    letter-spacing: 0.1em;
   }
-  .receipt__intro {
-    font-size: 0.8rem;
-    margin: 1.5rem 0;
+  .pricing__row p {
+    font-size: 0.73rem;
+    color: #d4cec5;
+    margin: 0.5rem 0 0;
+    max-width: 23ch;
   }
-  .receipt__item {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.3rem 0;
-    border-top: 1px dashed var(--line);
-  }
-  .receipt__item h3 {
-    font-size: 1rem;
-    letter-spacing: -0.025em;
-    margin: 0 0 0.3rem;
-  }
-  .receipt__item p {
-    font-size: 0.63rem;
-    color: var(--muted);
-    margin: 0;
-    max-width: 22ch;
-  }
-  .receipt__price {
+  .pricing__amount {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    font-family: var(--display);
-    font-size: 2rem;
+    text-align: right;
+    flex: none;
+  }
+  .pricing__amount strong {
+    font: 500 2.6rem/1.1 var(--display);
     letter-spacing: -0.055em;
-    line-height: 1.3;
   }
-  .receipt__price small {
-    font-family: var(--sans);
-    font-size: 0.45rem;
+  .pricing__amount span,
+  .pricing__amount small {
+    font-size: 0.58rem;
+    color: #d4cec5;
+  }
+  .pricing__amount small {
+    margin-bottom: 0.35rem;
     letter-spacing: 0.1em;
-    color: var(--muted);
   }
-  .receipt__note {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.7rem;
-    font-size: 0.65rem;
-    padding: 1rem 0 1.3rem;
-    border-block: 1px dashed var(--line);
-    color: var(--body);
+  .pricing__fine {
+    font-size: 0.65rem !important;
+    line-height: 1.8;
+    margin: 1.2rem 0 0 !important;
+    color: #c5bdb3 !important;
+    max-width: none !important;
   }
-  .receipt__note > span {
-    font-size: 1.25rem;
-    color: var(--ember);
-    line-height: 1;
-  }
-  .receipt__bottom {
-    font-size: 0.45rem;
-    letter-spacing: 0.11em;
-    text-align: center;
-    margin: 1.6rem 0 0.65rem;
-  }
-  .receipt__fine {
-    font-size: 0.56rem;
-    line-height: 1.6;
-    text-align: center;
-    color: var(--muted);
-    margin: 0;
-  }
-  .section-head__note {
-    font-size: 0.85rem;
-    margin: 0 0 0.2rem;
-    color: var(--muted);
-  }
-  .process__steps {
+  .questions {
+    padding-block: 5.5rem;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3.5rem;
-    margin: 3.6rem 0 2rem;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 12%;
   }
-  .process__steps article {
-    border-top: 1px solid var(--line);
-    padding-top: 1.4rem;
-  }
-  .process__number {
-    font-size: 0.57rem;
-    letter-spacing: 0.1em;
-    color: var(--ember);
-    display: block;
-    margin-bottom: 1.6rem;
-  }
-  .process__steps h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.8rem;
-  }
-  .process__steps p {
-    font-size: 0.83rem;
-    max-width: 36ch;
-  }
-  .concepts {
-    background: var(--bone);
-    padding-block: 4.5rem;
-  }
-  .concepts__inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8%;
-    align-items: center;
-  }
-  .concepts__type {
-    font-family: var(--display);
-    font-size: clamp(3.5rem, 6vw, 6rem);
-    line-height: 0.95;
-    letter-spacing: -0.06em;
-    transform: rotate(-5deg);
-    color: var(--ember);
-    text-align: center;
-    border: 1px solid var(--ember);
-    padding: 2.1rem 1rem 2.7rem;
-    outline: 1px solid var(--ember);
-    outline-offset: -9px;
-    max-width: 460px;
-  }
-  .concepts__type em {
-    font-family: var(--serif);
-    font-weight: 500;
-    font-size: 1.1em;
-  }
-  .concepts h2 {
-    font-size: 2.4rem;
-  }
-  .concepts p:not(.kicker) {
-    font-size: 0.85rem;
-    max-width: 42ch;
-  }
-  .concepts .concepts__note {
-    font-size: 0.62rem;
-    margin: 1rem 0 0;
-    color: var(--muted);
-  }
-  .questions__grid {
-    display: grid;
-    grid-template-columns: 1fr 1.4fr;
-    gap: 10%;
+  .questions h2 {
+    font-size: clamp(2.3rem, 3.7vw, 3.5rem);
   }
   .question {
     border-top: 1px solid var(--line);
@@ -975,261 +799,300 @@ const services = [
     border-bottom: 1px solid var(--line);
   }
   .question summary {
-    padding: 1.4rem 0;
     display: flex;
     justify-content: space-between;
-    gap: 1.5rem;
-    cursor: pointer;
+    align-items: center;
+    gap: 2rem;
     list-style: none;
-    font-size: 0.87rem;
+    font-size: 0.84rem;
     color: var(--ink);
+    cursor: pointer;
+    padding: 1.4rem 0;
   }
-  .question summary > span {
-    font-size: 1.15rem;
+  .question summary::-webkit-details-marker {
+    display: none;
+  }
+  .question summary span {
     flex: none;
-    transition: transform 0.2s;
+    font-size: 1.2rem;
   }
-  .question[open] summary > span {
+  .question[open] summary span {
     transform: rotate(45deg);
   }
-  .question > p {
-    font-size: 0.8rem;
-    padding: 0 2.5rem 1rem 0;
-    margin: 0;
-    color: var(--body);
+  .question p {
+    font-size: 0.79rem;
+    line-height: 1.85;
+    padding-bottom: 0.6rem;
   }
-  @media (min-width: 1500px) {
-    .hero h1 {
-      font-size: 6.4rem;
-    }
-    .hero__photo {
-      height: 600px;
+  @media (min-width: 1700px) {
+    .opening__grid {
+      gap: 10%;
     }
   }
   @media (max-width: 1000px) {
-    .hero h1 {
-      font-size: 6.2vw;
+    .opening h1 {
+      font-size: 8.8vw;
     }
-    .hero__photo {
-      height: 470px;
+    .opening__grid {
+      grid-template-columns: 1.4fr 1fr;
+      gap: 4%;
     }
-    .hero__eyebrow {
-      font-size: 0.53rem;
+    .opening__copy > p:first-child {
+      font-size: 1.15rem;
     }
-    .hero__intro {
-      font-size: 0.88rem;
-    }
-    .hero__body {
+    .opening__description {
       font-size: 0.78rem;
     }
-    .hero__seal {
-      width: 95px;
-      height: 95px;
-      left: -27px;
-      bottom: 68px;
+    .services,
+    .ownership__grid,
+    .questions {
+      gap: 7%;
     }
-    .hero__seal > span {
-      font-size: 0.42rem;
-    }
-    .hero__seal :global(.logo) {
-      width: 23px;
-    }
-    .hero__actions {
-      gap: 1.2rem;
-    }
-    .hero__actions .btn {
+    .direction-grid {
       gap: 0.8rem;
     }
-    .hero__secondary {
-      gap: 0.6rem;
-    }
-    .ownership__grid {
-      gap: 7%;
-    }
-    .receipt {
-      padding: 1.5rem;
-    }
-    .project__image {
-      padding: 2rem 1.5rem;
-    }
-    .studio__grid {
-      gap: 7%;
-    }
-    .process__steps {
-      gap: 2rem;
+    .direction__caption {
+      font-size: 0.65rem;
     }
   }
-  @media (max-width: 760px) {
-    .hero__grid {
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
+  @media (max-width: 700px) {
+    .opening {
+      padding-top: 1.75rem;
+      padding-bottom: 2rem;
     }
-    .hero {
-      padding-top: 2.5rem;
+    .opening__top {
+      margin-bottom: 1.5rem;
     }
-    .hero__copy {
-      padding: 0;
+    .opening__top .kicker {
+      font-size: 0.49rem;
+      letter-spacing: 0.09em;
     }
-    .hero h1 {
-      font-size: clamp(3rem, 9.7vw, 4.5rem);
-    }
-    .hero__eyebrow {
-      font-size: 0.57rem;
-      margin-bottom: 1.7rem;
-    }
-    .hero__intro {
-      font-size: 1rem;
-    }
-    .hero__body {
-      font-size: 0.87rem;
-      max-width: 44ch;
-    }
-    .hero__photo {
-      height: 500px;
-      border-radius: 46% 46% 2px 2px;
-    }
-    .hero__visual {
-      max-width: 520px;
-      width: 92%;
-      justify-self: end;
-      margin-top: 1rem;
-    }
-    .hero__seal {
-      left: -22px;
-      bottom: 59px;
-      width: 110px;
-      height: 110px;
-    }
-    .hero__seal > span {
-      font-size: 0.5rem;
-    }
-    .hero__seal :global(.logo) {
-      width: 27px;
-    }
-    .hero__foot {
-      margin-top: 2rem;
-      font-size: 0.48rem;
-      align-items: flex-end;
-      gap: 2rem;
-    }
-    .hero__foot > span {
-      max-width: 28ch;
-    }
-    .hero__foot a {
-      white-space: nowrap;
-      gap: 0.8rem;
-    }
-    .work {
-      padding-top: 3.5rem;
-    }
-    .section-head {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-    .work__grid {
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
-    }
-    .project__image {
-      padding: 2.5rem 1.7rem;
-    }
-    .project__meta p {
-      font-size: 0.66rem;
-    }
-    .project__view {
-      opacity: 1;
-      transform: translate(50%, 0);
-      bottom: 0.6rem;
-      font-size: 0.53rem;
-    }
-    .studio__grid {
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
-    }
-    .studio__intro h2 {
-      font-size: 3.5rem;
-    }
-    .studio__intro h2 br:nth-of-type(3) {
+    .opening__note {
       display: none;
     }
-    .service summary {
-      padding: 1.3rem 0;
+    .opening__grid {
+      display: block;
     }
-    .ownership__grid {
-      grid-template-columns: 1fr;
-      gap: 3rem;
+    .opening h1 {
+      font-size: clamp(3.9rem, 14.2vw, 6rem);
+      line-height: 0.98;
+      margin-bottom: 1.7rem;
+      letter-spacing: -0.065em;
     }
-    .ownership h2 {
-      font-size: 3.5rem;
+    .opening__copy {
+      max-width: none;
+      width: 100%;
+      justify-self: stretch;
+      padding: 0;
     }
-    .receipt {
-      width: 94%;
-      max-width: 430px;
-      justify-self: center;
-      padding: 1.8rem 1.6rem;
+    .opening__copy > p:first-child {
+      font-size: 1.07rem;
+      max-width: 28ch;
+      line-height: 1.5;
+      margin-bottom: 0.6rem;
     }
-    .process__steps {
-      grid-template-columns: 1fr;
+    .opening__copy > p:first-child br {
+      display: none;
+    }
+    .opening__copy > p:first-child em:before {
+      content: " ";
+    }
+    .opening__description {
+      font-size: 0.77rem;
+      max-width: 37ch;
+      margin-bottom: 1.15rem;
+    }
+    .opening__copy .btn {
+      width: auto;
+      min-width: 200px;
+    }
+    .opening__link {
+      display: inline-flex;
       gap: 1.5rem;
-      margin-top: 2rem;
+      margin-top: 0.5rem;
+      margin-left: 1.25rem;
+      font-size: 0.7rem;
     }
-    .process__steps article {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0;
+    .feature__frame {
+      height: 350px;
     }
-    .process__number {
-      margin-bottom: 1rem;
+    .feature__caption {
+      left: 1rem;
+      bottom: 1.3rem;
     }
-    .process__steps p {
-      max-width: 50ch;
+    .feature__caption > a {
+      font-size: 2.2rem;
     }
-    .concepts__inner {
-      grid-template-columns: 1fr;
-      gap: 3.5rem;
-    }
-    .concepts__type {
-      font-size: 4rem;
-      width: 85%;
-      justify-self: center;
-    }
-    .questions__grid {
-      grid-template-columns: 1fr;
-      gap: 2.3rem;
-    }
-    .question summary {
-      font-size: 0.82rem;
-    }
-    .hero__caption {
+    .feature__caption p {
       font-size: 0.57rem;
     }
-  }
-  @media (max-width: 390px) {
-    .hero__eyebrow {
+    .feature__caption > span {
+      font-size: 0.47rem;
+    }
+    .feature__frame :global(.hero-video__toggle) {
+      right: 0.7rem;
+      bottom: 1rem;
       font-size: 0.5rem;
+      padding: 0.5rem 0.65rem;
     }
-    .hero h1 {
-      font-size: 10vw;
+    .feature__credit {
+      font-size: 0.55rem;
+      gap: 0.7rem;
+      align-items: center;
     }
-    .hero__photo {
-      height: 400px;
+    .feature__credit p {
+      max-width: 19ch;
     }
-    .hero__actions {
-      gap: 1rem;
+    .selected {
+      padding-block: 3.5rem;
     }
-    .hero__actions .btn {
-      font-size: 0.73rem;
+    .section-heading {
+      display: block;
+      margin-bottom: 1.7rem;
     }
-    .hero__secondary {
-      font-size: 0.72rem;
+    .section-heading h2 {
+      font-size: 2.65rem;
     }
-    .studio__intro h2,
+    .section-heading > p {
+      font-size: 0.77rem;
+      margin: 1.2rem 0 0;
+      max-width: 36ch;
+    }
+    .work-grid {
+      gap: 2rem;
+      grid-template-columns: 1fr;
+    }
+    .project__image {
+      aspect-ratio: 16/11;
+    }
+    .project__caption h3 {
+      font-size: 1.3rem;
+    }
+    .project__caption p {
+      font-size: 0.65rem;
+    }
+    .project__visit {
+      font-size: 0.59rem;
+    }
+    .directions {
+      padding-block: 3.5rem;
+    }
+    .directions__intro {
+      margin-top: 1.2rem;
+      font-size: 0.78rem;
+      max-width: 36ch;
+    }
+    .direction-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem 0.75rem;
+    }
+    .direction__sample {
+      font-size: clamp(1.35rem, 5.8vw, 2rem);
+    }
+    .direction--1 .direction__sample,
+    .direction--3 .direction__sample {
+      font-size: clamp(1.02rem, 4.5vw, 1.65rem);
+    }
+    .direction__tag {
+      top: 0.6rem;
+      left: 0.6rem;
+      font-size: 0.38rem;
+      letter-spacing: 0.09em;
+    }
+    .direction__caption {
+      font-size: 0.6rem;
+      padding: 0.65rem 0;
+    }
+    .directions__foot {
+      font-size: 0.62rem;
+      margin-top: 1rem;
+    }
+    .services {
+      display: block;
+      padding-block: 3.5rem;
+    }
+    .services__intro h2 {
+      font-size: 2.65rem;
+    }
+    .services__intro > p:not(.kicker) {
+      font-size: 0.79rem;
+      margin-block: 1rem;
+    }
+    .service-list {
+      margin-top: 2.2rem;
+    }
+    .service summary {
+      font-size: 1.45rem;
+      padding-block: 1.3rem;
+    }
+    .service__body {
+      padding-left: 0;
+    }
+    .ownership {
+      padding-block: 3.5rem;
+    }
+    .ownership__grid {
+      display: block;
+    }
     .ownership h2 {
-      font-size: 3rem;
+      font-size: 2.65rem;
     }
-    .receipt__bottom {
-      font-size: 0.4rem;
+    .ownership__grid > div > p:not(.kicker) {
+      font-size: 0.79rem;
+    }
+    .pricing {
+      margin-top: 2rem;
+    }
+    .pricing__amount strong {
+      font-size: 2.4rem;
+    }
+    .pricing__label {
+      font-size: 0.56rem;
+    }
+    .pricing__row p {
+      font-size: 0.66rem;
+      max-width: 20ch;
+    }
+    .questions {
+      display: block;
+      padding-block: 3.5rem;
+    }
+    .questions h2 {
+      font-size: 2.65rem;
+      margin-bottom: 1.8rem;
+    }
+    .question summary {
+      font-size: 0.8rem;
+      gap: 1.4rem;
+    }
+    .question p {
+      font-size: 0.75rem;
+    }
+  }
+  @media (max-width: 400px) {
+    .opening__link {
+      display: flex;
+      margin-left: 0;
+      max-width: 200px;
+      justify-content: space-between;
+    }
+    .feature__frame {
+      height: 310px;
+    }
+    .opening h1 {
+      font-size: 14.4vw;
+    }
+    .pricing__row {
+      gap: 0.75rem;
+    }
+    .pricing__amount strong {
+      font-size: 2.15rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .project__image img,
+    .direction__photo img {
+      transition: none;
     }
   }
 </style>
