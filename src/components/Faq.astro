@@ -1,0 +1,53 @@
+---
+// Questions: a wide heading and the questions indented beneath it (Taste Skill blueprint
+// "wide heading, indented questions"). Native <details>, one open at a time where supported.
+interface Props {
+  heading: string;
+  items: ReadonlyArray<{ q: string; a: string }>;
+  id?: string;
+}
+const { heading, items, id = "questions" } = Astro.props;
+---
+
+<section class="ask" aria-labelledby={`${id}-title`} id={id}>
+  <h2 id={`${id}-title`} class="ask__h">{heading}</h2>
+  <div class="ask__list">
+    {
+      items.map((item, i) => (
+        <details class="qa" name={id} open={i === 0}>
+          <summary>{item.q}</summary>
+          <p>{item.a}</p>
+        </details>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .ask { padding: var(--section) var(--margin) 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+  .ask__h { grid-column: 1 / -1; max-width: 17ch; margin-bottom: 5rem; }
+  .ask__list { grid-column: 5 / 13; display: grid; gap: 1.25rem; }
+  .qa { border-radius: var(--radius); transition: background-color var(--t-ui) ease; }
+  .qa[open] { background: var(--surface); }
+  .qa summary {
+    list-style: none; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; gap: 1.5rem;
+    padding: 1rem 1.5rem; font-size: var(--step-lead); line-height: 1.3; color: var(--ink);
+  }
+  .qa summary::-webkit-details-marker { display: none; }
+  .qa summary::after {
+    content: ""; flex: none; width: 0.6rem; height: 0.6rem;
+    border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+    transform: rotate(45deg) translateY(-2px); transition: transform var(--t-ui) var(--ease-out);
+  }
+  .qa[open] summary::after { transform: rotate(225deg); }
+  .qa summary:hover { color: var(--ember-deep); }
+  .qa p { padding: 0 1.5rem 1.5rem; max-width: 48ch; color: var(--soft); }
+  @media (max-width: 860px) {
+    .ask__list { grid-column: 1 / -1; }
+    .ask__h { margin-bottom: 2.5rem; }
+    .qa summary { font-size: var(--step-body); padding: 1rem; }
+    .qa[open] { margin-inline: calc(-1 * var(--margin)); border-radius: 0; }
+    .qa[open] summary, .qa[open] p { padding-inline: var(--margin); }
+  }
+</style>

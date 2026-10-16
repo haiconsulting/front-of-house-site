@@ -1,26 +1,23 @@
 ---
+// About. The story with a picture as its drop cap, where we work as display rows,
+// how we work as lines that step across, then the work, the questions and the form.
 import Base from "../layouts/Base.astro";
-import CtaBand from "../components/CtaBand.astro";
-import VideoSlot from "../components/VideoSlot.astro";
-import { portfolioVideo, site, faq } from "../data/site.ts";
+import LeadForm from "../components/LeadForm.astro";
+import Faq from "../components/Faq.astro";
+import WorkStrip from "../components/WorkStrip.astro";
+import { site, faq, carePlans } from "../data/site.ts";
+
+const places = [
+  { place: "Park City, Utah", note: "Resort dining, where the first impression is the reservation." },
+  { place: "Salt Lake City, Utah", note: "Where Killa, Burger Lab and Dasks are." },
+  { place: "Metro Atlanta, Georgia", note: "Independents and small groups across the metro." },
+];
 
 const values = [
-  {
-    title: "Speak restaurant",
-    body: "We use kitchen and hospitality language. We're insiders, not vendors.",
-  },
-  {
-    title: "Warm, never corporate",
-    body: "Confident and plainspoken. No buzzwords, no fluff.",
-  },
-  {
-    title: "Show, don't oversell",
-    body: "We let the work and the food do the talking.",
-  },
-  {
-    title: "Service is the promise",
-    body: "Everything we do reinforces that we keep you running, hands-on.",
-  },
+  { line: "We speak restaurant.", text: "Kitchen and hospitality language. We are insiders, not vendors." },
+  { line: "Warm, never corporate.", text: "Confident and plainspoken. No buzzwords and no fluff." },
+  { line: "We show, we don't oversell.", text: "The work and the food do the talking." },
+  { line: "Service is the promise.", text: "Everything we do comes back to keeping you running, hands-on." },
 ];
 
 const jsonLd = {
@@ -36,243 +33,116 @@ const jsonLd = {
 
 <Base
   title="About"
-  description="Front of House is a web and brand studio built exclusively for restaurants. Founded by restaurant operators and the builders behind Killa and Burger Lab. Based in Park City, Utah and metro Atlanta, Georgia."
+  description="Front of House is a web and brand studio built only for restaurants, founded in 2026 by restaurant operators and the builders behind Killa and Burger Lab. Park City, Salt Lake City and metro Atlanta."
   jsonLd={jsonLd}
 >
-  <section class="phead">
-    <div class="container">
-      <p class="kicker">About the studio</p>
-      <h1>Who is Front of House?</h1>
-      <p class="lede eyebrow-serif" style="font-style:italic;">
-        A web and brand studio built exclusively for restaurants, founded in
-        2026 in Park City, Utah and metro Atlanta, Georgia.
+  <section class="intro" aria-labelledby="about-title">
+    <h1 id="about-title">Who is Front of House?</h1>
+    <p class="lead" data-reveal><span>A web and brand studio built only for restaurants, founded in {site.foundingYear} in Park City, Utah and metro Atlanta, Georgia.</span></p>
+  </section>
+
+  <section class="story" aria-label="Our story">
+    <div class="story__text" data-reveal>
+      <p class="story__p">
+        <img class="story__pic" src="/work/killa-aerial-square.jpg" width="720" height="720" alt="Downtown Salt Lake City at dusk, with Killa's lit windows in the foreground" loading="lazy" decoding="async" />
+        <strong>{site.name}</strong> is a six-person studio built for one thing: restaurants. We shape your brand, capture your photos and video on site, build a custom website you own outright, then keep it sharp for a flat yearly fee.
+      </p>
+      <p class="story__p soft">
+        Most of the industry rents you a site for $200 to $500 a month and bills you to touch it. We do the opposite: a real website you own, kept current for {carePlans[0].price} a year. Change it yourself or ask the Host, our AI. If you ever leave, you take your full code with you.
+      </p>
+      <p class="story__p soft">
+        We come at this as hospitality people first, with co-founders from HAI, the studio that built Burger Lab and Killa. We know what a Friday rush feels like, why the right photo of a plate matters, and how much a slow website quietly costs in covers. So we build fast, we build to be found, and we stay on call.
       </p>
     </div>
   </section>
 
-  <section id="story" class="section">
-    <div class="container story">
-      <div class="story__body">
-        <p class="story__lead">
-          Front of House is a six-person studio built for one thing: restaurants.
-          We shape your brand, capture your photos and video on site, build a
-          custom website you own outright, then keep it sharp for a flat yearly
-          fee.
-        </p>
-        <p>
-          Most agencies rent you a site for $200 to $500 a month and bill you to
-          touch it. We do the opposite. We build you a real, custom website that
-          you own outright, then keep it sharp for $450 a year. You can
-          make changes yourself or just ask the Host, your front-of-house AI.
-          Either way, it gets done. And if you ever leave, you take your full
-          code with you.
-        </p>
-        <p>
-          We come at this as hospitality people first, paired with co-founders
-          who also built HAI, the web and AI studio behind Burger Lab and Killa.
-          Front of House is its own company, but that same build talent is here.
-          We know what a Friday rush feels like, why the right photo of a plate
-          matters, and how much a slow, clunky website quietly costs you in
-          covers. So we build fast, we build it to be found by AI search and
-          traditional search alike, and we stay on call.
-        </p>
-      </div>
-      <aside class="story__aside">
-        <VideoSlot
-          src={portfolioVideo.killa}
-          alt="Killa Nikkei, a live restaurant site built by Front of House"
-          class="story__img"
-        />
-        <div class="story__stats">
-          <div class="story__stat">
-            <span class="story__num">100%</span>
-            <span class="story__cap">Restaurants. That's all we build for.</span>
-          </div>
-          <div class="story__stat">
-            <span class="story__num">You</span>
-            <span class="story__cap">Own the code. Every time.</span>
-          </div>
-          <div class="story__stat">
-            <span class="story__num">Always</span>
-            <span class="story__cap">Hosting & maintenance included.</span>
-          </div>
-        </div>
-      </aside>
-    </div>
+  <section class="places" aria-labelledby="places-title">
+    <h2 id="places-title" class="visually-hidden">Where we work</h2>
+    <ul class="places__rows" data-reveal>
+      {
+        places.map((p) => (
+          <li class="place">
+            <span class="place__name">{p.place}</span>
+            <span class="place__note">{p.note}</span>
+          </li>
+        ))
+      }
+    </ul>
   </section>
 
-  <section id="values" class="section surface-clay">
-    <div class="container">
-      <header class="head">
-        <p class="kicker">How we work</p>
-        <h2>The voice we keep.</h2>
-      </header>
-      <div class="values">
-        {
-          values.map((v) => (
-            <article class="value">
-              <h3>{v.title}</h3>
-              <p>{v.body}</p>
-            </article>
-          ))
-        }
-      </div>
-    </div>
+  <section class="steps" aria-labelledby="values-title">
+    <h2 id="values-title" class="visually-hidden">How we work</h2>
+    <ol class="steps__list" data-reveal>
+      {
+        values.map((v, i) => (
+          <li class={`step step--${i}`}>
+            <h3 class="step__line">{v.line}</h3>
+            <p class="step__text">{v.text}</p>
+          </li>
+        ))
+      }
+    </ol>
   </section>
 
-  <!-- ── FAQ ── -->
-  <section id="faq" class="section">
-    <div class="container">
-      <header class="head">
-        <h2>Questions about the studio</h2>
-      </header>
-      <div class="faq-list">
-        {
-          faq.about.map((item) => (
-            <details class="faq-item">
-              <summary class="faq-q">{item.q}</summary>
-              <p class="faq-a">{item.a}</p>
-            </details>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <CtaBand
-    heading="Let's build your front of house."
-    sub="Tell us about your restaurant. We'll take it from there."
-  />
+  <WorkStrip statement="What the team has built so far." />
+  <Faq heading="Questions about us" items={faq.about} />
+  <LeadForm heading="Come meet the team" />
 </Base>
 
 <style>
-  .phead {
-    padding-block: clamp(3rem, 7vw, 5rem) clamp(2rem, 4vw, 3rem);
-    background: var(--ink);
-  }
-  .phead .kicker {
-    color: var(--ember);
-  }
-  .phead h1 {
-    color: var(--paper);
-    max-width: 16ch;
-  }
-
-  .story {
+  .intro {
     display: grid;
-    grid-template-columns: 1.7fr 1fr;
-    gap: 3rem;
-    align-items: start;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: 2rem;
+    align-items: end;
+    padding: clamp(3rem, 9vh, 7rem) var(--margin) 0;
   }
-  .story__lead {
-    font-family: var(--display);
-    font-size: clamp(1.3rem, 2.2vw, 1.7rem);
-    line-height: 1.4;
-    color: var(--ink);
-    margin-bottom: 1.4rem;
-  }
-  .story__aside {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  .story__img,
-  .story__aside :global(.story__img) {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-  }
-  .story__stats {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    border-left: 3px solid var(--ember);
-    padding-left: 1.6rem;
-  }
-  .story__stat {
-    display: flex;
-    flex-direction: column;
-  }
-  .story__num {
-    font-family: var(--display);
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--ember);
-    line-height: 1;
-  }
-  .story__cap {
-    color: var(--body);
-    font-size: 0.95rem;
-    margin-top: 0.3rem;
-  }
+  .intro h1 { grid-column: 1 / 8; max-width: 12ch; }
+  .intro .lead { grid-column: 8 / 13; max-width: 34ch; }
+  .intro .lead span { display: block; }
 
-  .head {
-    max-width: 640px;
-    margin-bottom: 2.4rem;
-  }
-  .values {
+  .story { padding: var(--section) var(--margin) 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+  .story__text { grid-column: 3 / 13; }
+  .story__p { max-width: none; font-size: var(--step-lead); line-height: 1.32; }
+  .story__p + .story__p { margin-top: 1.3em; }
+  .story__p strong { font-weight: 600; }
+  .story__pic { float: left; width: 3.9em; height: 3.9em; object-fit: cover; margin: 0.25em 0.6em 0 0; }
+
+  .places { padding: var(--section) 0 0; }
+  .places__rows { display: grid; }
+  .place {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.6rem 2.5rem;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    align-items: end;
+    min-height: 9rem;
+    padding: 1.5rem var(--margin);
   }
-  .value {
-    border-top: 2px solid var(--ember);
-    padding-top: 1.1rem;
-  }
-  .value h3 {
-    font-size: 1.2rem;
-    margin-bottom: 0.3rem;
-  }
-  .value p {
-    margin: 0;
-  }
+  .place:nth-child(odd) { background: var(--surface); }
+  .place:nth-child(2) { background: var(--toast); }
+  .place__name { grid-column: 1 / 9; font-family: var(--display); font-weight: 600; font-size: var(--step-head); line-height: 1; letter-spacing: -0.02em; color: var(--ink); }
+  .place__note { grid-column: 9 / 13; color: var(--soft); padding-bottom: 0.4rem; }
 
-  .faq-list {
-    max-width: 740px;
-  }
-  .faq-item {
-    border-bottom: 1px solid var(--line);
-  }
-  .faq-q {
-    cursor: pointer;
-    padding: 1.2rem 0;
-    font-weight: 600;
-    font-size: 1.05rem;
-    color: var(--ink);
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-  }
-  .faq-q::after {
-    content: "+";
-    font-size: 1.3rem;
-    color: var(--ember);
-    flex: none;
-    transition: transform 0.2s ease;
-  }
-  .faq-item[open] .faq-q::after {
-    content: "−";
-  }
-  .faq-q::-webkit-details-marker {
-    display: none;
-  }
-  .faq-a {
-    padding: 0 0 1.2rem;
-    color: var(--body);
-    max-width: 65ch;
-    margin: 0;
-  }
+  .steps { padding: var(--section) var(--margin) 0; }
+  .steps__list { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 3.5rem; }
+  .step { grid-column: 1 / -1; }
+  .step--1 { grid-column-start: 3; }
+  .step--2 { grid-column-start: 5; }
+  .step--3 { grid-column-start: 7; }
+  .step__line { font-family: var(--display); font-weight: 600; font-size: var(--step-head); letter-spacing: -0.025em; line-height: 1; }
+  .step--3 .step__line { color: var(--ember-deep); }
+  .step__text { margin-top: 0.75rem; max-width: 34ch; color: var(--soft); }
 
-  @media (max-width: 760px) {
-    .story {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-    .values {
-      grid-template-columns: 1fr;
-    }
+  @media (max-width: 860px) {
+    .intro h1, .intro .lead, .story__text { grid-column: 1 / -1; }
+    .story__pic { width: 5.2em; height: 5.2em; }
+    .place { grid-template-columns: 1fr; gap: 0.5rem; min-height: 0; padding-block: 1.75rem; }
+    .place__name, .place__note { grid-column: 1; }
+    .steps__list { grid-template-columns: 1fr; row-gap: 2.5rem; }
+    .step { grid-column: 1; }
+    .step--1 { padding-left: 6vw; }
+    .step--2 { padding-left: 12vw; }
+    .step--3 { padding-left: 18vw; }
   }
 </style>

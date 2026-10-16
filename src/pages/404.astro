@@ -1,36 +1,41 @@
 ---
 import Base from "../layouts/Base.astro";
+import WorkStrip from "../components/WorkStrip.astro";
+import { cta } from "../data/site.ts";
 ---
 
 <Base title="Page not found">
-  <section class="nf">
-    <div class="container">
-      <p class="kicker">404</p>
-      <h1>This table isn't set.</h1>
-      <p class="lede">
-        The page you're after has moved or never existed. Let's get you back to
-        the front of house.
-      </p>
-      <div class="nf__actions">
-        <a href="/" class="btn btn--primary">Back home</a>
-        <a href="/contact" class="btn btn--ghost">Scope your build</a>
-      </div>
+  <section class="nf" aria-labelledby="nf-title">
+    <h1 id="nf-title">This table isn&rsquo;t set.</h1>
+    <div class="nf__side" data-reveal>
+      <p class="lead">The page you&rsquo;re after has moved or never existed. Let&rsquo;s get you back to the front of house.</p>
+      <p>If a link from somewhere else sent you here, tell us and we will fix it. These pages are where most owners start:</p>
+      <ul class="nf__links" data-reveal>
+        <li><a class="link" href="/work">The restaurant sites we built</a></li>
+        <li><a class="link" href="/pricing">What a website costs</a></li>
+        <li><a class="link" href="/services">What we do</a></li>
+        <li><a class="link" href="/templates">Try a live template with your name</a></li>
+      </ul>
+      <p class="nf__actions"><a href="/" class="btn btn--primary">Back home</a><a href="/contact" class="link">{cta.label}</a></p>
     </div>
   </section>
+  <WorkStrip statement="While you are here, the sites we built." />
 </Base>
 
 <style>
   .nf {
-    padding-block: clamp(4rem, 12vw, 9rem);
-    text-align: center;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: 2rem;
+    align-items: end;
+    padding: clamp(4rem, 14vh, 9rem) var(--margin) 0;
   }
-  .nf .lede {
-    margin: 0 auto 2rem;
-  }
-  .nf__actions {
-    display: flex;
-    gap: 0.8rem;
-    justify-content: center;
-    flex-wrap: wrap;
+  .nf h1 { grid-column: 1 / 8; max-width: 10ch; }
+  .nf__side { grid-column: 8 / 13; display: grid; gap: 1.5rem; }
+  .nf__links { display: grid; gap: 0.5rem; }
+  .nf__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.75rem; font-weight: 600; }
+  @media (max-width: 860px) {
+    .nf h1, .nf__side { grid-column: 1 / -1; }
   }
 </style>

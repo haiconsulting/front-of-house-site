@@ -132,13 +132,18 @@ export const specConcepts = [
 ] as const;
 
 export const nav = [
-  { label: "Websites", href: "/websites-for-restaurants" },
+  { label: "Work", href: "/work" },
   { label: "Services", href: "/services" },
   { label: "Pricing", href: "/pricing" },
   { label: "Templates", href: "/templates" },
-  { label: "Work", href: "/work" },
   { label: "About", href: "/about" },
 ] as const;
+
+// ── The one primary action, named the same everywhere. ──
+export const cta = {
+  label: "Talk to the team",
+  promise: "We reply within one business day with a scope, a price and a time to meet.",
+} as const;
 
 // ── What we do: the four offerings (core first) ──
 export const offerings = [

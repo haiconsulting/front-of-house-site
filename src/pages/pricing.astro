@@ -1,15 +1,11 @@
 ---
+// Pricing. The numbers are the page: a ledger of the four that matter, the build bands as rows,
+// Care and Care+ side by side, the own-versus-rent table, then the questions and the form.
 import Base from "../layouts/Base.astro";
-import Tiers from "../components/Tiers.astro";
-import CtaBand from "../components/CtaBand.astro";
-import {
-  carePlans,
-  build,
-  buildScope,
-  buildBands,
-  comparison,
-  faq,
-} from "../data/site.ts";
+import LeadForm from "../components/LeadForm.astro";
+import Faq from "../components/Faq.astro";
+import WorkStrip from "../components/WorkStrip.astro";
+import { carePlans, build, buildScope, buildBands, comparison, faq, locationDiscounts } from "../data/site.ts";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -20,381 +16,189 @@ const jsonLd = {
     acceptedAnswer: { "@type": "Answer", text: item.a },
   })),
 };
+const [care, carePlus] = carePlans;
+const figures = [
+  { n: build.from.replace("$", ""), cap: "dollars and up for the build, once. You own the code." },
+  { n: care.price.replace("$", ""), cap: "dollars a year for Care: hosting, fixes, changes and the Host." },
+  { n: carePlus.price.replace("$", ""), cap: "dollars a year for Care+, when you want us working on getting found." },
+  { n: "0", cap: "dollars a month. There is no monthly rent." },
+];
 ---
 
 <Base
   title="Pricing"
-  description="Buy your restaurant website outright from $2,000, then a flat $450/year to host and keep it sharp. One-time build, annual care. You own the code."
+  description="What a restaurant website costs with Front of House: a custom build you own from $2,000, then a flat $450 a year to host and keep it sharp. No monthly fee. Care+ is $900 a year."
   jsonLd={jsonLd}
 >
-  <section class="phead">
-    <div class="container">
-      <p class="kicker">Pricing</p>
-      <h1>How much does a restaurant website cost?</h1>
-      <p class="lede">
-        A custom website you own outright from $2,000, then a flat $450/year to
-        keep it hosted and current. A one-time build and a clear annual Care fee. Make
-        changes yourself or ask the Host.
+  <section class="ledger" aria-labelledby="price-title">
+    <div class="ledger__left" data-reveal>
+      <h1 id="price-title">What a restaurant website costs</h1>
+      <p class="lead">A custom website you own outright, then a flat yearly fee to keep it hosted and current. Make changes yourself or ask the Host.</p>
+    </div>
+    <dl class="ledger__figures num" data-reveal>
+      {
+        figures.map((f) => (
+          <div class="fig">
+            <dt class="fig__n">{f.n}</dt>
+            <dd class="fig__cap">{f.cap}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <WorkStrip statement="For that, you own a site like these, code and all." />
+
+  <section class="bands" aria-labelledby="build-title">
+    <div class="bands__head" data-reveal>
+      <h2 id="build-title">Priced to your restaurant</h2>
+      <p class="soft">
+        The build is scoped, not boxed. Three things move the price: {buildScope.map((s, i) => (
+          <span><strong>{s.label.toLowerCase()}</strong> ({s.note.charAt(0).toLowerCase() + s.note.slice(1).replace(/\.$/, "")}){i < buildScope.length - 1 ? "; " : "."}</span>
+        ))}
       </p>
     </div>
+    <ul class="bands__rows" data-reveal>
+      {
+        buildBands.map((b) => (
+          <li class="band">
+            <h3 class="band__name">{b.name}</h3>
+            <p class="band__price num">{b.price.replace("–", " to ")}</p>
+            <p class="band__for">{b.for}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="bands__note soft">Bigger menus, on-site capture, a full identity or more locations run higher. We always scope it with you first.</p>
   </section>
 
-  <section id="plans" class="section section--tight">
-    <div class="container pricing-body">
-      <Tiers showBuild={true} showLocations={true} />
+  <section class="plans" aria-labelledby="plans-title">
+    <h2 id="plans-title" class="plans__h">Then one flat fee a year</h2>
+    <div class="plans__pair" data-reveal>
+      <article class="plan plan--care">
+        <div class="plan__top">
+          <h3 class="plan__name">{care.name}</h3>
+          <p class="plan__price"><span class="num">{care.price}</span> a year</p>
+        </div>
+        <p class="plan__good">{care.goodFor}</p>
+        <ul class="plan__list">{care.features.map((f) => <li>{f}</li>)}</ul>
+      </article>
+      <article class="plan plan--plus">
+        <div class="plan__top">
+          <h3 class="plan__name">{carePlus.name}</h3>
+          <p class="plan__price"><span class="num">{carePlus.price}</span> a year</p>
+        </div>
+        <p class="plan__good">{carePlus.goodFor}</p>
+        <ul class="plan__list">{carePlus.features.map((f) => <li>{f}</li>)}</ul>
+      </article>
+    </div>
+    <div class="plans__notes" data-reveal>
+      <p>The Host runs on our own models, so there is no per-message billing and no surprise overage. Every change it drafts is checked by our team before it goes live.</p>
+      <p>More than one location? Care is {locationDiscounts.map((d, i) => `${d.off.replace(" off care", "")} off for ${d.range}${i < locationDiscounts.length - 1 ? ", " : ""}`).join("")}. The build stays per site.</p>
     </div>
   </section>
 
-  <!-- ── What a build runs ── -->
-  <section id="build" class="section surface-toast">
-    <div class="container">
-      <header class="head head--center">
-        <p class="kicker">The build</p>
-        <h2>Priced to your restaurant.</h2>
-        <p class="lede" style="margin-inline:auto;">
-          Every restaurant is different, so the build is scoped, not boxed.
-          Three things move the price:
-        </p>
-      </header>
-
-      <div class="scope">
-        {
-          buildScope.map((s, i) => (
-            <article class="scope__cell">
-              <span class="scope__n">0{i + 1}</span>
-              <h3>{s.label}</h3>
-              <p>{s.note}</p>
-            </article>
-          ))
-        }
-      </div>
-
-      <div class="bands">
-        {
-          buildBands.map((b) => (
-            <article class="band">
-              <div class="band__top">
-                <h3 class="band__name">{b.name}</h3>
-                <span class="band__price">{b.price}</span>
-              </div>
-              <p class="band__for">{b.for}</p>
-            </article>
-          ))
-        }
-      </div>
-      <p class="bands__note">
-        Bigger restaurants (extensive menus, on-site capture, full brand
-        identity, multiple locations) run higher. We'll always scope it with
-        you first.
-      </p>
+  <section class="compare" aria-labelledby="compare-title">
+    <h2 id="compare-title">Three years, side by side</h2>
+    <div class="compare__wrap" data-reveal>
+      <table class="compare__table">
+        <thead>
+          <tr>
+            <td></td>
+            <th scope="col">Renting</th>
+            <th scope="col" class="is-foh">Owning</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            comparison.rows.map((r) => (
+              <tr>
+                <th scope="row">{r.label}</th>
+                <td class="num">{r.rival.replace(/–/g, " to ")}</td>
+                <td class="num is-foh">{r.foh.replace(/–/g, " to ")}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+      <p class="compare__foot small soft">Renting is an illustrative subscription, an example budget and not a vendor quote. Owning is Front of House. {comparison.footnote.replace(/–/g, " to ")}</p>
     </div>
   </section>
 
-  <!-- ── Own it vs. rent it ── -->
-  <section id="compare" class="section">
-    <div class="container">
-      <header class="head head--center">
-        <p class="kicker">Own it, don't rent it</p>
-        <h2>Compare the full cost over three years.</h2>
-      </header>
+  <Faq heading="Questions about pricing" items={faq.pricing} />
 
-      <div class="compare">
-        <table class="compare__table">
-          <thead>
-            <tr>
-              <th></th>
-              <th>
-                <span class="compare__co">{comparison.rivalLabel}</span>
-                <span class="compare__sub">{comparison.rivalSub}</span>
-              </th>
-              <th class="compare__foh">
-                <span class="compare__co">{comparison.fohLabel}</span>
-                <span class="compare__sub">{comparison.fohSub}</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              comparison.rows.map((r) => (
-                <tr>
-                  <th scope="row">{r.label}</th>
-                  <td>{r.rival}</td>
-                  <td class="compare__foh">{r.foh}</td>
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
-        <p class="compare__foot">{comparison.footnote}</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section--tight">
-    <div class="container">
-      <div class="finenote">
-        <p>
-          Your AI assistant, the Host, is included with Care. It runs on our own
-          local models, so there's no metered per-message billing and no
-          surprise overages. Changes you or the Host submit are reviewed and built
-          by our team before they go live, so nothing breaks. And every Care
-          plan includes your exit kit: leave whenever you want and we hand you
-          your full code.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── FAQ ── -->
-  <section id="faq" class="section">
-    <div class="container">
-      <header class="head head--center">
-        <h2>Questions about pricing</h2>
-      </header>
-      <div class="faq-list">
-        {
-          faq.pricing.map((item) => (
-            <details class="faq-item">
-              <summary class="faq-q">{item.q}</summary>
-              <p class="faq-a">{item.a}</p>
-            </details>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <CtaBand
-    heading="Not sure what your build runs?"
-    sub="Tell us about your restaurant and we'll scope it: the build, and whether Care or Care+ fits."
-  />
+  <LeadForm heading="Get a price for your restaurant" />
 </Base>
 
 <style>
-  .phead {
-    padding-block: clamp(3rem, 7vw, 5rem) clamp(1.5rem, 3vw, 2.5rem);
-    text-align: center;
-  }
-  .phead h1 {
-    margin-inline: auto;
-  }
-  .phead .lede {
-    margin: 1.2rem auto 0;
-  }
-  .pricing-body {
-    text-align: center;
-  }
-  .pricing-body :global(.tiers),
-  .pricing-body :global(.buildpill),
-  .pricing-body :global(.loc) {
-    text-align: left;
-  }
-  .pricing-body :global(.tiers) {
-    margin-inline: auto;
-  }
-
-  .head--center {
-    margin-inline: auto;
-    text-align: center;
-    max-width: 640px;
-    margin-bottom: 2.6rem;
-  }
-  .head--center .lede {
-    margin-top: 0.8rem;
-  }
-
-  /* ── Build scope ── */
-  .scope {
+  .ledger {
+    padding: clamp(3rem, 9vh, 7rem) var(--margin) 0;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 2.5rem;
-  }
-  .scope__cell {
-    background: var(--paper);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 1.8rem;
-  }
-  .scope__n {
-    font-family: var(--display);
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--ember);
-  }
-  .scope__cell h3 {
-    font-size: 1.2rem;
-    margin: 0.5rem 0 0.4rem;
-  }
-  .scope__cell p {
-    margin: 0;
-    font-size: 0.92rem;
-    color: var(--body);
-  }
-
-  /* ── Build bands ── */
-  .bands {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-  }
-  .band {
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 1.5rem 1.6rem;
-    background: var(--paper);
-  }
-  .band__top {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.75rem;
-    margin-bottom: 0.6rem;
-  }
-  .band__name {
-    font-size: 1.15rem;
-    margin: 0;
-  }
-  .band__price {
-    font-family: var(--display);
-    font-weight: 700;
-    color: var(--ember);
-    white-space: nowrap;
-  }
-  .band__for {
-    margin: 0;
-    font-size: 0.9rem;
-    color: var(--body);
-  }
-  .bands__note {
-    margin: 1.4rem 0 0;
-    font-size: 0.88rem;
-    color: var(--muted);
-    max-width: 70ch;
-  }
-
-  /* ── Comparison ── */
-  .compare {
-    max-width: 760px;
-    margin-inline: auto;
-  }
-  .compare__table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--paper);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .compare__table th,
-  .compare__table td {
-    padding: 0.95rem 1.1rem;
-    text-align: left;
-    font-size: 0.92rem;
-    border-bottom: 1px solid var(--line);
-  }
-  .compare__table thead th {
-    vertical-align: bottom;
-    background: var(--bone);
-  }
-  .compare__table tbody th {
-    font-weight: 600;
-    color: var(--muted);
-    width: 26%;
-  }
-  .compare__table tbody td {
-    color: var(--body);
-  }
-  .compare__co {
-    display: block;
-    font-family: var(--display);
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--ink);
-  }
-  .compare__sub {
-    display: block;
-    font-size: 0.72rem;
-    letter-spacing: 0.04em;
-    color: var(--muted);
-    margin-top: 0.15rem;
-  }
-  .compare__foh {
-    background: rgba(199, 91, 57, 0.06);
-  }
-  td.compare__foh {
-    font-weight: 600;
-    color: var(--ink);
-  }
-  .compare__table tr:last-child th,
-  .compare__table tr:last-child td {
-    border-bottom: 0;
-  }
-  .compare__foot {
-    margin: 1rem 0 0;
-    font-size: 0.8rem;
-    color: var(--muted);
-  }
-
-  .faq-list {
-    max-width: 740px;
-    margin-inline: auto;
-  }
-  .faq-item {
-    border-bottom: 1px solid var(--line);
-  }
-  .faq-q {
-    cursor: pointer;
-    padding: 1.2rem 0;
-    font-weight: 600;
-    font-size: 1.05rem;
-    color: var(--ink);
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: 3rem;
     align-items: center;
-    gap: 1rem;
   }
-  .faq-q::after {
-    content: "+";
-    font-size: 1.3rem;
-    color: var(--ember);
-    flex: none;
-    transition: transform 0.2s ease;
-  }
-  .faq-item[open] .faq-q::after {
-    content: "−";
-  }
-  .faq-q::-webkit-details-marker {
-    display: none;
-  }
-  .faq-a {
-    padding: 0 0 1.2rem;
-    color: var(--body);
-    max-width: 65ch;
-    margin: 0;
-  }
+  .ledger__left { grid-column: 1 / 6; display: grid; gap: 1.75rem; }
+  .ledger__left h1 { font-size: var(--step-head); max-width: 17ch; }
+  .ledger__figures { grid-column: 7 / 13; display: grid; gap: 1.25rem; margin: 0; }
+  .fig { display: grid; grid-template-columns: 50% minmax(0, 1fr); align-items: baseline; column-gap: 1.5rem; }
+  .fig__n { font-family: var(--display); font-weight: 600; font-size: var(--step-display); line-height: 1; letter-spacing: -0.02em; text-align: right; font-variant-numeric: lining-nums tabular-nums; }
+  .fig__cap { margin: 0; max-width: 26ch; color: var(--soft); }
+  .fig:first-child .fig__n { color: var(--ember-deep); }
 
-  .finenote {
-    border-top: 1px solid var(--line);
-    padding-top: 1.5rem;
-  }
-  .finenote p {
-    color: var(--muted);
-    font-size: 0.85rem;
-    max-width: 80ch;
-    margin: 0;
-  }
+  .bands { padding: var(--section) var(--margin) 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 3rem; }
+  .bands__head { grid-column: 1 / 5; display: grid; gap: 1.25rem; align-content: start; }
+  .bands__head strong { color: var(--ink); font-weight: 600; }
+  .bands__rows { grid-column: 5 / 13; display: grid; gap: 4px; }
+  .band { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr) minmax(0, 1.6fr); gap: 1.5rem; align-items: baseline; padding: 1.75rem 1.5rem; background: var(--surface); border-radius: var(--radius); }
+  .band:nth-child(2) { background: var(--toast); }
+  .band:nth-child(3) { background: var(--ink); color: var(--paper); }
+  .band__name { font-family: var(--display); font-size: var(--step-lead); font-weight: 600; letter-spacing: -0.01em; }
+  .band__price { font-family: var(--display); font-size: var(--step-lead); font-weight: 600; }
+  .band__for { color: inherit; opacity: 0.85; }
+  .bands__note { grid-column: 5 / 13; }
 
-  @media (max-width: 760px) {
-    .scope,
-    .bands {
-      grid-template-columns: 1fr;
-    }
-    .compare__table th,
-    .compare__table td {
-      padding: 0.7rem 0.75rem;
-      font-size: 0.85rem;
-    }
+  .plans { padding: var(--section) var(--margin) 0; }
+  .plans__h { max-width: 14ch; margin-bottom: 3rem; }
+  .plans__pair { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .plan { display: grid; gap: 1.5rem; align-content: start; padding: clamp(1.75rem, 3.5vw, 3rem); border-radius: var(--radius); }
+  .plan--care { background: var(--ink); color: var(--paper); }
+  .plan--plus { background: var(--toast); color: var(--ink); }
+  .plan__top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+  .plan__name { font-family: var(--display); font-size: var(--step-head); font-weight: 600; letter-spacing: -0.02em; line-height: 1; }
+  .plan--plus .plan__name { color: var(--brass-deep); }
+  .plan__price { font-size: var(--step-lead); }
+  .plan__price .num { font-family: var(--display); font-weight: 600; font-size: var(--step-head); }
+  .plan__good { max-width: 40ch; }
+  .plan--care .plan__good { color: var(--muted-on-ink); }
+  .plan__list { display: grid; gap: 0.75rem; }
+  .plan__list li { padding-left: 1.4rem; position: relative; }
+  .plan__list li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: currentColor; }
+  .plan--care .plan__list li::before { background: var(--ember-bright); }
+  .plan--plus .plan__list li::before { background: var(--brass); }
+  .plans__notes { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter); margin-top: 2.5rem; color: var(--soft); }
+
+  .compare { padding: var(--section) var(--margin) 0; display: grid; gap: 3rem; }
+  .compare h2 { max-width: 12ch; }
+  .compare__wrap { display: grid; gap: 1.25rem; overflow-x: auto; }
+  .compare__table { width: 100%; border-collapse: collapse; font-size: var(--step-lead); }
+  .compare__table th, .compare__table td { text-align: left; padding: 1rem 1.25rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .compare__table thead th { font-family: var(--display); font-size: var(--step-head); font-weight: 600; line-height: 1; letter-spacing: -0.02em; }
+  .compare__table tbody th { font-weight: 600; font-size: var(--step-body); }
+  .compare__table .is-foh { background: var(--surface); }
+  .compare__foot { max-width: 62ch; }
+
+
+  @media (max-width: 860px) {
+    .ledger__left, .ledger__figures, .bands__head, .bands__rows, .bands__note { grid-column: 1 / -1; }
+    .fig { grid-template-columns: 1fr; }
+    .fig__n { text-align: left; font-size: clamp(3rem, 15vw, 4.5rem); }
+    .band { grid-template-columns: 1fr; gap: 0.5rem; }
+    .plans__pair, .plans__notes { grid-template-columns: 1fr; }
+    .plans__pair { gap: 2rem; }
+        .compare__table { font-size: var(--step-body); }
+    .compare__table th, .compare__table td { padding: 0.75rem 0.5rem; }
+    .compare__table thead th { font-size: var(--step-lead); }
   }
 </style>

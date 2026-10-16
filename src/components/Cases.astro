@@ -1,0 +1,133 @@
+---
+// Restaurant sites the team built: one block per restaurant (Taste Skill blueprint
+// "oversized visual, small cluster"). The site's own footage bleeds off the left edge;
+// a still, the name and what we built sit in a small cluster on the right.
+interface Props {
+  detailed?: boolean;
+}
+const { detailed = false } = Astro.props;
+
+const cases = [
+  {
+    id: "killa",
+    name: "Killa",
+    v: "killa-nikkei",
+    still: "/work/killa-still.jpg",
+    stillAlt: "Killa's signature dishes on its menu page: Ceviche Killa, the Killa Old Fashioned and crab causa",
+    url: "https://www.killanikkei.com",
+    host: "killanikkei.com",
+    kind: "Peruvian and Japanese Nikkei, Salt Lake City",
+    tagline: "Two worlds, one moon.",
+    body: "Peruvian and Japanese Nikkei in downtown Salt Lake City. A cinematic site with online reservations and confirmations, a newsletter and an admin dashboard, cut to its gold-on-black identity.",
+    built: ["Cinematic video hero", "Online reservations with confirmations", "Newsletter signup and an admin dashboard"],
+  },
+  {
+    id: "burger-lab",
+    name: "Burger Lab",
+    v: "burger-lab",
+    still: "/work/burger-lab-still.jpg",
+    stillAlt: "Burger Lab's Lab Tested Burgers menu section with three burgers and a Reserve the Experiment banner",
+    url: "https://www.burgerlabbar.com",
+    host: "burgerlabbar.com",
+    kind: "Gourmet burgers and a cocktail lab, Salt Lake City",
+    tagline: "We don't cook, we experiment.",
+    body: "A burger and cocktail lab in Salt Lake City. Video-led, with online ordering, a waitlist, email capture and articles written so AI search can find it.",
+    built: ["Video hero and a lab look", "Online ordering and a waitlist", "Email capture and AI-search articles"],
+  },
+  {
+    id: "dasks",
+    name: "Dasks",
+    v: "dasks",
+    still: "/work/dasks-still.jpg",
+    stillAlt: "The Dasks Greek Grill site with its Double Dasks Burger in a dish carousel and an Order Online button",
+    url: "https://www.dasks.com",
+    host: "dasks.com",
+    kind: "Greek grill, Salt Lake City",
+    tagline: "Home of Salt Lake's best gyro.",
+    body: "A Greek grill and Salt Lake's home of the gyro. A site led by the food, with a dish carousel and online ordering one tap away on every page.",
+    built: ["A dish carousel up front", "Online ordering on every page", "Menu and location pages"],
+  },
+];
+---
+
+<section class="work" aria-label="Restaurant websites we built">
+  {
+    cases.map((w, i) => (
+      <article class={`job job--${i}`} id={w.id} data-reveal>
+        <div class="job__visual">
+          <video muted loop playsinline preload="none" poster={`/videos/${w.v}.jpg`} aria-hidden="true" data-autoplay>
+            <source src={`/videos/${w.v}.webm`} type="video/webm" />
+            <source src={`/videos/${w.v}.mp4`} type="video/mp4" />
+          </video>
+        </div>
+        <div class="job__cluster">
+          <img src={w.still} alt={w.stillAlt} width="1280" height="720" loading="lazy" decoding="async" />
+          <div class="job__row">
+            <h2 class="job__name">{w.name}</h2>
+            <div class="job__body">
+              {detailed && <p class="job__kind">{w.kind}. &ldquo;{w.tagline}&rdquo;</p>}
+              <p>{w.body}</p>
+              {detailed && <p class="job__built">We built: {w.built.join(", ").toLowerCase()}.</p>}
+              <p><a class="link" href={w.url} target="_blank" rel="noopener noreferrer">Visit {w.host}</a></p>
+            </div>
+          </div>
+        </div>
+      </article>
+    ))
+  }
+  <slot />
+</section>
+
+<style>
+  .work { padding-top: var(--section); overflow: hidden; }
+  .job {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    padding-right: var(--margin);
+    align-items: end;
+    scroll-margin-top: 2rem;
+  }
+  .job + .job { margin-top: clamp(6rem, 10vw, 9rem); }
+  .job__visual {
+    grid-column: 1 / 8;
+    position: relative;
+    height: 80svh;
+    min-height: 26rem;
+    margin-left: calc(-1 * var(--margin));
+    overflow: hidden;
+    background: var(--dusk);
+  }
+  .job--1 .job__visual { height: 60svh; }
+  .job--2 .job__visual { height: 90svh; }
+  .job__visual video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.2); transform-origin: 30% 20%; }
+  .job__cluster { grid-column: 8 / 13; display: grid; gap: 1.75rem; }
+  .job__cluster img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: var(--radius); }
+  .job__row { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr); gap: 1.5rem; align-items: start; }
+  .job__name { font-size: var(--step-head); }
+  .job__body { color: var(--soft); font-size: var(--step-body); }
+  .job__kind, .job__built { color: var(--ink); }
+  .job__body .link { color: var(--ink); }
+  @media (max-width: 860px) {
+    .job { display: block; padding: 0 var(--margin); }
+    .job__visual { width: 110%; height: auto !important; min-height: 0; aspect-ratio: 4 / 3; }
+    .job__cluster { margin-top: 1.75rem; }
+    .job__row { grid-template-columns: 1fr; }
+    .job__cluster img { order: 2; width: 70%; justify-self: end; }
+  }
+  @media (max-width: 560px) {
+    .job__visual { aspect-ratio: 4 / 5; }
+  }
+</style>
+
+<script>
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const io = new IntersectionObserver(
+    (entries) => entries.forEach((e) => {
+      const v = e.target as HTMLVideoElement;
+      if (e.isIntersecting && !reduce) { v.preload = "auto"; v.play().catch(() => {}); } else v.pause();
+    }),
+    { threshold: 0.25 },
+  );
+  document.querySelectorAll<HTMLVideoElement>(".job video[data-autoplay]").forEach((v) => io.observe(v));
+</script>
