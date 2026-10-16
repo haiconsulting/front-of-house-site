@@ -54,8 +54,8 @@ const cases = [
       <article class={`job ${i % 2 ? "job--r" : "job--l"}`} id={w.id} data-reveal>
         <div class="job__visual">
           <video muted loop playsinline preload="none" poster={`/videos/${w.v}.jpg`} aria-label={`${w.name}'s website, ${w.host}`} data-autoplay>
-            <source src={`/videos/${w.v}.webm`} type="video/webm" />
             <source src={`/videos/${w.v}.mp4`} type="video/mp4" />
+            <source src={`/videos/${w.v}.webm`} type="video/webm" />
           </video>
         </div>
         <div class="job__cluster">

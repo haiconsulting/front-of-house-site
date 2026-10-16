@@ -85,8 +85,8 @@ const fmt = (n: number) => n.toLocaleString("en-US");
                     aria-hidden="true"
                     {...(i === 0 ? { autoplay: true } : {})}
                   >
-                    <source src={`/videos/${r.v}.webm`} type="video/webm" />
                     <source src={`/videos/${r.v}.mp4`} type="video/mp4" />
+                    <source src={`/videos/${r.v}.webm`} type="video/webm" />
                   </video>
                   <figcaption class="small"><strong>{r.name}</strong>, {r.place}</figcaption>
                 </figure>
