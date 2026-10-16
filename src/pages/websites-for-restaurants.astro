@@ -163,6 +163,10 @@ const jsonLd = [
     <div class="shift__head">
       <h2 id="shift-title">Your website has a shift to work</h2>
       <p class="soft">A good restaurant website does not make guests hunt. It answers the practical questions quickly, then gives them a clear next move.</p>
+      <figure class="shift__pic">
+        <img src="/work/killa-still.jpg" width="1280" height="720" alt="Killa's menu page: Ceviche Killa, the Killa Old Fashioned and crab causa, each with its ingredients" loading="lazy" decoding="async" />
+        <figcaption class="small soft">Killa&rsquo;s menu, every dish with its ingredients</figcaption>
+      </figure>
     </div>
     <ul class="shift__list" data-reveal>
       {inclusions.map((item) => (
@@ -259,6 +263,8 @@ const jsonLd = [
   .shift { margin-top: var(--section); padding: clamp(3.5rem, 7vw, 6rem) var(--margin); background: var(--surface); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 3rem; }
   .shift__head { grid-column: 1 / 6; display: grid; gap: 1.25rem; align-content: start; }
   .shift__head h2 { max-width: 17ch; }
+  .shift__pic { margin: 1rem 0 0; display: grid; gap: 0.6rem; }
+  .shift__pic img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius); }
   .shift__list { grid-column: 7 / 13; display: grid; gap: 2rem; }
   .shift__list h3 { font-family: var(--display); font-weight: 600; font-size: var(--step-lead); letter-spacing: -0.01em; }
   .shift__list p { margin-top: 0.35rem; color: var(--soft); }

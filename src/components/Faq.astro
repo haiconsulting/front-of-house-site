@@ -1,6 +1,7 @@
 ---
-// Questions: a wide heading and the questions indented beneath it (Taste Skill blueprint
-// "wide heading, indented questions"). Native <details>, one open at a time where supported.
+// Questions: the heading holds the left columns (and stays in view while you read) and the
+// questions fill the right. On phones the heading sits above. Native <details>, one open at a
+// time where supported.
 interface Props {
   heading: string;
   items: ReadonlyArray<{ q: string; a: string }>;
@@ -25,8 +26,8 @@ const { heading, items, id = "questions" } = Astro.props;
 
 <style>
   .ask { padding: var(--section) var(--margin) 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
-  .ask__h { grid-column: 1 / -1; max-width: 17ch; margin-bottom: 5rem; }
-  .ask__list { grid-column: 5 / 13; display: grid; gap: 1.25rem; }
+  .ask__h { grid-column: 1 / 6; grid-row: 1; align-self: start; position: sticky; top: 6rem; padding-right: var(--gutter); }
+  .ask__list { grid-column: 6 / 13; grid-row: 1; display: grid; gap: 0.75rem; }
   .qa { border-radius: var(--radius); transition: background-color var(--t-ui) ease; }
   .qa[open] { background: var(--surface); }
   .qa summary {
@@ -44,8 +45,8 @@ const { heading, items, id = "questions" } = Astro.props;
   .qa summary:hover { color: var(--ember-deep); }
   .qa p { padding: 0 1.5rem 1.5rem; max-width: 48ch; color: var(--soft); }
   @media (max-width: 860px) {
-    .ask__list { grid-column: 1 / -1; }
-    .ask__h { margin-bottom: 2.5rem; }
+    .ask__list { grid-column: 1 / -1; grid-row: 2; }
+    .ask__h { grid-column: 1 / -1; position: static; max-width: 17ch; margin-bottom: 2.5rem; }
     .qa summary { font-size: var(--step-body); padding: 1rem; }
     .qa[open] { margin-inline: calc(-1 * var(--margin)); border-radius: 0; }
     .qa[open] summary, .qa[open] p { padding-inline: var(--margin); }

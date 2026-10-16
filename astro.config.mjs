@@ -19,4 +19,6 @@ export default defineConfig({
   // reserved port in the FOH orchestration registry (src/lib/foh/clients.ts),
   // so `npm run dev` matches what the orchestrator's startPreview() binds.
   server: { port: 4999, host: "127.0.0.1" },
+  // The dev toolbar pill sits over the bottom of every page in previews; FOH reviews pages as visitors see them.
+  devToolbar: { enabled: false },
 });

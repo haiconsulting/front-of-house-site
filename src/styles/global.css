@@ -52,7 +52,9 @@
   --step-display: clamp(3rem, 0.6rem + 4.9vw, 6.75rem);
 
   /* Rhythm: one pair of margins, one grid */
-  --margin: clamp(1rem, 2.2vw, 2rem);
+  /* Above ~1520px the margins grow so content holds a 1456px column instead of
+     drifting to the screen edges on wide monitors; full-bleed pieces still reach the edge. */
+  --margin: max(clamp(1rem, 2.2vw, 2rem), calc((100vw - 1456px) / 2));
   --gutter: clamp(1rem, 2vw, 2rem);
   --section: clamp(6rem, 12vw, 12rem);
   --radius: 4px;

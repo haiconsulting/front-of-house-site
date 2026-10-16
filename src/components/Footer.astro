@@ -1,6 +1,6 @@
 ---
 // Close and footer in one ink field: an invitation with the one action, the practical facts,
-// and the name set larger than the screen can hold, cropped by the bottom edge.
+// and the name set as wide as the page, its descent cropped by the bottom edge.
 import { site, hai, cta } from "../data/site.ts";
 const year = new Date().getFullYear();
 const links = [
@@ -52,9 +52,8 @@ const ctaHref = Astro.url.pathname === "/" ? "#talk" : "/contact";
     position: relative;
     overflow: hidden;
     margin-top: var(--section);
-    min-height: min(100svh, 56rem);
     display: grid;
-    grid-template-rows: auto auto auto 1fr;
+    grid-template-rows: auto auto auto auto;
     gap: 2.5rem;
     padding: clamp(3.5rem, 7vw, 6rem) var(--margin) 0;
     background: var(--ink);
@@ -91,10 +90,12 @@ const ctaHref = Astro.url.pathname === "/" ? "#talk" : "/contact";
   .ft__name {
     align-self: end;
     width: calc(100% + 2 * var(--margin));
+    max-width: none;
     margin: 0 calc(-1 * var(--margin));
     height: auto;
     overflow: visible;
-    transform: translateY(26%);
+    margin-top: clamp(1rem, 4vw, 3rem);
+    transform: translateY(14%);
   }
   .ft__name text {
     font-family: var(--display);

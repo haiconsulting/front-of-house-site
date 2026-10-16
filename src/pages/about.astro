@@ -42,9 +42,9 @@ const jsonLd = {
   </section>
 
   <section class="story" aria-label="Our story">
+    <img class="story__pic" src="/work/killa-aerial-square.jpg" width="720" height="720" alt="Downtown Salt Lake City at dusk, with Killa's lit windows in the foreground" loading="lazy" decoding="async" />
     <div class="story__text" data-reveal>
       <p class="story__p">
-        <img class="story__pic" src="/work/killa-aerial-square.jpg" width="720" height="720" alt="Downtown Salt Lake City at dusk, with Killa's lit windows in the foreground" loading="lazy" decoding="async" />
         <strong>{site.name}</strong> is a six-person studio built for one thing: restaurants. We shape your brand, capture your photos and video on site, build a custom website you own outright, then keep it sharp for a flat yearly fee.
       </p>
       <p class="story__p soft">
@@ -103,11 +103,12 @@ const jsonLd = {
   .intro .lead span { display: block; }
 
   .story { padding: var(--section) var(--margin) 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
-  .story__text { grid-column: 3 / 13; }
-  .story__p { max-width: none; font-size: var(--step-lead); line-height: 1.32; }
-  .story__p + .story__p { margin-top: 1.3em; }
+  .story { align-items: start; row-gap: 2rem; }
+  .story__pic { grid-column: 1 / 5; width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius); position: sticky; top: 6rem; }
+  .story__text { grid-column: 6 / 13; }
+  .story__p { max-width: 40ch; font-size: var(--step-lead); line-height: 1.32; }
+  .story__p + .story__p { margin-top: 1.1em; }
   .story__p strong { font-weight: 600; }
-  .story__pic { float: left; width: 3.9em; height: 3.9em; object-fit: cover; margin: 0.25em 0.6em 0 0; }
 
   .places { padding: var(--section) 0 0; }
   .places__rows { display: grid; }
@@ -133,10 +134,18 @@ const jsonLd = {
   .step__line { font-family: var(--display); font-weight: 600; font-size: var(--step-head); letter-spacing: -0.025em; line-height: 1; }
   .step--3 .step__line { color: var(--ember-deep); }
   .step__text { margin-top: 0.75rem; max-width: 34ch; color: var(--soft); }
+  @media (min-width: 1100px) {
+    .steps__list { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 0; align-items: start; }
+    .step, .step--1, .step--2, .step--3 { grid-column: auto; }
+    .step--1 { margin-top: 3.5rem; }
+    .step--2 { margin-top: 7rem; }
+    .step--3 { margin-top: 10.5rem; }
+    .step__line { font-size: clamp(2rem, 0.9rem + 1.7vw, 2.75rem); }
+  }
 
   @media (max-width: 860px) {
     .intro h1, .intro .lead, .story__text { grid-column: 1 / -1; }
-    .story__pic { width: 5.2em; height: 5.2em; }
+    .story__pic { grid-column: 1 / -1; position: static; max-width: 14rem; }
     .place { grid-template-columns: 1fr; gap: 0.5rem; min-height: 0; padding-block: 1.75rem; }
     .place__name, .place__note { grid-column: 1; }
     .steps__list { grid-template-columns: 1fr; row-gap: 2.5rem; }

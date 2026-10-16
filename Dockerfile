@@ -12,6 +12,9 @@ FROM node:22-alpine AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# Optional public preview origin, supplied only to the design-preview app.
+ARG PUBLIC_PREVIEW_ORIGIN
+ENV PUBLIC_PREVIEW_ORIGIN=$PUBLIC_PREVIEW_ORIGIN
 RUN npm run build
 
 FROM node:22-alpine AS run
