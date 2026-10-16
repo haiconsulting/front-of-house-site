@@ -94,10 +94,10 @@ export const caseStudies = [
     location: "Salt Lake City, UT",
     tagline: "We don't cook, we experiment.",
     blurb:
-      "A science-lab burger and craft-cocktail concept. We built a video-led site with online ordering, a waitlist and email-capture system, and AI-search articles to get found across downtown SLC.",
+      "A science-lab burger and craft-cocktail concept. We built a video-led site with OpenTable reservations, a catering page, email capture, and AI-search articles to get found across downtown SLC.",
     points: [
       "Video hero & lab aesthetic",
-      "Online ordering + waitlist",
+      "OpenTable reservations + catering",
       "Email capture & AI-search articles",
     ],
     video: portfolioVideo.burgerLab,
