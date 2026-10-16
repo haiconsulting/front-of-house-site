@@ -75,7 +75,7 @@ const fmt = (n: number) => n.toLocaleString("en-US");
           <span class="half half--b">Don&rsquo;t rent it.</span>
         </h1>
         <figure class="reel" data-segments={JSON.stringify(reel)}>
-          <video autoplay muted loop playsinline preload="auto" poster="/videos/hero-reel.jpg" aria-label="The Front of House Client Portal, then the Killa, Burger Lab and Dasks websites">
+          <video autoplay muted loop playsinline webkit-playsinline preload="auto" poster="/videos/hero-reel.jpg" aria-label="The Front of House Client Portal, then the Killa, Burger Lab and Dasks websites">
             <source src="/videos/hero-reel.mp4" type="video/mp4" />
           </video>
           <figcaption class="small"><strong class="reel__name">{reel[0].name}</strong>, <span class="reel__place">{reel[0].place}</span></figcaption>
@@ -387,7 +387,17 @@ const fmt = (n: number) => n.toLocaleString("en-US");
   const placeEl = reelEl?.querySelector(".reel__place");
   if (heroVideo) {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) heroVideo.pause();
-    else heroVideo.play().catch(() => {});
+    else {
+      // Phones can refuse the first play() (data not ready yet, or a power-saving mode): retry when
+      // data arrives, when the tab is shown again, and on the first touch or scroll.
+      heroVideo.muted = true;
+      const go = () => { if (heroVideo.paused) heroVideo.play().catch(() => {}); };
+      go();
+      heroVideo.addEventListener("loadeddata", go);
+      heroVideo.addEventListener("canplay", go);
+      document.addEventListener("visibilitychange", () => { if (!document.hidden) go(); });
+      ["touchstart", "scroll", "pointerdown"].forEach((ev) => window.addEventListener(ev, go, { once: true, passive: true }));
+    }
     let shown = 0;
     heroVideo.addEventListener("timeupdate", () => {
       let i = 0;

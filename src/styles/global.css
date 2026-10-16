@@ -75,6 +75,8 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  /* Nothing may widen the page sideways on phones (iOS Safari ignores overflow-x: clip on body). */
+  overflow-x: hidden;
   scroll-padding-top: 1.5rem;
 }
 
