@@ -1,7 +1,7 @@
 ---
 // Home. Taste Skill v2, direction "The sentence is the layout" (seed 541284264), brand palette and type kept.
-// The idea: FOH's promise, "Own it. Don't rent it.", is split by a frame, and a reel of restaurant sites
-// we built passes through the gap. The reader finishes the sentence with their eyes: own *this*.
+// The idea: FOH's promise, "Own it. Don't rent it.", is split by a frame that plays the Client Portal
+// and the restaurant sites we built. The reader finishes the sentence with their eyes: own *this*.
 // The live thing: the rent-versus-own ledger, recalculated from the visitor's own monthly fee.
 import Base from "../layouts/Base.astro";
 import LeadForm from "../components/LeadForm.astro";
@@ -9,11 +9,14 @@ import Cases from "../components/Cases.astro";
 import Faq from "../components/Faq.astro";
 import { site, faq, carePlans, build, cta } from "../data/site.ts";
 
-// Each frame is a calm walkthrough loop of the live site (HowToVideoApp/walkthrough), not a promo cut.
+// One hero video, autoplaying and looping: the FOH Client Portal (the owner changes their own site),
+// then calm walkthroughs of Killa, Burger Lab and Dasks, then back to the portal. Segment starts are
+// seconds into public/videos/hero-reel.mp4 and drive the caption.
 const reel = [
-  { v: "killa-nikkei", name: "Killa", place: "Nikkei, Salt Lake City" },
-  { v: "burger-lab", name: "Burger Lab", place: "Burgers and cocktails, Salt Lake City" },
-  { v: "dasks", name: "Dasks Greek Grill", place: "Greek grill, Salt Lake City" },
+  { at: 0, name: "Front of House Client Portal", place: "change your own site in plain words" },
+  { at: 9.7, name: "Killa", place: "Nikkei, Salt Lake City" },
+  { at: 19.7, name: "Burger Lab", place: "burgers and cocktails, Salt Lake City" },
+  { at: 29.7, name: "Dasks", place: "Greek grill, Salt Lake City" },
 ];
 
 const steps = [
@@ -64,36 +67,19 @@ const fmt = (n: number) => n.toLocaleString("en-US");
   jsonLd={faqLd}
 >
   <!-- Hero: the promise, split by a reel of sites we built -->
-  <section class="stage" aria-labelledby="hero-title" data-reel-count={reel.length}>
+  <section class="stage" aria-labelledby="hero-title">
     <div class="stage__pin">
       <div class="stage__hero">
         <h1 id="hero-title" class="stage__sentence">
           <span class="half half--a">Own it.</span>
           <span class="half half--b">Don&rsquo;t rent it.</span>
         </h1>
-        <div class="reel" aria-label="Restaurant websites built by Front of House">
-          <div class="reel__track">
-            {
-              reel.map((r, i) => (
-                <figure class="reel__frame" data-i={i}>
-                  <video
-                    muted
-                    loop
-                    playsinline
-                    preload={i === 0 ? "auto" : "none"}
-                    poster={`/videos/${r.v}.jpg`}
-                    aria-hidden="true"
-                    {...(i === 0 ? { autoplay: true } : {})}
-                  >
-                    <source src={`/videos/${r.v}.mp4`} type="video/mp4" />
-                    <source src={`/videos/${r.v}.webm`} type="video/webm" />
-                  </video>
-                  <figcaption class="small"><strong>{r.name}</strong>, {r.place}</figcaption>
-                </figure>
-              ))
-            }
-          </div>
-        </div>
+        <figure class="reel" data-segments={JSON.stringify(reel)}>
+          <video autoplay muted loop playsinline preload="auto" poster="/videos/hero-reel.jpg" aria-label="The Front of House Client Portal, then the Killa, Burger Lab and Dasks websites">
+            <source src="/videos/hero-reel.mp4" type="video/mp4" />
+          </video>
+          <figcaption class="small"><strong class="reel__name">{reel[0].name}</strong>, <span class="reel__place">{reel[0].place}</span></figcaption>
+        </figure>
         <div class="stage__foot">
           <p class="stage__lede">
             {site.name} designs, builds and runs websites for restaurants. You pay once, you own the code, and we keep it sharp for {carePlans[0].price} a year.
@@ -199,9 +185,8 @@ const fmt = (n: number) => n.toLocaleString("en-US");
 
 <style>
   /* ---------- hero: the sentence split by the reel ----------
-     "Own it." top left, a window in the middle where the reel of sites we built slides past,
-     "Don't rent it." bottom right with the supporting sentence beside it. Above 1024px the stage
-     pins while the reel advances one site per stretch of scroll; below that it is static. */
+     "Own it." top left, the frame starting where it ends, "Don't rent it." under its right side.
+     One video plays on load and loops: the Client Portal, then Killa, Burger Lab and Dasks. */
   .stage {
     --hero-size: clamp(3.25rem, 0.8rem + 5.4vw, 7.5rem);
     /* The frame starts where "Own it." ends and runs on over the start of "Don't rent it.",
@@ -212,11 +197,7 @@ const fmt = (n: number) => n.toLocaleString("en-US");
     --frame-w: min(calc((100vw - 2 * var(--margin)) * 0.62), calc(100vw - 2 * var(--margin) - var(--own-w)), calc((100svh - 4.5rem - var(--hero-size) * 1.9 - 7.5rem) * 1.7778));
     --frame-h: calc(var(--frame-w) * 0.5625);
     --fig-h: calc(var(--frame-h) + 2.25rem);
-    --gap: 1rem;
-    /* No neighbouring frames peek into the window: one site at a time, sliding through. */
-    --sliver: 0px;
-    --pitch: calc(var(--fig-h) + var(--gap));
-    --slot-h: calc(var(--fig-h) + 2 * var(--sliver));
+    --slot-h: var(--fig-h);
     position: relative;
   }
   .stage__pin {
@@ -255,38 +236,18 @@ const fmt = (n: number) => n.toLocaleString("en-US");
   .reel {
     grid-area: 2 / 1 / 3 / 2;
     justify-self: start;
-    margin-left: var(--own-w);
-    position: relative;
+    margin: 0 0 0 var(--own-w);
     width: var(--frame-w);
-    height: var(--slot-h);
-    overflow: hidden;
   }
-  .reel__track {
-    position: absolute;
-    inset: 0;
-    transform: translateY(calc(var(--p, 0) * var(--pitch) * -1));
-    will-change: transform;
-  }
-  .reel__frame {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: calc(var(--sliver) + var(--i) * var(--pitch));
-    margin: 0;
-  }
-  .reel__frame:nth-child(1) { --i: 0; }
-  .reel__frame:nth-child(2) { --i: 1; }
-  .reel__frame:nth-child(3) { --i: 2; }
-  .reel__frame:nth-child(4) { --i: 3; }
-  .reel__frame video {
+  .reel video {
     width: 100%;
     aspect-ratio: 16 / 9;
     object-fit: cover;
     border-radius: var(--radius);
     background: var(--dusk);
   }
-  .reel__frame figcaption { margin-top: 0.6rem; color: var(--soft); }
-  .reel__frame figcaption strong { color: var(--ink); font-weight: 600; }
+  .reel figcaption { margin-top: 0.6rem; color: var(--soft); }
+  .reel figcaption strong { color: var(--ink); font-weight: 600; }
   .stage__foot {
     grid-area: 3 / 1 / 4 / 2;
     justify-self: start;
@@ -298,22 +259,19 @@ const fmt = (n: number) => n.toLocaleString("en-US");
   .stage__go { display: none; }
 
   @media (min-width: 1025px) and (prefers-reduced-motion: no-preference) {
-    :global(.js) .stage { height: calc(100svh - 4.5rem + 100svh); }
-    :global(.js) .stage__pin { position: sticky; top: 0; height: 100svh; min-height: 0; }
+
   }
 
   @media (max-width: 1024px) {
     .stage {
       --hero-size: clamp(2.75rem, 12vw, 5rem);
       --frame-w: calc(100vw - 2 * var(--margin));
-      --frame-h: calc(var(--frame-w) * 0.625);
-      --sliver: 0px;
-      --slot-h: var(--fig-h);
+      --frame-h: calc(var(--frame-w) * 0.5625);
     }
     .stage__pin { grid-template-rows: auto; min-height: 0; padding: 1.5rem var(--margin); }
     .stage__hero { grid-row: 1; grid-template-rows: auto var(--slot-h) auto auto; row-gap: 1rem; }
     .reel { justify-self: stretch; margin-left: 0; }
-    .reel__frame video { aspect-ratio: 16 / 10; }
+    .reel { width: auto; }
     .stage__foot { grid-area: 4 / 1 / 5 / 2; justify-self: stretch; max-width: none; display: grid; gap: 1.25rem; }
     .stage__lede { font-size: var(--step-body); max-width: 36ch; }
     .stage__go { display: inline-flex; }
@@ -421,44 +379,24 @@ const fmt = (n: number) => n.toLocaleString("en-US");
 </style>
 
 <script>
-  // Hero reel: the page's own scroll moves the frames through the sentence (pinned story).
-  const stage = document.querySelector<HTMLElement>(".stage");
-  const track = stage?.querySelector<HTMLElement>(".reel__track");
-  const frames = Array.from(stage?.querySelectorAll<HTMLElement>(".reel__frame") ?? []);
-  const videos = frames.map((f) => f.querySelector("video"));
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let current = -1;
-
-  function play(i: number) {
-    if (i === current) return;
-    current = i;
-    videos.forEach((v, j) => {
-      if (!v) return;
-      if (j === i && !reduce) {
-        if (v.preload === "none") v.preload = "auto";
-        v.play().catch(() => {});
-      } else v.pause();
+  // Hero video: plays on load (unless the visitor asked for reduced motion); the caption follows the segment.
+  const reelEl = document.querySelector<HTMLElement>(".reel");
+  const heroVideo = reelEl?.querySelector("video");
+  const segments: Array<{ at: number; name: string; place: string }> = JSON.parse(reelEl?.dataset.segments || "[]");
+  const nameEl = reelEl?.querySelector(".reel__name");
+  const placeEl = reelEl?.querySelector(".reel__place");
+  if (heroVideo) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) heroVideo.pause();
+    else heroVideo.play().catch(() => {});
+    let shown = 0;
+    heroVideo.addEventListener("timeupdate", () => {
+      let i = 0;
+      segments.forEach((sg, j) => { if (heroVideo.currentTime >= sg.at) i = j; });
+      if (i === shown || !nameEl || !placeEl) return;
+      shown = i;
+      nameEl.textContent = segments[i].name;
+      placeEl.textContent = segments[i].place;
     });
-  }
-
-  function onScroll() {
-    if (!stage || !track) return;
-    const rect = stage.getBoundingClientRect();
-    const run = stage.offsetHeight - window.innerHeight;
-    const t = run > 0 ? Math.min(1, Math.max(0, -rect.top / run)) : 0;
-    const narrow = window.matchMedia("(max-width: 1024px)").matches;
-    // Each site rests in the window for the middle half of its stretch of scroll, then eases on.
-    const raw = t * (frames.length - 1);
-    const i = Math.min(frames.length - 2, Math.floor(raw));
-    const f = Math.min(1, Math.max(0, (raw - i - 0.25) / 0.5));
-    const p = reduce || narrow ? 0 : i + f * f * (3 - 2 * f);
-    track.style.setProperty("--p", p.toFixed(4));
-    play(Math.round(p));
-  }
-  if (stage && track) {
-    onScroll();
-    window.addEventListener("scroll", () => requestAnimationFrame(onScroll), { passive: true });
-    window.addEventListener("resize", onScroll);
   }
 
   // The ledger: the visitor's own numbers.
