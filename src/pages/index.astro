@@ -184,47 +184,41 @@ const fmt = (n: number) => n.toLocaleString("en-US");
 </Base>
 
 <style>
-  /* ---------- hero: the sentence split by the reel ----------
-     "Own it." top left, the frame starting where it ends, "Don't rent it." under its right side.
+  /* ---------- hero: the sentence brackets the video ----------
+     "Own it." sits on the video's top-left corner, "Don't rent it." on its bottom-right corner and the
+     lede under its bottom-left. Every edge lines up with the frame, and the block is sized from the
+     frame and centred, so any window width keeps the same composition.
      One video plays on load and loops: the Client Portal, then Killa, Burger Lab and Dasks. */
   .stage {
-    --hero-size: clamp(3.25rem, 0.8rem + 5.4vw, 7.5rem);
-    /* The frame starts where "Own it." ends and runs on over the start of "Don't rent it.",
-       so the sentence reads as a diagonal through it: about 62% of the content column, never
-       past the right margin, and never taller than the screen leaves room for the two lines,
-       the caption and the header. */
-    --own-w: calc(var(--hero-size) * 2.8 + 1.5rem);
-    --frame-w: min(calc((100vw - 2 * var(--margin)) * 0.62), calc(100vw - 2 * var(--margin) - var(--own-w)), calc((100svh - 4.5rem - var(--hero-size) * 1.9 - 7.5rem) * 1.7778));
+    /* The frame is as wide as the column allows (72rem at most) and never taller than the screen
+       leaves room for: video (0.5625 of its width) + both lines of the sentence (2 x 0.95 x 0.11 of
+       its width) + caption, lede and header (about 16.5rem). The words are sized from the frame, so
+       the proportions are the same at every window size. */
+    --frame-w: min(calc(100vw - 2 * var(--margin)), 72rem, calc((100svh - 16.5rem) * 1.296));
+    --hero-size: clamp(2.75rem, calc(var(--frame-w) * 0.11), 7rem);
     --frame-h: calc(var(--frame-w) * 0.5625);
     --fig-h: calc(var(--frame-h) + 2.25rem);
-    --slot-h: var(--fig-h);
     position: relative;
   }
-  /* The hero is a cream band from the top of the screen: the header shares it on this page. */
-  .stage, :global(body .hd.hd) { background: var(--bone); }
+  /* A light cream band from the top of the screen; the header shares it on this page. */
+  .stage, :global(body .hd.hd) { background: #f8f2e8; }
   .stage__pin {
-    position: relative;
     display: grid;
-    grid-template-rows: minmax(1.25rem, 0.45fr) auto 1fr;
+    place-items: center;
     min-height: calc(100svh - 4.5rem);
-    padding: 1.25rem var(--margin);
-    overflow: hidden;
+    padding: clamp(1rem, 3vh, 2.5rem) var(--margin) clamp(1.5rem, 5vh, 3.5rem);
   }
   .stage__hero {
-    grid-row: 2;
+    width: var(--frame-w);
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto var(--slot-h) auto;
-    row-gap: 0.75rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "own own" "frame frame" "lede dont";
+    column-gap: 2rem;
+    row-gap: 0.6rem;
   }
-  .stage__sentence {
-    grid-area: 1 / 1 / 4 / 2;
-    display: grid;
-    grid-template-rows: auto var(--slot-h) auto;
-    row-gap: 0.75rem;
-    margin: 0;
-    pointer-events: none;
-  }
+  /* The heading's two halves are placed straight into the hero grid, so every row is sized by
+     what is in it and nothing can cover "Own it." */
+  .stage__sentence { display: contents; }
   .half {
     font-size: var(--hero-size);
     font-weight: 600;
@@ -233,14 +227,9 @@ const fmt = (n: number) => n.toLocaleString("en-US");
     white-space: nowrap;
     color: var(--ink);
   }
-  .half--a { grid-row: 1; justify-self: start; }
-  .half--b { grid-row: 3; justify-self: end; align-self: end; }
-  .reel {
-    grid-area: 2 / 1 / 3 / 2;
-    justify-self: start;
-    margin: 0 0 0 var(--own-w);
-    width: var(--frame-w);
-  }
+  .half--a { grid-area: own; justify-self: start; }
+  .half--b { grid-area: dont; justify-self: end; align-self: start; }
+  .reel { grid-area: frame; margin: 0; min-width: 0; }
   .reel video {
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -254,33 +243,21 @@ const fmt = (n: number) => n.toLocaleString("en-US");
   .reel figcaption { margin-top: 0.6rem; color: var(--soft); }
   .reel figcaption strong { color: var(--ink); font-weight: 600; }
   .stage__foot {
-    grid-area: 3 / 1 / 4 / 2;
+    grid-area: lede;
     justify-self: start;
-    align-self: end;
-    position: relative;
+    align-self: start;
+    padding-top: 0.35rem;
     max-width: 36ch;
   }
-  .stage__lede { font-size: var(--step-lead); line-height: 1.35; color: var(--ink); }
+  .stage__lede { font-size: var(--step-body); line-height: 1.45; color: var(--ink); }
   .stage__go { display: none; }
 
-  /* Desktop: the sentence and the frame are one block, sized from the frame and centred, so a wider
-     or shorter window scales them together instead of pulling the words to the screen edges. */
-  @media (min-width: 1025px) {
-    .stage__pin { grid-template-rows: 1fr auto 1fr; }
-    .stage__hero { justify-self: center; width: calc(var(--own-w) + var(--frame-w)); }
-  }
-
-  @media (max-width: 1024px) {
-    .stage {
-      --hero-size: clamp(2.75rem, 12vw, 5rem);
-      --frame-w: calc(100vw - 2 * var(--margin));
-      --frame-h: calc(var(--frame-w) * 0.5625);
-    }
-    .stage__pin { grid-template-rows: auto; min-height: 0; padding: 1.5rem var(--margin); }
-    .stage__hero { grid-row: 1; grid-template-rows: auto var(--slot-h) auto auto; row-gap: 1rem; }
-    .reel { justify-self: stretch; margin-left: 0; }
-    .reel { width: auto; }
-    .stage__foot { grid-area: 4 / 1 / 5 / 2; justify-self: stretch; max-width: none; display: grid; gap: 1.25rem; }
+  /* Phones: the same order stacked, the lede and the button under "Don't rent it." */
+  @media (max-width: 700px) {
+    .stage { --frame-w: calc(100vw - 2 * var(--margin)); --hero-size: clamp(2.75rem, 12vw, 4rem); }
+    .stage__pin { min-height: 0; padding: 1.5rem var(--margin); }
+    .stage__hero { grid-template-columns: minmax(0, 1fr); grid-template-areas: "own" "frame" "dont" "lede"; row-gap: 1rem; }
+    .stage__foot { justify-self: stretch; max-width: none; display: grid; gap: 1.25rem; padding-top: 0; }
     .stage__lede { font-size: var(--step-body); max-width: 36ch; }
     .stage__go { display: inline-flex; }
   }
