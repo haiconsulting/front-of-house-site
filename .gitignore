@@ -24,3 +24,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Taste Skill working files (direction.json is kept)
+.taste-skill/inspect/
+.taste-skill/pages/
+.taste-skill/before/

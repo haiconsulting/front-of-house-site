@@ -29,8 +29,8 @@ const posterSrc = poster ?? v.poster;
   aria-label={alt}
   data-autoplay-in-view
 >
-  {v.webm && <source src={v.webm} type="video/webm" />}
   <source src={v.mp4} type="video/mp4" />
+  {v.webm && <source src={v.webm} type="video/webm" />}
 </video>
 
 <script>

@@ -1,468 +1,87 @@
 ---
+// Contact: the page that turns a visit into a meeting. One invitation, the form, what happens next.
 import Base from "../layouts/Base.astro";
-import { site, carePlans } from "../data/site.ts";
-import { directions } from "../data/directions";
-
-const directionLabels = Object.fromEntries(
-  directions.map((direction) => [direction.slug, direction.label]),
-);
+import LeadForm from "../components/LeadForm.astro";
+import WorkStrip from "../components/WorkStrip.astro";
+import { site, cta } from "../data/site.ts";
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ContactPage",
-  name: "Contact Front of House",
+  name: "Talk to the Front of House team",
   description:
-    "Scope your restaurant website build with Front of House. Custom websites you own from $2,000, then flat yearly care from $450.",
+    "Tell Front of House about your restaurant. Custom websites you own from $2,000, then flat yearly care from $450. We reply within one business day.",
   url: `${site.url}/contact`,
-  mainEntity: {
-    "@id": `${site.url}/#organization`,
-  },
+  mainEntity: { "@id": `${site.url}/#organization` },
 };
+
+const next = [
+  { line: "We read it the same day.", text: "A person on the team, not a ticket queue. If it helps, we look at your current site and menu first." },
+  { line: "You get a scope and a price.", text: "Within one business day: what we would build, what it costs, and which Care plan fits." },
+  { line: "Then we meet.", text: "On a call, or at your place if you are in Park City, Salt Lake City or metro Atlanta. No obligation either way." },
+];
 ---
 
 <Base
-  title="Contact"
-  description="Scope your restaurant website build with Front of House. Custom sites you own from $2,000, flat yearly care from $450. Tell us about your restaurant and we'll come back with a plan."
+  title="Talk to the team"
+  description="Tell Front of House about your restaurant. We reply within one business day with a scope, a price and a time to meet. Custom websites you own from $2,000, flat yearly care from $450."
   jsonLd={jsonLd}
 >
-  <section id="form" class="phead">
-    <div class="container phead__grid">
-      <div>
-        <p class="kicker">Scope your build</p>
-        <h1>Ready to own your restaurant website?</h1>
-        <p class="lede">
-          Tell us about your restaurant and what you need. We'll come back with
-          a scope, a price, a recommended Care tier, and next steps, usually
-          within a business day. Custom builds from $2,000, flat yearly care
-          from $450.
-        </p>
-
-        <ul class="direct">
-          <li>
-            <span class="direct__label">Email</span>
-            <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
-          </li>
-          <li>
-            <span class="direct__label">Phone</span>
-            <a href={site.contact.phoneHref}>{site.contact.phone}</a>
-          </li>
-        </ul>
-      </div>
-
-      <!--
-        Lead capture: posts to /api/lead on the FOH server (src/pages/api/lead.ts),
-        which emails the lead to the studio through SendGrid. To send leads
-        elsewhere, set at build time: PUBLIC_LEAD_ENDPOINT=https://.../leads
-        If it's unset or the POST fails, the form falls back to opening the
-        visitor's mail client, pre-filled, so it always works.
-      -->
-      <form
-        class="form card"
-        id="lead-form"
-        data-endpoint={import.meta.env.PUBLIC_LEAD_ENDPOINT || "/api/lead"}
-      >
-        <div class="hp" aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden">
-          <label for="company_website">Leave this field empty</label>
-          <input id="company_website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
-        </div>
-        <input id="build-brief" name="build_brief" type="hidden" value="" />
-        <div class="field">
-          <label for="name">Your name</label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            required
-            autocomplete="name"
-            aria-describedby="name-err"
-          />
-          <span class="field__err" id="name-err" role="alert"></span>
-        </div>
-        <div class="field-row">
-          <div class="field">
-            <label for="restaurant">Restaurant</label>
-            <input
-              id="restaurant"
-              name="restaurant"
-              type="text"
-              autocomplete="organization"
-            />
-          </div>
-          <div class="field">
-            <label for="locations">Locations</label>
-            <input id="locations" name="locations" type="number" min="1" value="1" />
-          </div>
-        </div>
-        <div class="field-row">
-          <div class="field">
-            <label for="email">Email</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              autocomplete="email"
-              aria-describedby="email-err"
-            />
-            <span class="field__err" id="email-err" role="alert"></span>
-          </div>
-          <div class="field">
-            <label for="phone">Phone</label>
-            <input id="phone" name="phone" type="tel" autocomplete="tel" />
-          </div>
-        </div>
-        <div class="field">
-          <label for="tier">Care plan</label>
-          <select id="tier" name="tier">
-            <option value="">Not sure yet, help me choose</option>
-            {carePlans.map((t) => <option value={t.name}>{t.name}</option>)}
-          </select>
-        </div>
-        <div class="field">
-          <label for="message">What do you need?</label>
-          <textarea
-            id="message"
-            name="message"
-            rows="4"
-            placeholder="New site, a refresh, photos, branding…"></textarea>
-        </div>
-        <button type="submit" class="btn btn--primary form__submit">
-          Send it over
-        </button>
-        <p class="form__note" id="form-note" role="status" aria-live="polite" hidden></p>
-      </form>
+  <section class="intro" aria-labelledby="contact-title">
+    <h1 id="contact-title">{cta.label}</h1>
+    <div class="intro__side" data-reveal>
+      <p class="lead">Tell us about your restaurant. {cta.promise}</p>
+      <p class="intro__direct">
+        <a class="link" href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+        <a class="link" href={site.contact.phoneHref}>{site.contact.phone}</a>
+      </p>
     </div>
+  </section>
+
+  <LeadForm id="form" heading="Tell us about your restaurant" tight />
+
+  <WorkStrip statement="Who you will be talking to: the team that built these." />
+
+  <section class="next" aria-labelledby="next-title">
+    <h2 id="next-title" class="visually-hidden">What happens next</h2>
+    <ol class="next__list" data-reveal>
+      {
+        next.map((n, i) => (
+          <li class={`step step--${i}`}>
+            <h3 class="step__line">{n.line}</h3>
+            <p class="step__text">{n.text}</p>
+          </li>
+        ))
+      }
+    </ol>
   </section>
 </Base>
 
 <style>
-  .phead {
-    padding-block: clamp(3rem, 7vw, 5rem);
-  }
-  .phead__grid {
+  .intro {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(2rem, 5vw, 4rem);
-    align-items: start;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: 2rem;
+    align-items: end;
+    padding: clamp(3rem, 9vh, 7rem) var(--margin) 0;
   }
-  .phead h1 {
-    max-width: 14ch;
-  }
-  .phead .lede {
-    margin-top: 1rem;
-  }
-  .direct {
-    list-style: none;
-    padding: 0;
-    margin: 2rem 0 0;
-    display: flex;
-    gap: 2.5rem;
-  }
-  .direct__label {
-    display: block;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 0.3rem;
-  }
-  .direct a {
-    font-weight: 600;
-    color: var(--ink);
-  }
-  .direct a:hover {
-    color: var(--ember);
-  }
-
-  .form {
-    background: #fff;
-    box-shadow: var(--shadow);
-  }
-  .field {
-    margin-bottom: 1rem;
-    flex: 1;
-  }
-  .field-row {
-    display: flex;
-    gap: 1rem;
-  }
-  label {
-    display: block;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 0.4rem;
-  }
-  input,
-  select,
-  textarea {
-    width: 100%;
-    font: inherit;
-    font-size: 0.98rem;
-    color: var(--ink);
-    background: var(--paper);
-    border: 1.5px solid var(--line);
-    border-radius: var(--radius-sm);
-    padding: 0.7rem 0.85rem;
-    transition: border-color 0.16s ease, box-shadow 0.16s ease;
-  }
-  input:focus,
-  select:focus,
-  textarea:focus {
-    outline: none;
-    border-color: var(--ember);
-    box-shadow: 0 0 0 3px rgba(199, 91, 57, 0.14);
-  }
-  /* Invalid chrome only after the user has blurred or tried to submit —
-     never red borders on first paint. Mirrored by the JS aria-invalid flag. */
-  input[aria-invalid="true"],
-  input:user-invalid {
-    border-color: var(--danger);
-  }
-  input[aria-invalid="true"]:focus,
-  input:user-invalid:focus {
-    box-shadow: 0 0 0 3px rgba(178, 49, 34, 0.16);
-  }
-  .field__err {
-    display: block;
-    min-height: 1.1rem;
-    margin-top: 0.35rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--danger);
-  }
-  textarea {
-    resize: vertical;
-  }
-  .form__submit[aria-disabled="true"] {
-    opacity: 0.7;
-    cursor: progress;
-  }
-  .form__submit {
-    width: 100%;
-    justify-content: center;
-    margin-top: 0.5rem;
-  }
-  .form__note {
-    margin: 0.9rem 0 0;
-    font-size: 0.9rem;
-    text-align: center;
-    color: var(--body);
-  }
-  .form__note[data-state="ok"] {
-    color: var(--ember-deep);
-    font-weight: 600;
-  }
-
-  @media (max-width: 820px) {
-    .phead__grid {
-      grid-template-columns: 1fr;
-    }
-    .direct {
-      gap: 2rem;
-    }
-  }
-  @media (max-width: 520px) {
-    .field-row {
-      flex-direction: column;
-      gap: 0;
-    }
+  .intro h1 { grid-column: 1 / 8; max-width: 10ch; }
+  .intro__side { grid-column: 8 / 13; display: grid; gap: 1.5rem; }
+  .intro__direct { display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; font-weight: 600; }
+  .next { padding: var(--section) var(--margin) 0; }
+  .next__list { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 3.5rem; }
+  .step { grid-column: 1 / -1; }
+  .step--1 { grid-column-start: 3; }
+  .step--2 { grid-column-start: 5; }
+  .step__line { font-family: var(--display); font-weight: 600; font-size: var(--step-head); letter-spacing: -0.025em; line-height: 1; }
+  .step__text { margin-top: 0.75rem; max-width: 36ch; color: var(--soft); }
+  @media (max-width: 860px) {
+    .intro h1, .intro__side { grid-column: 1 / -1; }
+    .next__list { grid-template-columns: 1fr; row-gap: 2.5rem; }
+    .step { grid-column: 1; }
+    .step--1 { padding-left: 6vw; }
+    .step--2 { padding-left: 12vw; }
   }
 </style>
 
-<script is:inline define:vars={{ to: site.contact.email, directionLabels }}>
-  const form = document.getElementById("lead-form");
-  const note = document.getElementById("form-note");
-  const submit = form?.querySelector(".form__submit");
-
-  // Pattern A: no-JS users keep the browser's native validation; now that JS
-  // is here, we repaint errors ourselves instead of the browser's bubbles.
-  if (form) form.noValidate = true;
-
-  // Arriving from a spec template or build brief: prefill the form with what
-  // they chose so sales sees the useful context. Never overwrite anything the
-  // visitor already typed.
-  {
-    const q = new URLSearchParams(window.location.search);
-    const tpl = q.get("template");
-    const isBrief = q.get("brief") === "1";
-    const restaurant = q.get("restaurant") || "";
-    const city = q.get("city") || "";
-    const accentRaw = (q.get("accent") || "").trim().replace(/^#/, "");
-    const brandColor = /^[0-9a-f]{6}$/i.test(accentRaw) ? `#${accentRaw.toUpperCase()}` : "";
-    const brandLine = brandColor
-      ? `${brandColor}${q.get("finish") === "tonal" ? " with tonal gradient buttons" : ""}`
-      : "";
-    const rInput = document.getElementById("restaurant");
-    if (rInput && !rInput.value && restaurant) rInput.value = restaurant;
-    const msg = document.getElementById("message");
-
-    if (tpl && msg && !msg.value) {
-      const vibe = q.get("vibe") || "";
-      const tag = q.get("tag") || "";
-        let text = `I customized the ${tpl} spec template`;
-        if (restaurant) text += ` as ${restaurant}`;
-        if (city) text += ` in ${city}`;
-        text += vibe ? `, ${vibe} vibe.` : ".";
-        if (tag) text += ` Tagline: "${tag}".`;
-        if (brandLine) text += ` Brand color: ${brandLine}.`;
-        text += " Let's build the real thing.";
-        msg.value = text;
-    }
-
-    if (isBrief) {
-      const selectedDirections = (q.get("directions") || "")
-        .split(",")
-        .map((slug) => slug.trim())
-        .filter(Boolean)
-        .map((slug) => directionLabels[slug] || slug.replace(/-/g, " "));
-      const priority = q.get("priority") || "not sure yet";
-      const needs = q.getAll("needs").filter(Boolean);
-      const tag = q.get("tag") || "";
-      const note = q.get("note") || "";
-      const briefInput = document.getElementById("build-brief");
-      const parts = [];
-      if (selectedDirections.length) parts.push(`Directions: ${selectedDirections.join(" + ")}`);
-      if (priority) parts.push(`Primary action: ${priority.replace(/-/g, " ")}`);
-      if (needs.length) parts.push(`Needs: ${needs.map((need) => need.replace(/-/g, " ")).join(", ")}`);
-      if (city) parts.push(`City: ${city}`);
-      if (tag) parts.push(`Tagline: ${tag}`);
-      if (brandLine) parts.push(`Brand color: ${brandLine}`);
-      if (briefInput) briefInput.value = parts.join("; ");
-
-      if (msg && !msg.value) {
-        let text = "I started a website build brief";
-        if (selectedDirections.length) text += ` around ${selectedDirections.join(" and ")}`;
-        if (restaurant) text += ` for ${restaurant}`;
-        if (city) text += ` in ${city}`;
-        text += `. The main guest action is ${priority.replace(/-/g, " ")}.`;
-        if (needs.length) text += ` We need ${needs.map((need) => need.replace(/-/g, " ")).join(", ")}.`;
-        if (tag) text += ` Suggested tagline: "${tag}".`;
-        if (brandLine) text += ` Brand color: ${brandLine}.`;
-        if (note) text += ` Note: ${note}`;
-        text += " Let's scope the real build.";
-        msg.value = text;
-      }
-    }
-  }
-
-  // Fields that get inline, per-field validation.
-  const validated = ["name", "email"]
-    .map((id) => document.getElementById(id))
-    .filter(Boolean);
-
-  // Adaptive, subrule-specific messages beat a single catch-all.
-  function messageFor(input) {
-    const v = input.validity;
-    if (v.valid) return "";
-    if (input.id === "name") {
-      return "Add your name so we know who we're talking to.";
-    }
-    if (input.id === "email") {
-      if (v.valueMissing) return "Add your email so we can reach you.";
-      return "That doesn't look like a complete email address.";
-    }
-    return "Please check this field.";
-  }
-
-  function setError(input, msg) {
-    const err = document.getElementById(`${input.id}-err`);
-    if (msg) {
-      input.setAttribute("aria-invalid", "true");
-      if (err) err.textContent = msg;
-    } else {
-      input.removeAttribute("aria-invalid");
-      if (err) err.textContent = "";
-    }
-    return !msg;
-  }
-
-  validated.forEach((input) => {
-    // First blur after editing runs the constraint.
-    input.addEventListener("blur", () => setError(input, messageFor(input)));
-    // Once invalid, re-validate on input so the error clears as soon as it's
-    // fixed, without making the user blur again.
-    input.addEventListener("input", () => {
-      if (input.getAttribute("aria-invalid") === "true") {
-        setError(input, messageFor(input));
-      }
-    });
-  });
-
-  function setSubmitting(on) {
-    if (!submit) return;
-    submit.disabled = on;
-    submit.setAttribute("aria-disabled", String(on));
-    submit.textContent = on ? "Sending…" : "Send it over";
-  }
-
-  form?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    // Validate every wired field; show all errors, focus the first bad one.
-    let firstInvalid = null;
-    validated.forEach((input) => {
-      const ok = setError(input, messageFor(input));
-      if (!ok && !firstInvalid) firstInvalid = input;
-    });
-    if (firstInvalid) {
-      firstInvalid.focus();
-      window.fohTrack?.("lead_form_invalid", { field: firstInvalid.name || firstInvalid.id });
-      showNote("A couple of fields need a look.", "err");
-      return;
-    }
-
-    const data = Object.fromEntries(new FormData(form).entries());
-    const endpoint = form.getAttribute("data-endpoint");
-
-    setSubmitting(true);
-    showNote("Sending your details…", "");
-
-    if (endpoint) {
-      try {
-        const res = await fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
-        if (res.ok) {
-          form.reset();
-          setSubmitting(false);
-          window.fohTrack?.("lead_submitted", { via: "form", tier: data.tier || "unsure" });
-          showNote("Thanks, we'll be in touch within a business day.", "ok");
-          return;
-        }
-      } catch (_) {
-        /* fall through to mailto */
-      }
-    }
-
-    // No-backend fallback: open the visitor's email client, pre-filled.
-    const subject = `New build inquiry: ${data.restaurant || data.name}`;
-    const body = [
-      `Name: ${data.name}`,
-      `Restaurant: ${data.restaurant || "n/a"}`,
-      `Locations: ${data.locations || "n/a"}`,
-      `Email: ${data.email}`,
-      `Phone: ${data.phone || "n/a"}`,
-      `Interested in: ${data.tier || "Not sure yet"}`,
-      `Build brief: ${data.build_brief || "n/a"}`,
-      "",
-      `${data.message || ""}`,
-    ].join("\n");
-    window.location.href = `mailto:${to}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
-    setSubmitting(false);
-    window.fohTrack?.("lead_submitted", { via: "email_app", tier: data.tier || "unsure" });
-    showNote("Opening your email app to send. Almost there.", "ok");
-  });
-
-  function showNote(msg, state) {
-    if (!note) return;
-    note.textContent = msg;
-    note.hidden = false;
-    note.setAttribute("data-state", state);
-  }
-</script>

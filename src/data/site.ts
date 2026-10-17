@@ -94,10 +94,10 @@ export const caseStudies = [
     location: "Salt Lake City, UT",
     tagline: "We don't cook, we experiment.",
     blurb:
-      "A science-lab burger and craft-cocktail concept. We built a video-led site with online ordering, a waitlist and email-capture system, and AI-search articles to get found across downtown SLC.",
+      "A science-lab burger and craft-cocktail concept. We built a video-led site with OpenTable reservations, a catering page, email capture, and AI-search articles to get found across downtown SLC.",
     points: [
       "Video hero & lab aesthetic",
-      "Online ordering + waitlist",
+      "OpenTable reservations + catering",
       "Email capture & AI-search articles",
     ],
     video: portfolioVideo.burgerLab,
@@ -132,13 +132,18 @@ export const specConcepts = [
 ] as const;
 
 export const nav = [
-  { label: "Websites", href: "/websites-for-restaurants" },
+  { label: "Work", href: "/work" },
   { label: "Services", href: "/services" },
   { label: "Pricing", href: "/pricing" },
   { label: "Templates", href: "/templates" },
-  { label: "Work", href: "/work" },
   { label: "About", href: "/about" },
 ] as const;
+
+// ── The one primary action, named the same everywhere. ──
+export const cta = {
+  label: "Talk to the team",
+  promise: "We reply within one business day with a scope, a price and a time to meet.",
+} as const;
 
 // ── What we do: the four offerings (core first) ──
 export const offerings = [

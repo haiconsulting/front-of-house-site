@@ -100,7 +100,9 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
     font-family: var(--sans);
   }
 
-  /* Launcher */
+  /* Launcher: retired as a floating pill in the Taste Skill redesign so it never sits on content.
+     The Host opens from "Ask the Host" buttons in the header, menu sheet and footer ([data-open-host]). */
+  .maitre__launch { display: none !important; }
   .maitre__launch {
     display: inline-flex;
     align-items: center;
@@ -154,7 +156,7 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
     background: var(--paper);
     border: 1px solid var(--line);
     border-radius: 16px;
-    box-shadow: 0 24px 60px rgba(34, 28, 24, 0.28);
+    box-shadow: 0 24px 60px rgba(34, 28, 24, 0.28); /* a dialog truly floats */
     overflow: hidden;
     animation: maitre-rise 0.2s ease;
   }
@@ -369,14 +371,19 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
       return el;
     }
 
+    let opener = null;
     function setOpen(state) {
       if (state && !open) window.fohTrack?.("host_open", { page: window.location.pathname });
+      const wasOpen = open;
       open = state;
       panel.hidden = !state;
       launch.setAttribute("aria-expanded", String(state));
+      document.querySelectorAll("[data-open-host]").forEach((b) => b.setAttribute("aria-expanded", String(state)));
       if (state) {
         input.focus();
         log.scrollTop = log.scrollHeight;
+      } else if (wasOpen && opener) {
+        opener.focus();
       }
       save();
     }
@@ -474,6 +481,12 @@ const endpoint = import.meta.env.PUBLIC_MAITRE_ENDPOINT || "/api/maitre";
     });
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && open) setOpen(false);
+    });
+    document.querySelectorAll("[data-open-host]").forEach((b) => {
+      b.addEventListener("click", () => {
+        opener = b;
+        setOpen(!open);
+      });
     });
 
     // Restore across navigation

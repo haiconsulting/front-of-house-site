@@ -1,62 +1,46 @@
 ---
+// Services. Each service is a statement on the left and its proof on the right, core first.
 import Base from "../layouts/Base.astro";
-import CtaBand from "../components/CtaBand.astro";
-import VideoSlot from "../components/VideoSlot.astro";
-import TickList from "../components/TickList.astro";
-import { steps, portfolioVideo, site, faq } from "../data/site.ts";
+import LeadForm from "../components/LeadForm.astro";
+import Faq from "../components/Faq.astro";
+import { site, faq, carePlans, build } from "../data/site.ts";
 
 const services = [
   {
-    kind: "Optional",
-    name: "Brand & Design",
-    line: "A look, not just a site.",
-    body: "Identity, menu, and a visual system for restaurants that need a real brand. Logo, type, color, and the menu design that ties it all together, built so it reads as well on the table as it does on the screen.",
-    points: [
-      "Logo & identity system",
-      "Menu design & layout",
-      "Color, type & art direction",
-    ],
-    video: portfolioVideo.burgerLab,
-    mediaAlt: "BURGER.LAB brand and site preview",
-  },
-  {
-    kind: "Optional",
-    name: "Capture",
-    line: "The space, the plates, the people.",
-    body: "On-site photo and video, shot where you serve. We capture the room, the food, and the team, then edit and deliver a library your site and socials can pull from all year.",
-    points: [
-      "On-location photo & video",
-      "Food & interior styling",
-      "Edited, delivered, ready to use",
-    ],
-    video: portfolioVideo.killa,
-    mediaAlt: "Killa, on-site video capture for restaurant sites",
-  },
-  {
-    kind: "Core",
     name: "Build",
+    when: "With every partnership",
     line: "A real, custom website you own.",
-    body: "Hand-built, fast, and modern, made to turn visitors into covers. Real custom code you own outright, not a locked drag-and-drop template you rent forever. Optimized to be found through AI search, not Google alone.",
-    points: [
-      "Custom code you own outright",
-      "Fast, mobile-first, accessible",
-      "Built for AI search (AEO)",
-    ],
-    video: portfolioVideo.burgerLab,
-    mediaAlt: "BURGER.LAB, custom restaurant website build",
+    body: `Hand-built, fast and made to turn visitors into covers. Real code you own outright from ${build.from}, not a drag-and-drop template you rent forever. Readable menus, clear hours and structured data so search engines and AI assistants can understand it.`,
+    points: "Custom code you own, mobile first and accessible, built for AI search.",
+    v: "burger-lab",
+    alt: "Burger Lab's site, built by Front of House",
   },
   {
-    kind: "Core",
     name: "Care",
+    when: "With every partnership",
     line: "We keep you running.",
-    body: "Hosting and maintenance for one flat yearly fee, no monthly rental. Edit it yourself, or just ask the Host, your front-of-house AI. Either way, it gets done. Reviewed, tested, and live fast.",
-    points: [
-      "Flat yearly fee, hosting included",
-      "Edit it yourself or ask the Host",
-      "Changes reviewed before they go live",
-    ],
-    video: portfolioVideo.killa,
-    mediaAlt: "Killa, live site with ongoing care",
+    body: `Hosting and maintenance for one flat ${carePlans[0].price} a year, with no monthly rent. Edit it yourself or text the Host, your front-of-house AI. Either way it gets done, and our team checks every change before it goes live.`,
+    points: "Hosting included, changes reviewed, your exit kit always ready.",
+    v: "killa-nikkei",
+    alt: "Killa's site, kept current under Care",
+  },
+  {
+    name: "Brand and design",
+    when: "When you need a look",
+    line: "A look, not just a site.",
+    body: "Identity, menu and a visual system for restaurants that need a real brand. Logo, type, colour and the menu design that ties it together, built to read as well on the table as on the screen.",
+    points: "Logo and identity, menu design, colour, type and art direction.",
+    v: "dasks",
+    alt: "Dasks Greek Grill's site and identity",
+  },
+  {
+    name: "Capture",
+    when: "When you need pictures",
+    line: "The room, the plates, the people.",
+    body: "On-site photo and video, shot where you serve. We capture the space, the food and the team, then edit and deliver a library your site and socials can pull from all year.",
+    points: "On-location photo and video, food and interior styling, edited and delivered.",
+    v: "killa-film",
+    alt: "Killa's dining room and plates, from the film on its home page",
   },
 ];
 
@@ -67,7 +51,7 @@ const jsonLd = [
     provider: { "@id": `${site.url}/#organization` },
     name: "Restaurant Website Design and Build",
     description:
-      "Custom restaurant website the owner owns outright. Hand-built, fast, mobile-first, accessible, optimized for AI search (AEO/GEO). One-time build from $2,000.",
+      "Custom restaurant website the owner owns outright. Hand-built, fast, mobile-first, accessible, optimized for AI search. One-time build from $2,000.",
     serviceType: "Website Design",
     areaServed: "United States",
     hasOfferCatalog: {
@@ -75,11 +59,7 @@ const jsonLd = [
       name: "Restaurant Web Studio Services",
       itemListElement: services.map((s) => ({
         "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: s.name,
-          description: s.body,
-        },
+        itemOffered: { "@type": "Service", name: s.name, description: s.body },
       })),
     },
   },
@@ -97,282 +77,118 @@ const jsonLd = [
 
 <Base
   title="Services"
-  description="Front of House offers restaurant website design, branding, on-site photo and video, and flat yearly care. Custom sites you own from $2,000. Built for AI search."
+  description="Front of House builds custom restaurant websites you own, keeps them hosted and current for a flat yearly fee, and adds branding and on-site photo and video when you need them."
   jsonLd={jsonLd}
 >
-  <section class="phead">
-    <div class="container">
-      <p class="kicker">What we do</p>
-      <h1>What does a restaurant web studio do?</h1>
-      <p class="lede">
-        Front of House offers four services built around one idea: a
-        restaurant's website is its new front of house, so we treat it like one.
-        Brand, capture, build, and care. Two are core to every partnership, two
-        are optional.
-      </p>
-    </div>
+  <section class="intro" aria-labelledby="svc-title">
+    <h1 id="svc-title">What a restaurant web studio does</h1>
+    <p class="lead" data-reveal>
+      <span>Four services around one idea: your website is your new front of house. Building it and caring for it come with every partnership. Brand and on-site capture are there when you need them.</span>
+    </p>
   </section>
 
-  <section id="offerings" class="section">
-    <div class="container svc-list">
-      {
-        services.map((s, i) => (
-          <article class="svc">
-            <div class="svc__index">
-              <span class="svc__num">0{i + 1}</span>
-              <span
-                class:list={[
-                  "svc__kind",
-                  { "svc__kind--core": s.kind === "Core" },
-                ]}
-              >
-                {s.kind}
-              </span>
-            </div>
-            <div class="svc__main">
-              <h2>{s.name}</h2>
-              <p class="svc__line">{s.line}</p>
-              <p class="svc__body">{s.body}</p>
-              <div class="svc__points">
-                <TickList points={s.points} inline />
-              </div>
-            </div>
-            <div class="svc__media">
-              <VideoSlot src={s.video} alt={s.mediaAlt} />
-            </div>
-          </article>
-        ))
-      }
-    </div>
+  <div class="svcs">
+    {
+      services.map((s, i) => (
+        <section class={`svc svc--${i}`} aria-labelledby={`svc-${i}`}>
+          <div class="svc__text" data-reveal>
+            <h2 id={`svc-${i}`}>{s.name}</h2>
+            <p class="svc__when">{s.when}</p>
+            <p class="svc__line">{s.line}</p>
+            <p class="svc__body">{s.body}</p>
+            <p class="svc__points">{s.points}</p>
+          </div>
+          <div class="svc__proof">
+            <video muted loop playsinline preload="none" poster={`/videos/${s.v}.jpg`} aria-label={s.alt} data-autoplay>
+              <source src={`/videos/${s.v}.mp4`} type="video/mp4" />
+              <source src={`/videos/${s.v}.webm`} type="video/webm" />
+            </video>
+          </div>
+        </section>
+      ))
+    }
+  </div>
+
+  <section class="steps" aria-labelledby="steps-title">
+    <h2 id="steps-title" class="visually-hidden">How it works</h2>
+    <ol class="steps__list" data-reveal>
+      <li class="step step--0"><h3 class="step__line">First, we talk.</h3><p class="step__text">About your menu, your photos and what the site has to do. You leave with a scope and a price.</p></li>
+      <li class="step step--1"><h3 class="step__line">Then we build it.</h3><p class="step__text">Designed and coded for your restaurant, shot on site if you want it.</p></li>
+      <li class="step step--2"><h3 class="step__line">You own it. We keep it sharp.</h3><p class="step__text">Go live, then a flat yearly Care fee keeps it hosted, current and yours.</p></li>
+    </ol>
   </section>
 
-  <section id="how" class="section surface-ink surface-ink--glow">
-    <div class="container">
-      <header class="head head--center">
-        <p class="kicker">How it works</p>
-        <h2>Simple to start. Easy to live with.</h2>
-      </header>
-      <div class="steps">
-        {
-          steps.map((s) => (
-            <article class="step">
-              <span class="step__n">{s.n}</span>
-              <h3>{s.title}</h3>
-              <p>{s.body}</p>
-            </article>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- ── FAQ ── -->
-  <section id="faq" class="section">
-    <div class="container">
-      <header class="head--center">
-        <h2>Questions about our services</h2>
-      </header>
-      <div class="faq-list">
-        {
-          faq.services.map((item) => (
-            <details class="faq-item">
-              <summary class="faq-q">{item.q}</summary>
-              <p class="faq-a">{item.a}</p>
-            </details>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <CtaBand />
+  <Faq heading="Questions about our services" items={faq.services} />
+  <LeadForm heading="Tell us what your restaurant needs" />
 </Base>
 
 <style>
-  .phead {
-    padding-block: clamp(3rem, 7vw, 5rem) clamp(1.5rem, 3vw, 2.5rem);
-    background: var(--bone);
-    border-bottom: 1px solid var(--line);
-  }
-  .phead h1 {
-    max-width: 18ch;
-  }
-  .phead .lede {
-    margin-top: 1rem;
-  }
-
-  .svc-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-  .svc {
+  .intro {
     display: grid;
-    grid-template-columns: 120px 1fr 0.85fr;
-    gap: clamp(1.5rem, 3vw, 2.5rem);
-    padding-block: clamp(2rem, 4vw, 3rem);
-    border-top: 1px solid var(--line);
-    align-items: center;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: 2rem;
+    align-items: end;
+    padding: clamp(3rem, 9vh, 7rem) var(--margin) 0;
   }
-  .svc:first-child {
-    border-top: 0;
-    padding-top: 0;
-  }
-  .svc__media {
-    border-radius: var(--radius);
-    overflow: hidden;
-    aspect-ratio: 4 / 3;
-    box-shadow: var(--shadow);
-  }
-  .svc__media img,
-  .svc__media video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    background: var(--ink);
-  }
-  .svc__index {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
-  .svc__num {
-    font-family: var(--display);
-    font-size: 2.4rem;
-    font-weight: 700;
-    color: var(--line);
-  }
-  .svc__kind {
-    font-size: 0.66rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .svc__kind--core {
-    color: var(--ember);
-  }
-  .svc__main h2 {
-    margin-bottom: 0.2rem;
-  }
-  .svc__line {
-    font-family: var(--display);
-    font-style: italic;
-    font-size: 1.2rem;
-    color: var(--ember);
-    margin: 0 0 1rem;
-  }
-  .svc__body {
-    max-width: 60ch;
-  }
-  .svc__points {
-    margin-top: 1.2rem;
+  .intro h1 { grid-column: 1 / 9; max-width: 18ch; }
+  .intro .lead { grid-column: 9 / 13; max-width: 36ch; }
+  .intro .lead span { display: block; }
+
+  .svcs { padding-top: var(--section); display: grid; gap: clamp(6rem, 10vw, 9rem); }
+  .svc { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 2rem; padding-inline: var(--margin); align-items: center; }
+  .svc__text { grid-column: 1 / 6; display: grid; gap: 0.9rem; align-content: start; }
+  .svc__when { color: var(--soft); }
+  .svc__line { font-size: var(--step-lead); line-height: 1.3; color: var(--ink); margin-top: 0.5rem; }
+  .svc__body { color: var(--soft); }
+  .svc__points { font-weight: 600; color: var(--ink); }
+  .svc__proof { grid-column: 7 / 13; }
+  .svc__proof video { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius); background: var(--dusk); }
+  /* Neighbours never share a layout: the optional services turn the split around and sit on a tone step. */
+  .svc--2, .svc--3 { background: var(--surface); padding-block: clamp(3rem, 6vw, 5rem); }
+  .svc--2 .svc__text, .svc--3 .svc__text { grid-column: 8 / 13; grid-row: 1; }
+  .svc--2 .svc__proof, .svc--3 .svc__proof { grid-column: 1 / 7; grid-row: 1; }
+  .svc--1 .svc__proof { grid-column: 6 / 13; }
+
+  .svc--3 { margin-top: calc(-1 * clamp(6rem, 10vw, 9rem)); background: var(--toast); }
+
+  .steps { padding: var(--section) var(--margin) 0; }
+  .steps__list { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 3.5rem; }
+  .step { grid-column: 1 / -1; }
+  .step--1 { grid-column-start: 3; }
+  .step--2 { grid-column-start: 5; }
+  .step__line { font-family: var(--display); font-weight: 600; font-size: var(--step-head); letter-spacing: -0.025em; line-height: 1; }
+  .step--2 .step__line { color: var(--ember-deep); }
+  .step__text { margin-top: 0.75rem; max-width: 36ch; color: var(--soft); }
+  @media (min-width: 1100px) {
+    .steps__list { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 0; align-items: start; }
+    .step, .step--1, .step--2 { grid-column: auto; }
+    .step--1 { margin-top: 3.5rem; }
+    .step--2 { margin-top: 7rem; }
+    .step__line { font-size: clamp(2rem, 0.9rem + 1.7vw, 2.75rem); }
   }
 
-  .head--center {
-    margin-inline: auto;
-    text-align: center;
-    max-width: 640px;
-    margin-bottom: 2.6rem;
-  }
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-  }
-  .step {
-    border: 1px solid rgba(244, 236, 221, 0.16);
-    border-radius: var(--radius);
-    padding: 1.8rem;
-  }
-  .step__n {
-    display: inline-grid;
-    place-items: center;
-    width: 2.4rem;
-    height: 2.4rem;
-    border-radius: 999px;
-    background: var(--ember);
-    color: var(--paper);
-    font-family: var(--display);
-    font-weight: 700;
-    margin-bottom: 1rem;
-  }
-  .step h3 {
-    color: var(--paper);
-    font-size: 1.2rem;
-    margin-bottom: 0.4rem;
-  }
-  .step p {
-    margin: 0;
-    color: var(--muted);
-  }
-
-  .faq-list {
-    max-width: 740px;
-    margin-inline: auto;
-  }
-  .faq-item {
-    border-bottom: 1px solid var(--line);
-  }
-  .faq-q {
-    cursor: pointer;
-    padding: 1.2rem 0;
-    font-weight: 600;
-    font-size: 1.05rem;
-    color: var(--ink);
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-  }
-  .faq-q::after {
-    content: "+";
-    font-size: 1.3rem;
-    color: var(--ember);
-    flex: none;
-    transition: transform 0.2s ease;
-  }
-  .faq-item[open] .faq-q::after {
-    content: "−";
-  }
-  .faq-q::-webkit-details-marker {
-    display: none;
-  }
-  .faq-a {
-    padding: 0 0 1.2rem;
-    color: var(--body);
-    max-width: 65ch;
-    margin: 0;
-  }
-
-  @media (max-width: 980px) {
-    .svc {
-      grid-template-columns: 90px 1fr;
-    }
-    .svc__media {
-      grid-column: 1 / -1;
-      aspect-ratio: 16 / 9;
-    }
-  }
-  @media (max-width: 760px) {
-    .svc {
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-    .svc__index {
-      flex-direction: row;
-      align-items: center;
-      gap: 1rem;
-    }
-    .svc__num {
-      font-size: 1.6rem;
-    }
-    .svc__media {
-      grid-column: auto;
-    }
-    .steps {
-      grid-template-columns: 1fr;
-    }
+  @media (max-width: 860px) {
+    .intro h1, .intro .lead { grid-column: 1 / -1; }
+    .svc__text, .svc__proof,
+    .svc--1 .svc__proof,
+    .svc--2 .svc__text, .svc--3 .svc__text, .svc--2 .svc__proof, .svc--3 .svc__proof { grid-column: 1 / -1; grid-row: auto; }
+    .svc__proof { order: -1; }
+    .steps__list { grid-template-columns: 1fr; row-gap: 2.5rem; }
+    .step { grid-column: 1; }
+    .step--1 { padding-left: 6vw; }
+    .step--2 { padding-left: 12vw; }
   }
 </style>
+
+<script>
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const io = new IntersectionObserver(
+    (entries) => entries.forEach((e) => {
+      const v = e.target as HTMLVideoElement;
+      if (e.isIntersecting && !reduce) { v.preload = "auto"; v.play().catch(() => {}); } else v.pause();
+    }),
+    { threshold: 0.25 },
+  );
+  document.querySelectorAll<HTMLVideoElement>(".svc video[data-autoplay]").forEach((v) => io.observe(v));
+</script>

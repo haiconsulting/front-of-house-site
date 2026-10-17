@@ -1,0 +1,161 @@
+---
+// Restaurant sites the team built: one block per restaurant (Taste Skill blueprint
+// "oversized visual, small cluster"). Each site plays as a calm walkthrough loop of the live
+// site (HowToVideoApp/walkthrough), shown whole at 16:9 and bleeding off one edge; the name and
+// what we built sit beside it. Neighbours swap sides. A site with a full walkthrough gets a
+// "Watch" button that opens it in a dialog.
+interface Props {
+  detailed?: boolean;
+}
+const { detailed = false } = Astro.props;
+
+const cases = [
+  {
+    id: "killa",
+    name: "Killa",
+    v: "killa-nikkei",
+    url: "https://www.killanikkei.com",
+    host: "killanikkei.com",
+    kind: "Peruvian and Japanese Nikkei, Salt Lake City",
+    tagline: "Two worlds, one moon.",
+    body: "Peruvian and Japanese Nikkei in downtown Salt Lake City. A cinematic site with online reservations and confirmations, a newsletter and an admin dashboard, cut to its gold-on-black identity.",
+    built: ["Cinematic video hero", "Online reservations with confirmations", "Newsletter signup and an admin dashboard"],
+    walkthrough: { src: "/videos/killa-nikkei-walkthrough.mp4", poster: "/videos/killa-nikkei-walkthrough.jpg", length: "75-second" },
+  },
+  {
+    id: "burger-lab",
+    name: "Burger Lab",
+    v: "burger-lab",
+    url: "https://www.burgerlabbar.com",
+    host: "burgerlabbar.com",
+    kind: "Gourmet burgers and a cocktail lab, Salt Lake City",
+    tagline: "We don't cook, we experiment.",
+    body: "A burger and cocktail lab in Salt Lake City. Video-led, with group reservations on OpenTable, a catering page, email capture and local guides written so AI search can find it.",
+    built: ["Video hero and a lab look", "OpenTable reservations and a catering page", "Email capture and AI-search articles"],
+  },
+  {
+    id: "dasks",
+    name: "Dasks",
+    v: "dasks",
+    url: "https://www.dasks.com",
+    host: "dasks.com",
+    kind: "Greek grill, Salt Lake City",
+    tagline: "Home of Salt Lake's best gyro.",
+    body: "A Greek grill and Salt Lake's home of the gyro. A site led by the food, with a dish carousel and online ordering one tap away on every page.",
+    built: ["A dish carousel up front", "Online ordering on every page", "Menu and location pages"],
+  },
+];
+---
+
+<section class="work" aria-label="Restaurant websites we built">
+  {Astro.slots.has("default") && <div class="work__intro"><slot /></div>}
+  {
+    cases.map((w, i) => (
+      <article class={`job ${i % 2 ? "job--r" : "job--l"}`} id={w.id} data-reveal>
+        <div class="job__visual">
+          <video muted loop playsinline preload="none" poster={`/videos/${w.v}.jpg`} aria-label={`${w.name}'s website, ${w.host}`} data-autoplay>
+            <source src={`/videos/${w.v}.mp4`} type="video/mp4" />
+            <source src={`/videos/${w.v}.webm`} type="video/webm" />
+          </video>
+        </div>
+        <div class="job__cluster">
+          <h2 class="job__name">{w.name}</h2>
+          <p class="job__kind">{w.kind}{detailed && <>. &ldquo;{w.tagline}&rdquo;</>}</p>
+          <p class="job__body">{w.body}</p>
+          {detailed && <p class="job__built">We built: {w.built.join(", ").toLowerCase()}.</p>}
+          <div class="job__links">
+            {w.walkthrough && (
+              <button type="button" class="btn btn--ghost btn--small" data-watch={w.walkthrough.src} data-poster={w.walkthrough.poster} data-title={`${w.name}: a ${w.walkthrough.length} walkthrough of ${w.host}`}>
+                Watch the {w.walkthrough.length} walkthrough
+              </button>
+            )}
+            <a class="link" href={w.url} target="_blank" rel="noopener noreferrer">Visit {w.host}</a>
+          </div>
+        </div>
+      </article>
+    ))
+  }
+  <dialog class="watch" aria-labelledby="watch-title">
+    <div class="watch__bar">
+      <p id="watch-title" class="watch__title small"></p>
+      <form method="dialog"><button class="watch__close" type="submit">Close</button></form>
+    </div>
+    <video class="watch__video" controls playsinline preload="none"></video>
+  </dialog>
+</section>
+
+<style>
+  .work { padding-top: var(--section); overflow: hidden; }
+  .work__intro { padding: 0 var(--margin); margin-bottom: clamp(3rem, 6vw, 5rem); }
+  .job {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: 1.75rem;
+    padding-inline: var(--margin);
+    align-items: center;
+    scroll-margin-top: 2rem;
+  }
+  .job + .job { margin-top: clamp(5rem, 9vw, 8rem); }
+  /* the whole site, never cropped into a portrait box */
+  .job__visual {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--dusk);
+  }
+  .job--l .job__visual { grid-column: 1 / 9; margin-left: calc(-1 * var(--margin)); border-radius: 0 var(--radius) var(--radius) 0; }
+  .job--l .job__cluster { grid-column: 9 / 13; }
+  .job--r .job__visual { grid-column: 5 / 13; grid-row: 1; margin-right: calc(-1 * var(--margin)); border-radius: var(--radius) 0 0 var(--radius); }
+  .job--r .job__cluster { grid-column: 1 / 5; grid-row: 1; }
+  .job__visual video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .job__cluster { display: grid; gap: 0.9rem; align-content: center; }
+  .job__name { font-size: var(--step-head); }
+  .job__kind { color: var(--ink); font-weight: 600; }
+  .job__body, .job__built { color: var(--soft); font-size: var(--step-body); }
+  .job__links { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; margin-top: 0.6rem; }
+  .job__links .link { color: var(--ink); }
+
+  .watch { width: min(92vw, 1280px); max-height: 92svh; padding: 0; border: 0; border-radius: var(--radius); background: var(--ink); color: var(--paper); }
+  .watch::backdrop { background: rgb(34 28 24 / 0.82); }
+  .watch__bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.5rem 0.5rem 0.5rem 1.25rem; }
+  .watch__title { color: var(--muted-on-ink); }
+  .watch__close { min-height: 2.75rem; padding: 0 1rem; background: none; border: 0; color: var(--paper); font-weight: 600; text-decoration: underline; text-underline-offset: 0.2em; cursor: pointer; }
+  .watch__close:hover { color: var(--ember-bright); }
+  .watch__video { width: 100%; aspect-ratio: 16 / 9; background: #000; }
+
+  @media (max-width: 860px) {
+    .job { display: block; }
+    .job--l .job__visual, .job--r .job__visual { margin-inline: calc(-1 * var(--margin)); border-radius: 0; }
+    .job__cluster { margin-top: 1.5rem; }
+  }
+</style>
+
+<script>
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const io = new IntersectionObserver(
+    (entries) => entries.forEach((e) => {
+      const v = e.target as HTMLVideoElement;
+      if (e.isIntersecting && !reduce) { v.preload = "auto"; v.play().catch(() => {}); } else v.pause();
+    }),
+    { threshold: 0.25 },
+  );
+  document.querySelectorAll<HTMLVideoElement>(".job video[data-autoplay]").forEach((v) => io.observe(v));
+
+  // The full walkthrough plays on request, in a dialog, with controls.
+  const dlg = document.querySelector<HTMLDialogElement>("dialog.watch");
+  const player = dlg?.querySelector<HTMLVideoElement>("video");
+  const title = dlg?.querySelector<HTMLElement>(".watch__title");
+  document.querySelectorAll<HTMLButtonElement>("[data-watch]").forEach((b) =>
+    b.addEventListener("click", () => {
+      if (!dlg || !player) return;
+      player.src = b.dataset.watch!;
+      player.poster = b.dataset.poster || "";
+      if (title) title.textContent = b.dataset.title || "";
+      dlg.showModal();
+      player.play().catch(() => {});
+    }),
+  );
+  dlg?.addEventListener("close", () => { player?.pause(); player?.removeAttribute("src"); player?.load(); });
+  dlg?.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
+</script>

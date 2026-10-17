@@ -1,34 +1,41 @@
 ---
+// Work. The restaurants first as one sentence of names with their own frames inside it,
+// then each site in full, then the live templates as an index with a preview.
 import Base from "../layouts/Base.astro";
-import CtaBand from "../components/CtaBand.astro";
-import VideoSlot from "../components/VideoSlot.astro";
-import TickList from "../components/TickList.astro";
+import Cases from "../components/Cases.astro";
+import LeadForm from "../components/LeadForm.astro";
 import { caseStudies, hai, specConcepts, site } from "../data/site.ts";
+
+const ogFor: Record<string, string> = {
+  "/templates/fine-dining": "/og/fine-dining.jpg",
+  "/templates/fast-casual": "/og/fast-casual.jpg",
+  "/templates/cantina": "/og/cantina.jpg",
+  "/templates/neighborhood-bar": "/og/neighborhood-bar.jpg",
+};
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   name: "Restaurant Websites Built by Front of House",
   description:
-    "Portfolio of custom restaurant websites designed, built, and maintained by Front of House. Each site is owned outright by the restaurant owner.",
-  itemListElement: caseStudies.map((c, i) => ({
+    "Custom restaurant websites designed, built and maintained by Front of House. Each site is owned outright by the restaurant owner.",
+  itemListElement: [
+    ...caseStudies.map((c) => ({ name: c.name, url: c.url, description: c.blurb, cuisine: c.type, city: c.location })),
+    { name: "Dasks Greek Grill", url: "https://www.dasks.com", description: "A Greek grill in Salt Lake City with a food-led site and online ordering.", cuisine: "Greek", city: "Salt Lake City, UT" },
+  ].map((c, i) => ({
     "@type": "ListItem",
     position: i + 1,
     item: {
       "@type": "WebSite",
       name: c.name,
       url: c.url,
-      description: c.blurb,
+      description: c.description,
       creator: { "@id": `${site.url}/#organization` },
       about: {
         "@type": "Restaurant",
         name: c.name,
-        servesCuisine: c.type,
-        address: {
-          "@type": "PostalAddress",
-          addressLocality: c.location.split(",")[0].trim(),
-          addressRegion: c.location.split(",")[1]?.trim(),
-        },
+        servesCuisine: c.cuisine,
+        address: { "@type": "PostalAddress", addressLocality: c.city.split(",")[0].trim(), addressRegion: c.city.split(",")[1]?.trim() },
       },
     },
   })),
@@ -37,357 +44,103 @@ const jsonLd = {
 
 <Base
   title="Work"
-  description="Restaurant websites built by Front of House. See Burger Lab and Killa: custom, fast, mobile-first, and owned by the restaurant owner. Based in Salt Lake City, Park City, and Atlanta."
+  description="Restaurant websites built by Front of House: Killa, Burger Lab and Dasks in Salt Lake City. Custom, fast, mobile first, and owned by the restaurant owner. Plus four live templates to try with your own name."
   jsonLd={jsonLd}
 >
-  <section class="phead">
-    <div class="container">
-      <p class="kicker">Our work</p>
-      <h1>What does a Front of House restaurant website look like?</h1>
-      <p class="lede">
-        Real restaurants we designed and built. Fast, custom, mobile-first,
-        and owned by the restaurant owner. Each ships with online ordering,
-        reservations, waitlists, email capture, and AI search optimization.
-      </p>
+  <section class="intro" aria-labelledby="work-title">
+    <h1 id="work-title">Restaurant websites we built</h1>
+    <p class="names" data-reveal>
+      <span>
+        <a href="#killa">Killa</a><img class="inline" src="/work/killa-still.jpg" alt="" width="1280" height="720" />,
+        <a href="#burger-lab">Burger Lab</a><img class="inline" src="/work/burger-lab-still.jpg" alt="" width="1280" height="720" /> and
+        <a href="#dasks">Dasks</a><img class="inline" src="/work/dasks-still.jpg" alt="" width="1280" height="720" />, all owned by the people who run them, plus four live templates to try with your name.
+      </span>
+    </p>
+  </section>
+
+  <Cases detailed />
+
+  <section class="lineage" aria-labelledby="lineage-title">
+    <h2 id="lineage-title">Same people, same standard</h2>
+    <div class="lineage__text" data-reveal>
+      <p>{hai.blurb}</p>
+      <p><a class="link" href={hai.url} target="_blank" rel="noopener noreferrer">More of the team's work at {hai.longName}</a></p>
     </div>
   </section>
 
-  <section id="cases" class="section">
-    <div class="container">
-      <div class="cases">
+  <section class="spec" aria-labelledby="spec-title">
+    <div class="spec__head" data-reveal>
+      <h2 id="spec-title">Your kind of place, live today</h2>
+      <p class="soft">A live spec site for every kind of restaurant. Open one, type your restaurant's name and pick a vibe, and see what yours could look like before we start. Nothing is saved or sent.</p>
+    </div>
+    <div class="spec__index">
+      <ul class="spec__rows" data-reveal>
         {
-          caseStudies.map((c, i) => (
-            <article class:list={["case", { "case--flip": i % 2 === 1 }]}>
-              <a
-                class="case__media"
-                href={c.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Visit ${c.name}`}
-              >
-                <VideoSlot src={c.video} alt={c.alt} />
-
-                <span class="case__badge">Live site</span>
+          specConcepts.map((c, i) => (
+            <li>
+              <a class="spec__row" href={c.href} data-key={i}>
+                <img class="spec__thumb" src={ogFor[c.href]} alt="" width="1200" height="630" loading="lazy" decoding="async" />
+                <span class="spec__name">{c.name.replace(" / ", " and ")}</span>
+                <span class="spec__note">{c.note}</span>
               </a>
-              <div class="case__body">
-                <p class="case__loc">{c.location}</p>
-                <h2 class="case__name">{c.name}</h2>
-                <p class="case__type">{c.type}</p>
-                <p class="case__tag">"{c.tagline}"</p>
-                <p class="case__blurb">{c.blurb}</p>
-                <div class="case__points">
-                  <TickList points={c.points} inline />
-                </div>
-                <a
-                  class="case__link"
-                  href={c.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Visit {c.name} →
-                </a>
-              </div>
-            </article>
+            </li>
           ))
         }
+      </ul>
+      <div class="spec__frame" aria-hidden="true">
+        {specConcepts.map((c, i) => <img class:list={["spec__pic", { "is-on": i === 0 }]} data-key={i} src={ogFor[c.href]} alt="" width="1200" height="630" loading="lazy" decoding="async" />)}
       </div>
     </div>
   </section>
 
-  <!-- ── HAI talent reference (separate company) ── -->
-  <section class="section--tight">
-    <div class="container">
-      <div class="agency surface-ink">
-        <div class="agency__copy">
-          <p class="kicker">Same team, same standard</p>
-          <h2>Real sites. Real restaurants.</h2>
-          <p>{hai.blurb}</p>
-        </div>
-        <a
-          class="btn btn--on-ink agency__cta"
-          href={hai.url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          More work at {hai.name} →
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Spec showcase by category ── -->
-  <section id="spec" class="section--tight">
-    <div class="container">
-      <header class="spec-head">
-        <p class="kicker">Spec builds</p>
-        <h2>Don't see your kind of place yet?</h2>
-        <p class="lede">
-          We built a live spec site for every kind of restaurant, so you can
-          see exactly what yours could look like before we start. Open one,
-          answer four quick questions, and it puts your name up in lights.
-        </p>
-      </header>
-      <div class="specs">
-        {
-          specConcepts.map((s) => (
-            <a class="spec" href={s.href}>
-              <span class="spec__tag">Live spec</span>
-              <h3>{s.name}</h3>
-              <p>{s.note}</p>
-              <span class="spec__go">Try it with your name →</span>
-            </a>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <section class="section--tight">
-    <div class="container">
-      <div class="soon">
-        <div>
-          <h2>Want to be next?</h2>
-          <p class="lede">
-            We're booking our first Front of House partners now. Early partners
-            get our fullest attention, and a spot in this gallery.
-          </p>
-        </div>
-        <a href="/contact" class="btn btn--primary">Become an early partner</a>
-      </div>
-    </div>
-  </section>
-
-  <CtaBand />
+  <LeadForm heading="Want yours next?" />
 </Base>
 
 <style>
-  .phead {
-    padding-block: clamp(3rem, 7vw, 5rem) clamp(1.5rem, 3vw, 2.5rem);
-    background: var(--bone);
-    border-bottom: 1px solid var(--line);
-  }
-  .phead h1 {
-    max-width: 18ch;
-  }
-  .phead .lede {
-    margin-top: 1rem;
-  }
+  .intro { padding: clamp(3rem, 9vh, 7rem) var(--margin) 0; display: grid; gap: 2.5rem; }
+  .intro h1 { max-width: 14ch; }
+  .names { max-width: 48ch; font-family: var(--display); font-weight: 600; font-size: clamp(1.5rem, 1rem + 1.6vw, 2.25rem); line-height: 1.25; letter-spacing: -0.01em; }
+  .names a { text-decoration: underline; text-decoration-thickness: 0.06em; color: var(--ink); }
+  .names a:hover { color: var(--ember-deep); }
+  .inline { display: inline-block; width: 1.6em; height: 0.9em; margin: 0 0.12em 0 0.2em; vertical-align: -0.05em; object-fit: cover; border-radius: var(--radius); transition: transform var(--t-ui) var(--ease-out); transform-origin: left center; }
+  .names a:hover + .inline { transform: scale(1.6); }
 
-  /* ── Case studies ── */
-  .cases {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(2.5rem, 6vw, 4.5rem);
-  }
-  .case {
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    gap: clamp(1.5rem, 4vw, 3.5rem);
-    align-items: center;
-  }
-  .case--flip .case__media {
-    order: 2;
-  }
-  .case__media {
-    position: relative;
-    display: block;
-    border-radius: var(--radius);
-    overflow: hidden;
-    aspect-ratio: 4 / 3;
-    box-shadow: var(--shadow);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .case__media:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lift);
-  }
-  .case__media img,
-  .case__media video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    background: var(--ink);
-  }
-  .case__badge {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--paper);
-    background: rgba(34, 28, 24, 0.6);
-    backdrop-filter: blur(4px);
-    padding: 0.3rem 0.7rem;
-    border-radius: 999px;
-  }
-  .case__loc {
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin: 0 0 0.6rem;
-  }
-  .case__name {
-    font-size: clamp(2rem, 4vw, 2.8rem);
-    margin: 0 0 0.2rem;
-  }
-  .case__type {
-    color: var(--ember);
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    margin: 0 0 0.9rem;
-  }
-  .case__tag {
-    font-family: var(--display);
-    font-style: italic;
-    font-size: 1.2rem;
-    color: var(--ink);
-    margin: 0 0 1rem;
-  }
-  .case__blurb {
-    color: var(--body);
-    max-width: 52ch;
-    margin: 0 0 1.2rem;
-  }
-  .case__points {
-    margin: 0 0 1.5rem;
-  }
-  .case__link {
-    font-weight: 600;
-    color: var(--ember-deep);
-  }
-  .case__link:hover {
-    color: var(--ink);
-  }
+  .lineage { padding: var(--section) var(--margin) 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 2rem; align-items: start; }
+  .lineage h2 { grid-column: 1 / 6; max-width: 12ch; }
+  .lineage__text { grid-column: 7 / 13; display: grid; gap: 1rem; font-size: var(--step-lead); line-height: 1.35; }
 
-  /* ── Agency / HAI band ── */
-  .agency {
-    border-radius: var(--radius);
-    padding: clamp(1.8rem, 4vw, 3rem);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    flex-wrap: wrap;
+  .spec { padding: var(--section) var(--margin) 0; display: grid; gap: 3rem; }
+  .spec__head { display: grid; gap: 1.25rem; max-width: 46rem; }
+  .spec__head h2 { max-width: 14ch; }
+  .spec__index { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+  .spec__rows { display: grid; gap: 0.25rem; }
+  .spec__row { display: grid; gap: 0.35rem; padding: 1rem 0; text-decoration: none; color: var(--ink); transition: opacity var(--t-hover) ease; }
+  .spec__name { font-family: var(--display); font-weight: 600; font-size: var(--step-head); line-height: 1; letter-spacing: -0.02em; }
+  .spec__note { color: var(--soft); max-width: 44ch; }
+  .spec__row:hover .spec__name, .spec__row:focus-visible .spec__name { color: var(--ember-deep); }
+  .spec__thumb { display: none; }
+  .spec__frame { position: sticky; top: 2rem; aspect-ratio: 1200 / 630; }
+  .spec__pic { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius); opacity: 0; transition: opacity var(--t-ui) ease; }
+  .spec__pic.is-on { opacity: 1; }
+  @media (hover: hover) and (pointer: fine) {
+    .spec__rows:hover .spec__row:not(:hover) { opacity: 0.4; }
   }
-  .agency__copy {
-    max-width: 56ch;
+  @media (max-width: 560px) {
+    .names { font-size: 1.375rem; }
   }
-  .agency__copy h2 {
-    margin: 0.4rem 0 0.6rem;
-  }
-  .agency__copy p {
-    color: var(--muted-on-ink);
-    margin: 0;
-  }
-  .agency__cta {
-    flex: none;
-  }
-
-  /* ── Spec showcase ── */
-  .spec-head {
-    max-width: 640px;
-    margin-bottom: 2rem;
-  }
-  .spec-head h2 {
-    margin: 0.3rem 0 0.6rem;
-  }
-  .spec-head .lede {
-    margin: 0;
-  }
-  .specs {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
-  }
-  .spec {
-    display: block;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 1.6rem;
-    background: var(--bone);
-    color: var(--body);
-    transition: border-color 0.18s ease, box-shadow 0.18s ease,
-      transform 0.18s ease;
-  }
-  .spec:hover {
-    border-color: var(--ink);
-    box-shadow: var(--shadow-lift);
-    transform: translateY(-2px);
-    color: var(--body);
-  }
-  .spec__go {
-    display: block;
-    margin-top: 0.9rem;
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--ember-deep);
-  }
-  .spec:hover .spec__go {
-    color: var(--ink);
-  }
-  .spec__tag {
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--brass);
-  }
-  .spec h3 {
-    font-size: 1.3rem;
-    margin: 0.7rem 0 0.4rem;
-  }
-  .spec p {
-    margin: 0;
-    font-size: 0.9rem;
-    color: var(--body);
-  }
-
-  /* ── Booking band ── */
-  .soon {
-    background: var(--bone);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: clamp(1.8rem, 4vw, 2.8rem);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    flex-wrap: wrap;
-  }
-  .soon h2 {
-    margin: 0 0 0.4rem;
-  }
-  .soon .lede {
-    margin: 0;
-    max-width: 46ch;
-  }
-
-  @media (max-width: 760px) {
-    .case {
-      grid-template-columns: 1fr;
-      gap: 1.4rem;
-    }
-    .case--flip .case__media {
-      order: 0;
-    }
-    .case__media {
-      aspect-ratio: 16 / 10;
-    }
-    .agency,
-    .soon {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .agency__cta,
-    .soon .btn {
-      width: 100%;
-      justify-content: center;
-    }
+  @media (max-width: 860px), (hover: none) {
+    .spec__index { grid-template-columns: 1fr; }
+    .spec__frame { display: none; }
+    .spec__thumb { display: block; width: 100%; aspect-ratio: 1200 / 630; object-fit: cover; border-radius: var(--radius); margin-bottom: 0.5rem; }
+    .lineage h2, .lineage__text { grid-column: 1 / -1; }
   }
 </style>
+
+<script>
+  const pics = document.querySelectorAll<HTMLImageElement>(".spec__pic");
+  document.querySelectorAll<HTMLAnchorElement>(".spec__row").forEach((row) => {
+    const show = () => pics.forEach((p) => p.classList.toggle("is-on", p.dataset.key === row.dataset.key));
+    row.addEventListener("mouseenter", show);
+    row.addEventListener("focus", show);
+  });
+</script>

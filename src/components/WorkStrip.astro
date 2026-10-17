@@ -1,0 +1,66 @@
+---
+// Proof in a row: frames of restaurant sites the team built, one of them playing.
+// A statement on the left columns, its evidence on the right (the direction's section grammar).
+interface Props {
+  statement?: string;
+}
+const { statement = "What you would own: sites we built for restaurants that keep them." } = Astro.props;
+const frames = [
+  { kind: "video", v: "killa-nikkei", cap: "Killa, Salt Lake City" },
+  { kind: "img", src: "/work/burger-lab-still.jpg", alt: "Burger Lab's Lab Tested Burgers menu section", cap: "Burger Lab, Salt Lake City" },
+  { kind: "img", src: "/work/dasks-still.jpg", alt: "Dasks Greek Grill's dish carousel with an Order Online button", cap: "Dasks, Salt Lake City" },
+  { kind: "img", src: "/work/killa-still.jpg", alt: "Killa's signature dishes on its menu page", cap: "Killa's menu, with reservations" },
+];
+---
+
+<section class="strip" aria-label="Restaurant sites we built">
+  <p class="strip__statement">{statement} <a class="link" href="/work">See the work</a></p>
+  <ul class="strip__row" data-reveal>
+    {
+      frames.map((f) => (
+        <li>
+          <figure>
+            {f.kind === "video" ? (
+              <video muted loop playsinline preload="none" poster={`/videos/${f.v}.jpg`} aria-hidden="true" data-autoplay>
+                <source src={`/videos/${f.v}.mp4`} type="video/mp4" />
+                <source src={`/videos/${f.v}.webm`} type="video/webm" />
+              </video>
+            ) : (
+              <img src={f.src} alt={f.alt} width="1280" height="720" loading="lazy" decoding="async" />
+            )}
+            <figcaption class="small">{f.cap}</figcaption>
+          </figure>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .strip { padding: var(--section) var(--margin) 0; display: grid; gap: 2rem; }
+  .strip__statement { max-width: 34ch; font-size: var(--step-lead); line-height: 1.35; }
+  .strip__row { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 0.75rem; align-items: end; }
+  .strip__row figure { margin: 0; display: grid; gap: 0.6rem; }
+  .strip__row img, .strip__row video {
+    width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: var(--radius); background: var(--dusk);
+    transition: transform var(--t-ui) var(--ease-out);
+  }
+  .strip__row li:hover img { transform: scale(1.02); }
+  .strip__row figcaption { color: var(--soft); }
+  @media (max-width: 860px) {
+    .strip__row { grid-template-columns: 1fr 1fr; }
+    .strip__row li:first-child { grid-column: 1 / -1; }
+  }
+</style>
+
+<script>
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const io = new IntersectionObserver(
+    (entries) => entries.forEach((e) => {
+      const v = e.target as HTMLVideoElement;
+      if (e.isIntersecting && !reduce) { v.preload = "auto"; v.play().catch(() => {}); } else v.pause();
+    }),
+    { threshold: 0.25 },
+  );
+  document.querySelectorAll<HTMLVideoElement>(".strip video[data-autoplay]").forEach((v) => io.observe(v));
+</script>

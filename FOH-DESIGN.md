@@ -137,3 +137,19 @@ Warm, plainspoken, restaurant-native. Insiders, not vendors. Show, don't oversel
 - Do not use generic stock photography — FOH shoots real rooms, plates, and people; use the `.ph-img` placeholder pattern until real photography exists.
 - Do not use em dashes in copy.
 - Do not ship the unvaried SaaS section skeleton — earn one distinctive section per page.
+
+## 10. Taste Skill redesign (October 2026, branch `taste-skill-redesign`)
+
+The marketing pages were redesigned with Taste Skill v2 (`~/Desktop/DrewT/taste-skill-main`), direction "The sentence is the layout" (seed 541284264, `.taste-skill/direction.json`), with the brand's palette, type, logo and voice kept exactly. Where this section and sections 1 to 9 disagree on the marketing pages, this section wins; the templates studio still follows sections 1 to 9.
+
+- **Kept:** every color token, Cormorant + Inter, the awning mark, the voice and phrases, pill buttons, Brass for Care+ only.
+- **Primary button at rest is Ember Deep** (`#A8472B`), because Paper text on Ember measures 3.9:1; hover goes to Ink. Ember stays the accent for focus and emphasis.
+- **Retired as generic devices:** the kicker label above headings, numbered sections (01, 02), hairline dividers between sections, soft card shadows, gradient glows and seams, and the italic Ember word in headlines. Hierarchy now comes from size, tone steps (Paper, Bone, Toast, Ink) and space.
+- **Signature move:** on the home page the promise "Own it. Don't rent it." is split by a frame, and a reel of sites we built (Killa, Burger Lab, Dasks) moves through it as the page scrolls.
+- **Proof is real:** client footage and stills, and owner quotes from Killa and Burger Lab and from Dasks. No invented metrics.
+- **One primary action everywhere:** "Talk to the team", which leads to the inquiry form (`src/components/LeadForm.astro`, posting to `/api/lead`).
+- **The Host** opens from "Ask the Host" in the header, menu and footer instead of a floating pill, so it never covers content.
+- **Shared pieces:** `LeadForm`, `Faq`, `Cases`, `WorkStrip`, `Header`, `Footer`.
+- **Check a page:** `node ~/Desktop/DrewT/taste-skill-main/skills/taste-skill/scripts/inspect.mjs <url> --allow palette-claude,palette-terracotta,palette-cream` (the brand owns its cream and ember, so those two palette rules are allowed).
+- **Client footage is walkthrough footage (Oct 16).** Every site we show plays as a calm, silent walkthrough loop of the live site made with `~/Desktop/DrewT/HowToVideoApp/walkthrough` (skill `site-walkthrough`), never a promo cut with text over it. Loops are `/videos/<site>.(mp4|webm|jpg)`; Killa also has the 75-second tour (`killa-nikkei-walkthrough.mp4`), opened from "Watch the walkthrough" in a dialog. Show the footage whole at 16:9: no portrait crops, no zoom. Capture uses `killa-film`, a clip of the film on Killa's home page.
+- **Desktop layout (Oct 16).** Content holds a 1456px column (`--margin` grows on wide screens; bleeds still reach the screen edge). Hero: "Own it." then the frame starting where it ends (about 62% of the column), "Don't rent it." under the frame's right side; one site in the window at a time. Cases alternate sides and drop the second still. Step lines run in one row stepping down from 1100px. FAQ heading holds the left five columns beside the questions. Who and About put the photo in its own column instead of a thumbnail drop cap. Footer: no empty ink band; the big name is cropped only at its descent.

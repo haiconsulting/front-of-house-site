@@ -1,0 +1,299 @@
+---
+// The inquiry form: the page's one job. A clip-out card (Taste Skill blueprint "clip-out coupon"),
+// split by a perforation: the invitation on the left, the fields on the right.
+// Posts JSON to /api/lead (src/pages/api/lead.ts, SendGrid). If that fails or is not set up,
+// it opens the visitor's email app pre-filled, so an inquiry is never lost.
+import { site, cta } from "../data/site.ts";
+import { directions } from "../data/directions";
+
+interface Props {
+  heading?: string;
+  id?: string;
+  tight?: boolean;
+}
+const { heading = "Tell us about your restaurant", id = "talk", tight = false } = Astro.props;
+const directionLabels = Object.fromEntries(directions.map((d) => [d.slug, d.label]));
+const endpoint = import.meta.env.PUBLIC_LEAD_ENDPOINT || "/api/lead";
+---
+
+<section class:list={["talk", { "talk--tight": tight }]} id={id} aria-labelledby={`${id}-title`}>
+  <form class="coupon" id="lead-form" data-endpoint={endpoint} novalidate>
+    <span class="coupon__perf" aria-hidden="true"><span class="coupon__dots"></span></span>
+    <div class="coupon__left" data-reveal>
+      <h2 id={`${id}-title`}>{heading}</h2>
+      <div class="coupon__sentence">
+        <p>{cta.promise}</p>
+        <p>Rather talk now? Call {site.contact.name.split(" ")[0]} at <a href={site.contact.phoneHref}>{site.contact.phone}</a>.</p>
+      </div>
+    </div>
+    <div class="coupon__right" data-reveal>
+      <div class="hp" aria-hidden="true">
+        <label for="company_website">Leave this field empty</label>
+        <input id="company_website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+      <input id="build-brief" name="build_brief" type="hidden" value="" />
+      <div class="row">
+        <div class="field">
+          <label for="name">Your name</label>
+          <input id="name" name="name" type="text" required autocomplete="name" aria-describedby="name-err" />
+          <span class="field__err" id="name-err" role="alert"></span>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required autocomplete="email" aria-describedby="email-err" />
+          <span class="field__err" id="email-err" role="alert"></span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="restaurant">Restaurant</label>
+          <input id="restaurant" name="restaurant" type="text" autocomplete="organization" />
+        </div>
+        <div class="field field--short">
+          <label for="locations">Locations</label>
+          <input id="locations" name="locations" type="number" min="1" inputmode="numeric" value="1" />
+        </div>
+      </div>
+      <div class="field">
+        <label for="phone">Phone <span class="opt">(optional)</span></label>
+        <input id="phone" name="phone" type="tel" autocomplete="tel" />
+      </div>
+      <div class="field">
+        <label for="message">What do you need?</label>
+        <textarea id="message" name="message" rows="3" placeholder="A new site, off a platform, photos, a brand, a second location"></textarea>
+      </div>
+      <button type="submit" class="coupon__bar form__submit">Send it to the team</button>
+      <p class="form__note" id="form-note" role="status" aria-live="polite" hidden></p>
+    </div>
+  </form>
+</section>
+
+<style>
+  .talk { padding: var(--section) var(--margin) 0; }
+  .talk--tight { padding-top: clamp(3rem, 6vw, 5rem); }
+  .coupon {
+    position: relative;
+    max-width: 78rem;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 46fr 54fr;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: var(--radius);
+  }
+  .coupon__perf { position: absolute; left: 46%; top: 0; bottom: 0; width: 1.75rem; margin-left: -0.875rem; pointer-events: none; }
+  .coupon__perf::before, .coupon__perf::after {
+    content: ""; position: absolute; left: 0; width: 1.75rem; height: 1.75rem; border-radius: 50%; background: var(--bg);
+  }
+  .coupon__perf::before { top: -0.875rem; }
+  .coupon__perf::after { bottom: -0.875rem; }
+  .coupon__dots {
+    position: absolute; left: 50%; top: 1.75rem; bottom: 1.75rem; width: 6px; margin-left: -3px; background: var(--bg);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='16'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3C/svg%3E") 0 0 / 6px 16px repeat-y;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='16'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3C/svg%3E") 0 0 / 6px 16px repeat-y;
+  }
+  .coupon__left {
+    display: flex; flex-direction: column; justify-content: space-between; gap: 2.5rem;
+    padding: clamp(2rem, 4vw, 3.5rem);
+  }
+  .coupon__left h2 { font-size: var(--step-head); max-width: 15ch; color: var(--paper); }
+  .coupon__sentence { color: var(--muted-on-ink); max-width: 34ch; }
+  .coupon__sentence a { color: var(--paper); text-decoration: underline; }
+  .coupon__right { display: grid; gap: 0.75rem; align-content: start; padding: clamp(2rem, 4vw, 3.5rem); }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .row .field--short { max-width: none; }
+  .field { display: grid; gap: 0.35rem; }
+  label { font-size: var(--step-small); font-weight: 600; color: var(--muted-on-ink); }
+  .opt { font-weight: 400; }
+  input, textarea {
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.8rem 1rem;
+    background: var(--dusk);
+    color: var(--paper);
+    border: 0;
+    border-radius: var(--radius);
+    font-size: var(--step-body);
+  }
+  textarea { min-height: 6.5rem; resize: vertical; }
+  ::placeholder { color: var(--muted-on-ink); opacity: 0.85; }
+  input:focus-visible, textarea:focus-visible { outline: 2.5px solid var(--ember-bright); outline-offset: 2px; }
+  input[aria-invalid="true"] { outline: 2.5px solid var(--ember-bright); }
+  .field__err { min-height: 0; font-size: var(--step-small); font-weight: 600; color: var(--ember-bright); }
+  .field__err:empty { display: none; }
+  .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; } /* taste-skill-ignore: off-screen honeypot, not a rule */
+  .coupon__bar {
+    margin-top: 0.5rem;
+    min-height: 3.5rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--ember-deep);
+    color: var(--paper);
+    font-weight: 600;
+    font-size: var(--step-body);
+    cursor: pointer;
+    transition: transform var(--t-press) var(--ease-out), background-color var(--t-hover) ease;
+  }
+  .coupon__bar:hover { background: var(--paper); color: var(--ink); }
+  .coupon__bar:active { transform: scale(0.98); }
+  .coupon__bar[disabled] { opacity: 0.7; cursor: progress; }
+  .form__note { font-weight: 600; color: var(--paper); }
+  .form__note[data-state="err"] { color: var(--ember-bright); }
+
+  @media (max-width: 860px) {
+    .talk { padding-inline: 0.75rem; }
+    .coupon { grid-template-columns: 1fr; }
+    .coupon__left { order: 1; gap: 1.25rem; padding-bottom: 1.5rem; }
+    .coupon__perf { order: 2; position: relative; left: auto; top: auto; bottom: auto; width: auto; height: 1.75rem; margin: 0; }
+    .coupon__perf::before { top: 0; left: -0.875rem; }
+    .coupon__perf::after { top: 0; bottom: auto; left: auto; right: -0.875rem; }
+    .coupon__dots {
+      left: 1.75rem; right: 1.75rem; top: 50%; bottom: auto; width: auto; height: 6px; margin: -3px 0 0;
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='6'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3C/svg%3E") 0 0 / 16px 6px repeat-x;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='6'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3C/svg%3E") 0 0 / 16px 6px repeat-x;
+    }
+    .coupon__right { order: 3; padding-top: 1.5rem; }
+  }
+  @media (max-width: 520px) {
+    .row { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script is:inline define:vars={{ to: site.contact.email, directionLabels }}>
+  (function () {
+    const form = document.getElementById("lead-form");
+    if (!form) return;
+    const note = document.getElementById("form-note");
+    const submit = form.querySelector(".form__submit");
+    const submitLabel = submit ? submit.textContent : "";
+
+    // Arriving from a spec template or the build brief: prefill what they chose so
+    // the team sees the useful context. Never overwrite anything already typed.
+    {
+      const q = new URLSearchParams(window.location.search);
+      const tpl = q.get("template");
+      const isBrief = q.get("brief") === "1";
+      const restaurant = q.get("restaurant") || "";
+      const city = q.get("city") || "";
+      const accentRaw = (q.get("accent") || "").trim().replace(/^#/, "");
+      const brandColor = /^[0-9a-f]{6}$/i.test(accentRaw) ? `#${accentRaw.toUpperCase()}` : "";
+      const brandLine = brandColor ? `${brandColor}${q.get("finish") === "tonal" ? " with tonal gradient buttons" : ""}` : "";
+      const rInput = document.getElementById("restaurant");
+      if (rInput && !rInput.value && restaurant) rInput.value = restaurant;
+      const msg = document.getElementById("message");
+      if (tpl && msg && !msg.value) {
+        const vibe = q.get("vibe") || "";
+        const tag = q.get("tag") || "";
+        let text = `I customized the ${tpl} spec template`;
+        if (restaurant) text += ` as ${restaurant}`;
+        if (city) text += ` in ${city}`;
+        text += vibe ? `, ${vibe} vibe.` : ".";
+        if (tag) text += ` Tagline: "${tag}".`;
+        if (brandLine) text += ` Brand color: ${brandLine}.`;
+        text += " Let's build the real thing.";
+        msg.value = text;
+      }
+      if (isBrief) {
+        const selected = (q.get("directions") || "").split(",").map((s) => s.trim()).filter(Boolean)
+          .map((slug) => directionLabels[slug] || slug.replace(/-/g, " "));
+        const priority = q.get("priority") || "not sure yet";
+        const needs = q.getAll("needs").filter(Boolean);
+        const tag = q.get("tag") || "";
+        const extra = q.get("note") || "";
+        const briefInput = document.getElementById("build-brief");
+        const parts = [];
+        if (selected.length) parts.push(`Directions: ${selected.join(" + ")}`);
+        if (priority) parts.push(`Primary action: ${priority.replace(/-/g, " ")}`);
+        if (needs.length) parts.push(`Needs: ${needs.map((n) => n.replace(/-/g, " ")).join(", ")}`);
+        if (city) parts.push(`City: ${city}`);
+        if (tag) parts.push(`Tagline: ${tag}`);
+        if (brandLine) parts.push(`Brand color: ${brandLine}`);
+        if (briefInput) briefInput.value = parts.join("; ");
+        if (msg && !msg.value) {
+          let text = "I started a website build brief";
+          if (selected.length) text += ` around ${selected.join(" and ")}`;
+          if (restaurant) text += ` for ${restaurant}`;
+          if (city) text += ` in ${city}`;
+          text += `. The main guest action is ${priority.replace(/-/g, " ")}.`;
+          if (needs.length) text += ` We need ${needs.map((n) => n.replace(/-/g, " ")).join(", ")}.`;
+          if (tag) text += ` Suggested tagline: "${tag}".`;
+          if (brandLine) text += ` Brand color: ${brandLine}.`;
+          if (extra) text += ` Note: ${extra}`;
+          text += " Let's scope the real build.";
+          msg.value = text;
+        }
+      }
+    }
+
+    const validated = ["name", "email"].map((id) => document.getElementById(id)).filter(Boolean);
+    function messageFor(input) {
+      const v = input.validity;
+      if (v.valid) return "";
+      if (input.id === "name") return "Add your name so we know who we're talking to.";
+      if (input.id === "email") return v.valueMissing ? "Add your email so we can reach you." : "That doesn't look like a complete email address.";
+      return "Please check this field.";
+    }
+    function setError(input, msg) {
+      const err = document.getElementById(`${input.id}-err`);
+      if (msg) { input.setAttribute("aria-invalid", "true"); if (err) err.textContent = msg; }
+      else { input.removeAttribute("aria-invalid"); if (err) err.textContent = ""; }
+      return !msg;
+    }
+    validated.forEach((input) => {
+      input.addEventListener("blur", () => { if (input.value) setError(input, messageFor(input)); });
+      input.addEventListener("input", () => { if (input.getAttribute("aria-invalid") === "true") setError(input, messageFor(input)); });
+    });
+    function setSubmitting(on) {
+      if (!submit) return;
+      submit.disabled = on;
+      submit.setAttribute("aria-disabled", String(on));
+      submit.textContent = on ? "Sending…" : submitLabel;
+    }
+    function showNote(msg, state) {
+      if (!note) return;
+      note.textContent = msg;
+      note.hidden = false;
+      note.setAttribute("data-state", state);
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      let firstInvalid = null;
+      validated.forEach((input) => {
+        const ok = setError(input, messageFor(input));
+        if (!ok && !firstInvalid) firstInvalid = input;
+      });
+      if (firstInvalid) {
+        firstInvalid.focus();
+        window.fohTrack?.("lead_form_invalid", { field: firstInvalid.name || firstInvalid.id });
+        showNote("A couple of fields need a look.", "err");
+        return;
+      }
+      const data = Object.fromEntries(new FormData(form).entries());
+      const endpoint = form.getAttribute("data-endpoint");
+      setSubmitting(true);
+      showNote("Sending your details…", "");
+      if (endpoint) {
+        try {
+          const res = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+          if (res.ok) {
+            form.reset();
+            setSubmitting(false);
+            window.fohTrack?.("lead_submitted", { via: "form", tier: data.tier || "unsure" });
+            showNote("Thanks. The team has it, and we'll be in touch within one business day.", "ok");
+            return;
+          }
+        } catch (_) { /* fall through to the email app */ }
+      }
+      const subject = `New build inquiry: ${data.restaurant || data.name}`;
+      const body = [
+        `Name: ${data.name}`, `Restaurant: ${data.restaurant || "n/a"}`, `Locations: ${data.locations || "n/a"}`,
+        `Email: ${data.email}`, `Phone: ${data.phone || "n/a"}`, `Build brief: ${data.build_brief || "n/a"}`, "", `${data.message || ""}`,
+      ].join("\n");
+      window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      setSubmitting(false);
+      window.fohTrack?.("lead_submitted", { via: "email_app", tier: data.tier || "unsure" });
+      showNote("Opening your email app to send it. Almost there.", "ok");
+    });
+  })();
+</script>
